@@ -90,13 +90,15 @@ namespace RarbgAdvancedSearch
         public void parsePage(string html)
         {
             listings.Clear();
-            doc.LoadHtml(html); 
+            doc.LoadHtml(html);
 
-            foreach(HtmlNode html_listing in doc.DocumentNode.SelectNodes("//tr[@class='lista2']"))
-            {
-                if (html_listing.HasChildNodes)
-                    parserListing(html_listing.ChildNodes.Where(n => n.Name != "#text").ToList());
-            }
+            var nodes = doc.DocumentNode.SelectNodes("//tr[@class='lista2']");
+            if(nodes != null)
+                foreach (HtmlNode html_listing in nodes)
+                {
+                    if (html_listing.HasChildNodes)
+                        parserListing(html_listing.ChildNodes.Where(n => n.Name != "#text").ToList());
+                }
         }
 
         private void parserListing(List<HtmlNode> listing_nodes)
@@ -125,7 +127,14 @@ namespace RarbgAdvancedSearch
                         foreach(var s in name)
                         {
                             if (s.Length == 4 && int.TryParse(s, out entry.year))
+                            {
+                                if(entry.year > DateTime.Now.Year)
+                                {
+                                    entry.year = 0;
+                                    continue;
+                                }
                                 break;
+                            }                                
                         }
 
                         entry.url = data_nodes[0].Attributes["href"]?.Value ?? string.Empty;

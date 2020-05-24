@@ -60,16 +60,16 @@ namespace RarbgAdvancedSearch
                     category += "&category[]=" + (new[] { $"{(int)RarbgCategory.Movies_x264}", $"{(int)RarbgCategory.Movies_x264_4k}", $"{(int)RarbgCategory.Movies_BD_Remux}", $"{(int)RarbgCategory.TV_UHD_Episodes}", $"{(int)RarbgCategory.Games_PC_RIP}", $"{(int)RarbgCategory.Games_PS4}" }[index]);
                 }
 
-                //if(chkSearchOrder.Checked)
-                //{
-
-                //}     
+                if (chkSearchOrder.Checked)
+                {
+                    order = $"&order={cmbSearchOrder.Tag.ToString().Split(new[] { ',' })[cmbSearchOrder.SelectedIndex]}&by={dudSearchOrder.SelectedItem.ToString()}";
+                }
 
                 int entryCount = 0;
                 RarbgPageParser parser = new RarbgPageParser();
 
                 int maxPage = 1;
-                if(parser.getLastPageNum(Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={category}{order}&page={9999999}"), ref maxPage))
+                if(!chkPageLimit.Checked && parser.getLastPageNum(Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={9999999}"), ref maxPage))
                 {
                     chkPageLimit.Checked = true;
                     nudPageLimit.Value = maxPage;
@@ -78,10 +78,22 @@ namespace RarbgAdvancedSearch
                 int pageNum;
                 for (pageNum = 1; btnSearch.Text != "SEARCH"; pageNum++)
                 {
-                    string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?{category}{order}&page={pageNum}");
+                    string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={pageNum}");
+                    if(response.Contains("We have too many requests from your ip in the past 24h."))
+                    {
+                        MessageBox.Show("Failed to gather listings, IP temporarily banned by server for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        pageNum--;
+                        btnSearch.Text = "SEARCH";
+                        btnSearch.ForeColor = Color.DarkGreen;
+                        break;
+                    }
                     parser.parsePage(response);
 
-                    populateGrid(parser.listings, pageNum, ref entryCount);
+                    if (parser.listings.Count > 0)
+                        populateGrid(parser.listings, pageNum, ref entryCount);
+                    else
+                        pageNum--;
+
                     Application.DoEvents();
 
                     if (parser.listings.Count == 0 || (nudPageLimit.Enabled && pageNum == nudPageLimit.Value))
@@ -209,8 +221,11 @@ namespace RarbgAdvancedSearch
 
         private void dgvListings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
-            Process.Start($"https://rarbgenter.org{entry.url}");
+            if(e.RowIndex > 0)
+            {
+                rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
+                Process.Start($"https://rarbgenter.org{entry.url}");
+            }            
         }
     }
 }

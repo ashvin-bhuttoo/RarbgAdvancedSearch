@@ -46,7 +46,7 @@
             this.Genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.dgImdb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.txtSearch = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.dudSearchOrder = new System.Windows.Forms.DomainUpDown();
             this.cmbSearchOrder = new System.Windows.Forms.ComboBox();
@@ -186,6 +186,7 @@
             this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Category.HeaderText = "Category";
             this.Category.Name = "Category";
+            this.Category.ReadOnly = true;
             this.Category.Width = 74;
             // 
             // dgName
@@ -193,6 +194,7 @@
             this.dgName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgName.HeaderText = "Name";
             this.dgName.Name = "dgName";
+            this.dgName.ReadOnly = true;
             this.dgName.Width = 60;
             // 
             // dgAdded
@@ -200,6 +202,7 @@
             this.dgAdded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgAdded.HeaderText = "Added";
             this.dgAdded.Name = "dgAdded";
+            this.dgAdded.ReadOnly = true;
             this.dgAdded.Width = 63;
             // 
             // dgSize
@@ -207,6 +210,7 @@
             this.dgSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgSize.HeaderText = "Size";
             this.dgSize.Name = "dgSize";
+            this.dgSize.ReadOnly = true;
             this.dgSize.Width = 52;
             // 
             // dgS
@@ -214,6 +218,7 @@
             this.dgS.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgS.HeaderText = "S";
             this.dgS.Name = "dgS";
+            this.dgS.ReadOnly = true;
             this.dgS.Width = 39;
             // 
             // dgL
@@ -221,6 +226,7 @@
             this.dgL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgL.HeaderText = "L";
             this.dgL.Name = "dgL";
+            this.dgL.ReadOnly = true;
             this.dgL.Width = 38;
             // 
             // dgUploader
@@ -228,6 +234,7 @@
             this.dgUploader.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgUploader.HeaderText = "Uploader";
             this.dgUploader.Name = "dgUploader";
+            this.dgUploader.ReadOnly = true;
             this.dgUploader.Width = 75;
             // 
             // Genre
@@ -235,6 +242,7 @@
             this.Genre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.Genre.HeaderText = "Genre";
             this.Genre.Name = "Genre";
+            this.Genre.ReadOnly = true;
             this.Genre.Width = 61;
             // 
             // dgYear
@@ -242,6 +250,7 @@
             this.dgYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgYear.HeaderText = "Year";
             this.dgYear.Name = "dgYear";
+            this.dgYear.ReadOnly = true;
             this.dgYear.Width = 54;
             // 
             // dgImdb
@@ -249,17 +258,18 @@
             this.dgImdb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
             this.dgImdb.HeaderText = "Imdb";
             this.dgImdb.Name = "dgImdb";
+            this.dgImdb.ReadOnly = true;
             this.dgImdb.Width = 55;
             // 
-            // textBox1
+            // txtSearch
             // 
-            this.textBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this.txtSearch.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this.textBox1.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.textBox1.Location = new System.Drawing.Point(540, 98);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(190, 25);
-            this.textBox1.TabIndex = 3;
+            this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.txtSearch.Location = new System.Drawing.Point(540, 98);
+            this.txtSearch.Name = "txtSearch";
+            this.txtSearch.Size = new System.Drawing.Size(190, 25);
+            this.txtSearch.TabIndex = 3;
             // 
             // groupBox1
             // 
@@ -507,7 +517,7 @@
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.txtSearch);
             this.Controls.Add(this.dgvListings);
             this.Controls.Add(this.btnSearch);
             this.Controls.Add(this.categ4);
@@ -540,7 +550,7 @@
         private System.Windows.Forms.CheckedListBox categ4;
         private System.Windows.Forms.Button btnSearch;
         private System.Windows.Forms.DataGridView dgvListings;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox txtSearch;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.StatusStrip statusStrip;
         private System.Windows.Forms.ToolStripProgressBar tstProgress;
