@@ -66,7 +66,10 @@
             this.tstStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripSplitButton();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.exportEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
@@ -329,6 +332,7 @@
             this.chkMaxYear.TabIndex = 7;
             this.chkMaxYear.Text = "Max. Content Year";
             this.chkMaxYear.UseVisualStyleBackColor = true;
+            this.chkMaxYear.CheckedChanged += new System.EventHandler(this.chkMaxYear_CheckedChanged);
             // 
             // dtpMaxYear
             // 
@@ -340,6 +344,8 @@
             this.dtpMaxYear.ShowUpDown = true;
             this.dtpMaxYear.Size = new System.Drawing.Size(60, 20);
             this.dtpMaxYear.TabIndex = 6;
+            this.dtpMaxYear.Value = new System.DateTime(3000, 1, 1, 0, 0, 0, 0);
+            this.dtpMaxYear.ValueChanged += new System.EventHandler(this.dtpMaxYear_ValueChanged);
             // 
             // chkSearchOrder
             // 
@@ -362,6 +368,7 @@
             this.chkMinYear.Text = "Min. Content Year";
             this.toolTip.SetToolTip(this.chkMinYear, "Applies to Movies Only");
             this.chkMinYear.UseVisualStyleBackColor = true;
+            this.chkMinYear.CheckedChanged += new System.EventHandler(this.chkMinYear_CheckedChanged);
             // 
             // dtpMinYear
             // 
@@ -373,6 +380,8 @@
             this.dtpMinYear.ShowUpDown = true;
             this.dtpMinYear.Size = new System.Drawing.Size(60, 20);
             this.dtpMinYear.TabIndex = 4;
+            this.dtpMinYear.Value = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
+            this.dtpMinYear.ValueChanged += new System.EventHandler(this.dtpMinYear_ValueChanged);
             // 
             // dtpMinUpDate
             // 
@@ -418,6 +427,7 @@
             this.nudMinImdb.Name = "nudMinImdb";
             this.nudMinImdb.Size = new System.Drawing.Size(60, 20);
             this.nudMinImdb.TabIndex = 3;
+            this.nudMinImdb.ValueChanged += new System.EventHandler(this.nudMinImdb_ValueChanged);
             // 
             // chkPageLimit
             // 
@@ -450,6 +460,7 @@
             this.chkMinImdb.Text = "Min. Imdb Rating";
             this.toolTip.SetToolTip(this.chkMinImdb, "Applies to Movies & TV Shows Only");
             this.chkMinImdb.UseVisualStyleBackColor = true;
+            this.chkMinImdb.CheckedChanged += new System.EventHandler(this.chkMinImdb_CheckedChanged);
             // 
             // statusStrip
             // 
@@ -476,12 +487,35 @@
             // toolStrip1
             // 
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripSplitButton1});
+            this.toolStripSplitButton1,
+            this.toolStripSeparator2,
+            this.toolStripSeparator1,
+            this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(741, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(42, 22);
+            this.toolStripButton1.Text = "RESET";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripSeparator1
+            // 
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator2
+            // 
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
             // toolStripSplitButton1
             // 
@@ -492,7 +526,7 @@
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(41, 22);
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(38, 22);
             this.toolStripSplitButton1.Text = "File";
             // 
             // exportEntriesToolStripMenuItem
@@ -580,7 +614,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgImdb;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripSplitButton toolStripSplitButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem exportEntriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importEntriesToolStripMenuItem;
     }

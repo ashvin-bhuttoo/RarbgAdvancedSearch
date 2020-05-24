@@ -76,6 +76,7 @@ namespace RarbgAdvancedSearch
                 }
 
                 int pageNum;
+                saved_listings.Clear();
                 for (pageNum = 1; btnSearch.Text != "SEARCH"; pageNum++)
                 {
                     string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={pageNum}");
@@ -90,7 +91,10 @@ namespace RarbgAdvancedSearch
                     parser.parsePage(response);
 
                     if (parser.listings.Count > 0)
+                    {
+                        saved_listings.AddRange(parser.listings);
                         populateGrid(parser.listings, pageNum, ref entryCount);
+                    }                        
                     else
                         pageNum--;
 
@@ -117,7 +121,7 @@ namespace RarbgAdvancedSearch
                     }
                 }
 
-                tstStatus.Text = $"Done.. Page {pageNum}, {entryCount} Entries Added";
+                tstStatus.Text = $"Done.. Page {pageNum}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
                 tstProgress.Value = tstProgress.Maximum;
             }
             else
@@ -178,7 +182,7 @@ namespace RarbgAdvancedSearch
                 saved_listings = Utils.Deserialize<List<rarbgEntry>>(openFileDialog1.FileName);
                 int entryCount = 0;
                 populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
-                tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded";
+                tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
             }
         }
 
@@ -187,13 +191,31 @@ namespace RarbgAdvancedSearch
             int totalEntryCount = entries.Count;
             foreach (var entry in entries)
             {
-                dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
-                dgvListings.Rows[dgvListings.Rows.Count-1].Tag = entry;
+                //Custom Filter
+                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked)
+                {
+                    if(!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
+                    {
+                        if(!chkMinYear.Checked || entry.year >= dtpMinYear.Value.Year)
+                        {
+                            if (!chkMaxYear.Checked || entry.year >= dtpMaxYear.Value.Year)
+                            {
+                                dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
+                                dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                            }                           
+                        }                        
+                    }
+                }
+                else
+                {
+                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
+                    dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                }
 
                 if(fromXML)
-                    tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Added";
+                    tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
                 else
-                    tstStatus.Text = $"Working.. Page {pageCount}, {entryCount++} Entries Added";
+                    tstStatus.Text = $"Working.. Page {pageCount}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
 
                 if (entryCount % 25 == 0)
                 {
@@ -203,6 +225,11 @@ namespace RarbgAdvancedSearch
                     }
                     Application.DoEvents();
                 }
+            }
+
+            if(fromXML)
+            {
+                tstProgress.Value = tstProgress.Maximum;
             }
         }
 
@@ -226,6 +253,56 @@ namespace RarbgAdvancedSearch
                 rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
                 Process.Start($"https://rarbgenter.org{entry.url}");
             }            
+        }
+
+        private void chkMinImdb_CheckedChanged(object sender, EventArgs e)
+        {
+            nudMinImdb.Enabled = chkMinImdb.Checked;
+            if(nudMinImdb.Value > 0)
+                reloadGrid();
+        }
+
+        private void nudMinImdb_ValueChanged(object sender, EventArgs e)
+        {
+            reloadGrid();
+        }
+
+        private void reloadGrid()
+        {
+            dgvListings.Rows.Clear();
+            int entryCount = 0;
+            populateGrid(saved_listings, saved_listings.Count / 25, ref entryCount, true);
+            tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+        }
+
+        private void chkMinYear_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpMinYear.Enabled = chkMinYear.Checked;
+            if (dtpMinYear.Value.Year != 1753)
+                reloadGrid();
+        }
+
+        private void chkMaxYear_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpMaxYear.Enabled = chkMaxYear.Checked;
+            if (dtpMaxYear.Value.Year != 3000)
+                reloadGrid();
+        }
+
+        private void dtpMinYear_ValueChanged(object sender, EventArgs e)
+        {
+            reloadGrid();
+        }
+
+        private void dtpMaxYear_ValueChanged(object sender, EventArgs e)
+        {
+            reloadGrid();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            saved_listings.Clear();
+            dgvListings.Rows.Clear();
         }
     }
 }
