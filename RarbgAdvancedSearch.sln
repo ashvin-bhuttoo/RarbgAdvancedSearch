@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.29905.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RarbgAdvancedSearch", "RarbgAdvancedSearch\RarbgAdvancedSearch.csproj", "{BC2C1FF1-1780-423D-922C-81C4FF4349FB}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{BC2C1FF1-1780-423D-922C-81C4FF4349FB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC2C1FF1-1780-423D-922C-81C4FF4349FB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC2C1FF1-1780-423D-922C-81C4FF4349FB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC2C1FF1-1780-423D-922C-81C4FF4349FB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {301847BD-7621-4402-853A-31AB5B714A7A}
+	EndGlobalSection
+EndGlobal
