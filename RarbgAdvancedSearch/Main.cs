@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Reflection;
@@ -80,13 +81,7 @@ namespace RarbgAdvancedSearch
                     string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?{category}{order}&page={pageNum}");
                     parser.parsePage(response);
 
-                    foreach (var entry in parser.listings)
-                    {
-                        saved_listings.Add(entry);
-                        dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, entry.sizeInGb, entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
-                        tstStatus.Text = $"Working.. Page {pageNum}, {entryCount++} Entries Added";
-                    }
-
+                    populateGrid(parser.listings, pageNum, ref entryCount);
                     Application.DoEvents();
 
                     if (parser.listings.Count == 0 || (nudPageLimit.Enabled && pageNum == nudPageLimit.Value))
@@ -170,19 +165,35 @@ namespace RarbgAdvancedSearch
                 dgvListings.Rows.Clear();
                 saved_listings = Utils.Deserialize<List<rarbgEntry>>(openFileDialog1.FileName);
                 int entryCount = 0;
-                foreach (var entry in saved_listings)
-                {                   
-                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, entry.sizeInGb, entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
-                    tstStatus.Text = $"Working.. Page {entryCount++} Entries Added";
-
-                    if(entryCount %25 ==0)
-                    {
-                        Application.DoEvents();
-                    }
-                }
-                tstStatus.Text = $"Done.. {entryCount++} Entries Loaded";
+                populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
+                tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded";
             }
         }
+
+        private void populateGrid(List<rarbgEntry> entries, int pageCount, ref int entryCount, bool fromXML = false)
+        {
+            int totalEntryCount = entries.Count;
+            foreach (var entry in entries)
+            {
+                dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
+                dgvListings.Rows[dgvListings.Rows.Count-1].Tag = entry;
+
+                if(fromXML)
+                    tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Added";
+                else
+                    tstStatus.Text = $"Working.. Page {pageCount}, {entryCount++} Entries Added";
+
+                if (entryCount % 25 == 0)
+                {
+                    if(fromXML)
+                    {
+                        tstProgress.Value = (int)(((double)entryCount / totalEntryCount) * tstProgress.Maximum);
+                    }
+                    Application.DoEvents();
+                }
+            }
+        }
+
 
         private void chkPageLimit_CheckedChanged(object sender, EventArgs e)
         {
@@ -194,6 +205,12 @@ namespace RarbgAdvancedSearch
             cmbSearchOrder.Enabled = dudSearchOrder.Enabled = chkSearchOrder.Checked;
             cmbSearchOrder.SelectedIndex = 0;
             dudSearchOrder.SelectedIndex = 0;
+        }
+
+        private void dgvListings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
+            Process.Start($"https://rarbgenter.org{entry.url}");
         }
     }
 }

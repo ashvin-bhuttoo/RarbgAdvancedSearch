@@ -170,10 +170,15 @@
             this.Genre,
             this.dgYear,
             this.dgImdb});
+            this.dgvListings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvListings.Location = new System.Drawing.Point(12, 239);
+            this.dgvListings.MultiSelect = false;
             this.dgvListings.Name = "dgvListings";
+            this.dgvListings.ReadOnly = true;
+            this.dgvListings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvListings.Size = new System.Drawing.Size(718, 254);
             this.dgvListings.TabIndex = 2;
+            this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
             // 
             // Category
             // 
