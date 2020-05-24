@@ -178,6 +178,7 @@
             this.dgvListings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
             this.dgvListings.Size = new System.Drawing.Size(718, 254);
             this.dgvListings.TabIndex = 2;
+            this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
             // 
             // Category
