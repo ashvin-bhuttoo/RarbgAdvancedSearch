@@ -143,7 +143,7 @@ namespace RarbgAdvancedSearch
             {
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
-                saveFileDialog1.Title = "Save text Files";
+                saveFileDialog1.Title = "Save Listing";
                 //saveFileDialog1.CheckFileExists = true;
                 saveFileDialog1.CheckPathExists = true;
                 saveFileDialog1.DefaultExt = "xml";
@@ -153,6 +153,7 @@ namespace RarbgAdvancedSearch
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     Utils.Serialize(saveFileDialog1.FileName, saved_listings);
+                    MessageBox.Show($"Listing saved succesfully to\n{saveFileDialog1.FileName}\n{saved_listings.Count} Entries Saved", "Export Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }                
             }
         }
@@ -162,7 +163,7 @@ namespace RarbgAdvancedSearch
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
                 InitialDirectory = Environment.CurrentDirectory,
-                Title = "Load Xml File",
+                Title = "Load Listing",
 
                 CheckFileExists = true,
                 CheckPathExists = true,
@@ -183,6 +184,7 @@ namespace RarbgAdvancedSearch
                 int entryCount = 0;
                 populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
                 tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                MessageBox.Show($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
         }
 
@@ -192,16 +194,19 @@ namespace RarbgAdvancedSearch
             foreach (var entry in entries)
             {
                 //Custom Filter
-                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked)
+                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked)
                 {
                     if(!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
                     {
                         if(!chkMinYear.Checked || entry.year >= dtpMinYear.Value.Year)
                         {
-                            if (!chkMaxYear.Checked || entry.year >= dtpMaxYear.Value.Year)
+                            if (!chkMaxYear.Checked || entry.year <= dtpMaxYear.Value.Year)
                             {
-                                dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
-                                dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                if(!chkMinUpDate.Checked || entry.dateAdded >= dtpMinUpDate.Value)
+                                {
+                                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
+                                    dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                }                               
                             }                           
                         }                        
                     }
@@ -248,7 +253,7 @@ namespace RarbgAdvancedSearch
 
         private void dgvListings_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            if(e.RowIndex > 0)
+            if(e.RowIndex >= 0)
             {
                 rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
                 Process.Start($"https://rarbgenter.org{entry.url}");
@@ -258,13 +263,13 @@ namespace RarbgAdvancedSearch
         private void chkMinImdb_CheckedChanged(object sender, EventArgs e)
         {
             nudMinImdb.Enabled = chkMinImdb.Checked;
-            if(nudMinImdb.Value > 0)
-                reloadGrid();
+            //if(nudMinImdb.Value > 0)
+            //    reloadGrid();
         }
 
         private void nudMinImdb_ValueChanged(object sender, EventArgs e)
         {
-            reloadGrid();
+            //reloadGrid();
         }
 
         private void reloadGrid()
@@ -278,31 +283,48 @@ namespace RarbgAdvancedSearch
         private void chkMinYear_CheckedChanged(object sender, EventArgs e)
         {
             dtpMinYear.Enabled = chkMinYear.Checked;
-            if (dtpMinYear.Value.Year != 1753)
-                reloadGrid();
+            //if (dtpMinYear.Value.Year != 1753)
+            //    reloadGrid();
         }
 
         private void chkMaxYear_CheckedChanged(object sender, EventArgs e)
         {
             dtpMaxYear.Enabled = chkMaxYear.Checked;
-            if (dtpMaxYear.Value.Year != 3000)
-                reloadGrid();
+            //if (dtpMaxYear.Value.Year != 3000)
+            //    reloadGrid();
         }
 
         private void dtpMinYear_ValueChanged(object sender, EventArgs e)
         {
-            reloadGrid();
+            //reloadGrid();
         }
 
         private void dtpMaxYear_ValueChanged(object sender, EventArgs e)
         {
-            reloadGrid();
+            //reloadGrid();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             saved_listings.Clear();
             dgvListings.Rows.Clear();
+        }
+
+        private void chkMinUpDate_CheckedChanged(object sender, EventArgs e)
+        {
+            dtpMinUpDate.Enabled = chkMinUpDate.Checked;
+            //if (dtpMinUpDate.Value.Year != 1753)
+            //    reloadGrid();
+        }
+
+        private void dtpMinUpDate_ValueChanged(object sender, EventArgs e)
+        {
+            //reloadGrid();
+        }
+
+        private void btnReapplyFilter_Click(object sender, EventArgs e)
+        {
+            reloadGrid();
         }
     }
 }

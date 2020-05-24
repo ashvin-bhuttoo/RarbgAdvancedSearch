@@ -72,6 +72,7 @@
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.exportEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.btnReapplyFilter = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -148,7 +149,7 @@
             this.btnSearch.ForeColor = System.Drawing.Color.DarkGreen;
             this.btnSearch.Location = new System.Drawing.Point(540, 29);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(190, 63);
+            this.btnSearch.Size = new System.Drawing.Size(292, 63);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "SEARCH";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -179,7 +180,7 @@
             this.dgvListings.Name = "dgvListings";
             this.dgvListings.ReadOnly = true;
             this.dgvListings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvListings.Size = new System.Drawing.Size(718, 254);
+            this.dgvListings.Size = new System.Drawing.Size(821, 294);
             this.dgvListings.TabIndex = 2;
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
@@ -271,13 +272,14 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearch.Location = new System.Drawing.Point(540, 98);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(190, 25);
+            this.txtSearch.Size = new System.Drawing.Size(293, 25);
             this.txtSearch.TabIndex = 3;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.btnReapplyFilter);
             this.groupBox1.Controls.Add(this.dudSearchOrder);
             this.groupBox1.Controls.Add(this.cmbSearchOrder);
             this.groupBox1.Controls.Add(this.chkMaxYear);
@@ -293,7 +295,7 @@
             this.groupBox1.Controls.Add(this.chkMinImdb);
             this.groupBox1.Location = new System.Drawing.Point(12, 130);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(717, 104);
+            this.groupBox1.Size = new System.Drawing.Size(820, 104);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Advanced Filters";
@@ -390,6 +392,8 @@
             this.dtpMinUpDate.Name = "dtpMinUpDate";
             this.dtpMinUpDate.Size = new System.Drawing.Size(142, 20);
             this.dtpMinUpDate.TabIndex = 4;
+            this.dtpMinUpDate.Value = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
+            this.dtpMinUpDate.ValueChanged += new System.EventHandler(this.dtpMinUpDate_ValueChanged);
             // 
             // nudPageLimit
             // 
@@ -449,6 +453,7 @@
             this.chkMinUpDate.TabIndex = 2;
             this.chkMinUpDate.Text = "Min. Upload Date";
             this.chkMinUpDate.UseVisualStyleBackColor = true;
+            this.chkMinUpDate.CheckedChanged += new System.EventHandler(this.chkMinUpDate_CheckedChanged);
             // 
             // chkMinImdb
             // 
@@ -467,9 +472,9 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tstProgress,
             this.tstStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 503);
+            this.statusStrip.Location = new System.Drawing.Point(0, 543);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(741, 22);
+            this.statusStrip.Size = new System.Drawing.Size(844, 22);
             this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -493,7 +498,7 @@
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(741, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(844, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -533,21 +538,35 @@
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
             this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.exportEntriesToolStripMenuItem.Text = "Export Entries";
+            this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
             this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.importEntriesToolStripMenuItem.Text = "Import Entries";
+            this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
+            // 
+            // btnReapplyFilter
+            // 
+            this.btnReapplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReapplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReapplyFilter.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.btnReapplyFilter.Location = new System.Drawing.Point(725, 19);
+            this.btnReapplyFilter.Name = "btnReapplyFilter";
+            this.btnReapplyFilter.Size = new System.Drawing.Size(81, 63);
+            this.btnReapplyFilter.TabIndex = 7;
+            this.btnReapplyFilter.Text = "RELOAD FILTER";
+            this.btnReapplyFilter.UseVisualStyleBackColor = true;
+            this.btnReapplyFilter.Click += new System.EventHandler(this.btnReapplyFilter_Click);
             // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(741, 525);
+            this.ClientSize = new System.Drawing.Size(844, 565);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -559,7 +578,7 @@
             this.Controls.Add(this.categ2);
             this.Controls.Add(this.categ1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(757, 527);
+            this.MinimumSize = new System.Drawing.Size(860, 604);
             this.Name = "Main";
             this.Text = "Rarbg Advanced Search";
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).EndInit();
@@ -620,6 +639,7 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton1;
         private System.Windows.Forms.ToolStripMenuItem exportEntriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importEntriesToolStripMenuItem;
+        private System.Windows.Forms.Button btnReapplyFilter;
     }
 }
 
