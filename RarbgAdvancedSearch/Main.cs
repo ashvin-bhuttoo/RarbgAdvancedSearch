@@ -193,8 +193,14 @@ namespace RarbgAdvancedSearch
             int totalEntryCount = entries.Count;
             foreach (var entry in entries)
             {
+                if(entry.genre.Count > 0)
+                    if(entry.genre.Any(g => !clbGenre.Items.Contains(g)))
+                    {
+                        clbGenre.Items.AddRange(entry.genre.Where(g => !clbGenre.Items.Contains(g)).ToArray());
+                    }
+
                 //Custom Filter
-                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked)
+                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
                 {
                     if(!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
                     {
@@ -204,8 +210,11 @@ namespace RarbgAdvancedSearch
                             {
                                 if(!chkMinUpDate.Checked || entry.dateAdded >= dtpMinUpDate.Value)
                                 {
-                                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
-                                    dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || entry.genre.Any( g => clbGenre.CheckedItems.Contains(g)))
+                                    {
+                                        dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating });
+                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                    }                                    
                                 }                               
                             }                           
                         }                        
@@ -213,7 +222,7 @@ namespace RarbgAdvancedSearch
                 }
                 else
                 {
-                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, entry.genre, entry.year, entry.imdbRating });
+                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating });
                     dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
                 }
 
@@ -263,15 +272,8 @@ namespace RarbgAdvancedSearch
         private void chkMinImdb_CheckedChanged(object sender, EventArgs e)
         {
             nudMinImdb.Enabled = chkMinImdb.Checked;
-            //if(nudMinImdb.Value > 0)
-            //    reloadGrid();
         }
-
-        private void nudMinImdb_ValueChanged(object sender, EventArgs e)
-        {
-            //reloadGrid();
-        }
-
+        
         private void reloadGrid()
         {
             dgvListings.Rows.Clear();
@@ -283,48 +285,33 @@ namespace RarbgAdvancedSearch
         private void chkMinYear_CheckedChanged(object sender, EventArgs e)
         {
             dtpMinYear.Enabled = chkMinYear.Checked;
-            //if (dtpMinYear.Value.Year != 1753)
-            //    reloadGrid();
         }
 
         private void chkMaxYear_CheckedChanged(object sender, EventArgs e)
         {
             dtpMaxYear.Enabled = chkMaxYear.Checked;
-            //if (dtpMaxYear.Value.Year != 3000)
-            //    reloadGrid();
         }
-
-        private void dtpMinYear_ValueChanged(object sender, EventArgs e)
-        {
-            //reloadGrid();
-        }
-
-        private void dtpMaxYear_ValueChanged(object sender, EventArgs e)
-        {
-            //reloadGrid();
-        }
-
+        
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
             saved_listings.Clear();
             dgvListings.Rows.Clear();
+            clbGenre.Items.Clear();
         }
 
         private void chkMinUpDate_CheckedChanged(object sender, EventArgs e)
         {
             dtpMinUpDate.Enabled = chkMinUpDate.Checked;
-            //if (dtpMinUpDate.Value.Year != 1753)
-            //    reloadGrid();
-        }
-
-        private void dtpMinUpDate_ValueChanged(object sender, EventArgs e)
-        {
-            //reloadGrid();
         }
 
         private void btnReapplyFilter_Click(object sender, EventArgs e)
         {
             reloadGrid();
+        }
+
+        private void chkGenre_CheckedChanged(object sender, EventArgs e)
+        {
+            clbGenre.Enabled = chkGenre.Enabled;
         }
     }
 }

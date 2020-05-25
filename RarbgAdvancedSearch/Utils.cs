@@ -67,7 +67,7 @@ namespace RarbgAdvancedSearch
             public int leechers;
             public int comments;
             public string uploader;
-            public string genre;
+            public List<string> genre;
             public int year;
             public double imdbRating;
             public string imdb_id;
@@ -105,7 +105,7 @@ namespace RarbgAdvancedSearch
         {
             if (listing_nodes.Count == 8)
             {
-                rarbgEntry entry = new rarbgEntry();
+                rarbgEntry entry = new rarbgEntry() { genre = new List<string>() };
 
                 //extract category
                 if(listing_nodes[0].HasChildNodes && listing_nodes[0].FirstChild.Name == "a")
@@ -147,7 +147,7 @@ namespace RarbgAdvancedSearch
                         if(data_nodes.Count > 2)
                         {
                             string[] span_data = data_nodes[2].InnerText.Split(new[] { "IMDB:", "imdb:" }, StringSplitOptions.RemoveEmptyEntries);
-                            entry.genre = span_data.Length > 0 ? span_data[0].Trim() : string.Empty;
+                            entry.genre = span_data.Length > 0 ? span_data[0].Trim().Split( new[] { ',', ' '}, StringSplitOptions.RemoveEmptyEntries ).ToList() : new List<string>();
                             if (span_data.Length > 1)
                             {
                                 string imdb_info = span_data[1].Trim();

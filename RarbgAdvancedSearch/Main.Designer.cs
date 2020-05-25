@@ -73,6 +73,8 @@
             this.exportEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.importEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.btnReapplyFilter = new System.Windows.Forms.Button();
+            this.clbGenre = new System.Windows.Forms.CheckedListBox();
+            this.chkGenre = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -149,7 +151,7 @@
             this.btnSearch.ForeColor = System.Drawing.Color.DarkGreen;
             this.btnSearch.Location = new System.Drawing.Point(540, 29);
             this.btnSearch.Name = "btnSearch";
-            this.btnSearch.Size = new System.Drawing.Size(292, 63);
+            this.btnSearch.Size = new System.Drawing.Size(379, 63);
             this.btnSearch.TabIndex = 1;
             this.btnSearch.Text = "SEARCH";
             this.btnSearch.UseVisualStyleBackColor = true;
@@ -175,12 +177,12 @@
             this.dgYear,
             this.dgImdb});
             this.dgvListings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.dgvListings.Location = new System.Drawing.Point(12, 239);
+            this.dgvListings.Location = new System.Drawing.Point(12, 270);
             this.dgvListings.MultiSelect = false;
             this.dgvListings.Name = "dgvListings";
             this.dgvListings.ReadOnly = true;
             this.dgvListings.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.dgvListings.Size = new System.Drawing.Size(821, 294);
+            this.dgvListings.Size = new System.Drawing.Size(908, 335);
             this.dgvListings.TabIndex = 2;
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
@@ -272,18 +274,20 @@
             this.txtSearch.Font = new System.Drawing.Font("Segoe UI", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.txtSearch.Location = new System.Drawing.Point(540, 98);
             this.txtSearch.Name = "txtSearch";
-            this.txtSearch.Size = new System.Drawing.Size(293, 25);
+            this.txtSearch.Size = new System.Drawing.Size(380, 25);
             this.txtSearch.TabIndex = 3;
             // 
             // groupBox1
             // 
             this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupBox1.Controls.Add(this.clbGenre);
             this.groupBox1.Controls.Add(this.btnReapplyFilter);
             this.groupBox1.Controls.Add(this.dudSearchOrder);
             this.groupBox1.Controls.Add(this.cmbSearchOrder);
             this.groupBox1.Controls.Add(this.chkMaxYear);
             this.groupBox1.Controls.Add(this.dtpMaxYear);
+            this.groupBox1.Controls.Add(this.chkGenre);
             this.groupBox1.Controls.Add(this.chkSearchOrder);
             this.groupBox1.Controls.Add(this.chkMinYear);
             this.groupBox1.Controls.Add(this.dtpMinYear);
@@ -295,7 +299,7 @@
             this.groupBox1.Controls.Add(this.chkMinImdb);
             this.groupBox1.Location = new System.Drawing.Point(12, 130);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(820, 104);
+            this.groupBox1.Size = new System.Drawing.Size(907, 134);
             this.groupBox1.TabIndex = 4;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Advanced Filters";
@@ -305,7 +309,7 @@
             this.dudSearchOrder.Enabled = false;
             this.dudSearchOrder.Items.Add("DESC");
             this.dudSearchOrder.Items.Add("ASC");
-            this.dudSearchOrder.Location = new System.Drawing.Point(636, 62);
+            this.dudSearchOrder.Location = new System.Drawing.Point(438, 60);
             this.dudSearchOrder.Name = "dudSearchOrder";
             this.dudSearchOrder.Size = new System.Drawing.Size(70, 20);
             this.dudSearchOrder.TabIndex = 9;
@@ -319,7 +323,7 @@
             "Size",
             "Seeders",
             "Leechers"});
-            this.cmbSearchOrder.Location = new System.Drawing.Point(509, 62);
+            this.cmbSearchOrder.Location = new System.Drawing.Point(311, 60);
             this.cmbSearchOrder.Name = "cmbSearchOrder";
             this.cmbSearchOrder.Size = new System.Drawing.Size(121, 21);
             this.cmbSearchOrder.TabIndex = 8;
@@ -328,7 +332,7 @@
             // chkMaxYear
             // 
             this.chkMaxYear.AutoSize = true;
-            this.chkMaxYear.Location = new System.Drawing.Point(224, 64);
+            this.chkMaxYear.Location = new System.Drawing.Point(23, 99);
             this.chkMaxYear.Name = "chkMaxYear";
             this.chkMaxYear.Size = new System.Drawing.Size(114, 17);
             this.chkMaxYear.TabIndex = 7;
@@ -341,18 +345,17 @@
             this.dtpMaxYear.CustomFormat = "yyyy";
             this.dtpMaxYear.Enabled = false;
             this.dtpMaxYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpMaxYear.Location = new System.Drawing.Point(341, 61);
+            this.dtpMaxYear.Location = new System.Drawing.Point(140, 96);
             this.dtpMaxYear.Name = "dtpMaxYear";
             this.dtpMaxYear.ShowUpDown = true;
             this.dtpMaxYear.Size = new System.Drawing.Size(60, 20);
             this.dtpMaxYear.TabIndex = 6;
             this.dtpMaxYear.Value = new System.DateTime(3000, 1, 1, 0, 0, 0, 0);
-            this.dtpMaxYear.ValueChanged += new System.EventHandler(this.dtpMaxYear_ValueChanged);
             // 
             // chkSearchOrder
             // 
             this.chkSearchOrder.AutoSize = true;
-            this.chkSearchOrder.Location = new System.Drawing.Point(422, 64);
+            this.chkSearchOrder.Location = new System.Drawing.Point(224, 62);
             this.chkSearchOrder.Name = "chkSearchOrder";
             this.chkSearchOrder.Size = new System.Drawing.Size(86, 17);
             this.chkSearchOrder.TabIndex = 5;
@@ -363,7 +366,7 @@
             // chkMinYear
             // 
             this.chkMinYear.AutoSize = true;
-            this.chkMinYear.Location = new System.Drawing.Point(23, 64);
+            this.chkMinYear.Location = new System.Drawing.Point(23, 62);
             this.chkMinYear.Name = "chkMinYear";
             this.chkMinYear.Size = new System.Drawing.Size(111, 17);
             this.chkMinYear.TabIndex = 5;
@@ -377,13 +380,12 @@
             this.dtpMinYear.CustomFormat = "yyyy";
             this.dtpMinYear.Enabled = false;
             this.dtpMinYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpMinYear.Location = new System.Drawing.Point(140, 61);
+            this.dtpMinYear.Location = new System.Drawing.Point(140, 59);
             this.dtpMinYear.Name = "dtpMinYear";
             this.dtpMinYear.ShowUpDown = true;
             this.dtpMinYear.Size = new System.Drawing.Size(60, 20);
             this.dtpMinYear.TabIndex = 4;
             this.dtpMinYear.Value = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
-            this.dtpMinYear.ValueChanged += new System.EventHandler(this.dtpMinYear_ValueChanged);
             // 
             // dtpMinUpDate
             // 
@@ -393,12 +395,11 @@
             this.dtpMinUpDate.Size = new System.Drawing.Size(142, 20);
             this.dtpMinUpDate.TabIndex = 4;
             this.dtpMinUpDate.Value = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
-            this.dtpMinUpDate.ValueChanged += new System.EventHandler(this.dtpMinUpDate_ValueChanged);
             // 
             // nudPageLimit
             // 
             this.nudPageLimit.Enabled = false;
-            this.nudPageLimit.Location = new System.Drawing.Point(627, 20);
+            this.nudPageLimit.Location = new System.Drawing.Point(342, 96);
             this.nudPageLimit.Maximum = new decimal(new int[] {
             -559939585,
             902409669,
@@ -431,12 +432,11 @@
             this.nudMinImdb.Name = "nudMinImdb";
             this.nudMinImdb.Size = new System.Drawing.Size(60, 20);
             this.nudMinImdb.TabIndex = 3;
-            this.nudMinImdb.ValueChanged += new System.EventHandler(this.nudMinImdb_ValueChanged);
             // 
             // chkPageLimit
             // 
             this.chkPageLimit.AutoSize = true;
-            this.chkPageLimit.Location = new System.Drawing.Point(509, 23);
+            this.chkPageLimit.Location = new System.Drawing.Point(224, 99);
             this.chkPageLimit.Name = "chkPageLimit";
             this.chkPageLimit.Size = new System.Drawing.Size(112, 17);
             this.chkPageLimit.TabIndex = 2;
@@ -472,9 +472,9 @@
             this.statusStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.tstProgress,
             this.tstStatus});
-            this.statusStrip.Location = new System.Drawing.Point(0, 543);
+            this.statusStrip.Location = new System.Drawing.Point(0, 615);
             this.statusStrip.Name = "statusStrip";
-            this.statusStrip.Size = new System.Drawing.Size(844, 22);
+            this.statusStrip.Size = new System.Drawing.Size(931, 22);
             this.statusStrip.TabIndex = 5;
             this.statusStrip.Text = "statusStrip";
             // 
@@ -498,7 +498,7 @@
             this.toolStripButton1});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(844, 25);
+            this.toolStrip1.Size = new System.Drawing.Size(931, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
@@ -550,23 +550,45 @@
             // 
             // btnReapplyFilter
             // 
-            this.btnReapplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReapplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.btnReapplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.btnReapplyFilter.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnReapplyFilter.Location = new System.Drawing.Point(725, 19);
+            this.btnReapplyFilter.Location = new System.Drawing.Point(809, 12);
             this.btnReapplyFilter.Name = "btnReapplyFilter";
-            this.btnReapplyFilter.Size = new System.Drawing.Size(81, 63);
+            this.btnReapplyFilter.Size = new System.Drawing.Size(92, 110);
             this.btnReapplyFilter.TabIndex = 7;
             this.btnReapplyFilter.Text = "RELOAD FILTER";
             this.btnReapplyFilter.UseVisualStyleBackColor = true;
             this.btnReapplyFilter.Click += new System.EventHandler(this.btnReapplyFilter_Click);
             // 
+            // clbGenre
+            // 
+            this.clbGenre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.clbGenre.Enabled = false;
+            this.clbGenre.FormattingEnabled = true;
+            this.clbGenre.Location = new System.Drawing.Point(589, 13);
+            this.clbGenre.MultiColumn = true;
+            this.clbGenre.Name = "clbGenre";
+            this.clbGenre.Size = new System.Drawing.Size(214, 109);
+            this.clbGenre.TabIndex = 10;
+            // 
+            // chkGenre
+            // 
+            this.chkGenre.AutoSize = true;
+            this.chkGenre.Location = new System.Drawing.Point(528, 23);
+            this.chkGenre.Name = "chkGenre";
+            this.chkGenre.Size = new System.Drawing.Size(55, 17);
+            this.chkGenre.TabIndex = 5;
+            this.chkGenre.Text = "Genre";
+            this.chkGenre.UseVisualStyleBackColor = true;
+            this.chkGenre.CheckedChanged += new System.EventHandler(this.chkGenre_CheckedChanged);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(844, 565);
+            this.ClientSize = new System.Drawing.Size(931, 637);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -578,7 +600,7 @@
             this.Controls.Add(this.categ2);
             this.Controls.Add(this.categ1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.MinimumSize = new System.Drawing.Size(860, 604);
+            this.MinimumSize = new System.Drawing.Size(947, 676);
             this.Name = "Main";
             this.Text = "Rarbg Advanced Search";
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).EndInit();
@@ -640,6 +662,8 @@
         private System.Windows.Forms.ToolStripMenuItem exportEntriesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem importEntriesToolStripMenuItem;
         private System.Windows.Forms.Button btnReapplyFilter;
+        private System.Windows.Forms.CheckedListBox clbGenre;
+        private System.Windows.Forms.CheckBox chkGenre;
     }
 }
 
