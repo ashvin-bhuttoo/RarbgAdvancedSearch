@@ -396,7 +396,7 @@
             // chkGenre
             // 
             this.chkGenre.AutoSize = true;
-            this.chkGenre.Location = new System.Drawing.Point(528, 23);
+            this.chkGenre.Location = new System.Drawing.Point(528, 62);
             this.chkGenre.Name = "chkGenre";
             this.chkGenre.Size = new System.Drawing.Size(55, 17);
             this.chkGenre.TabIndex = 5;
@@ -442,9 +442,9 @@
             // dtpMinUpDate
             // 
             this.dtpMinUpDate.Enabled = false;
-            this.dtpMinUpDate.Location = new System.Drawing.Point(341, 21);
+            this.dtpMinUpDate.Location = new System.Drawing.Point(335, 21);
             this.dtpMinUpDate.Name = "dtpMinUpDate";
-            this.dtpMinUpDate.Size = new System.Drawing.Size(142, 20);
+            this.dtpMinUpDate.Size = new System.Drawing.Size(181, 20);
             this.dtpMinUpDate.TabIndex = 4;
             this.dtpMinUpDate.Value = new System.DateTime(1753, 1, 1, 0, 0, 0, 0);
             // 
