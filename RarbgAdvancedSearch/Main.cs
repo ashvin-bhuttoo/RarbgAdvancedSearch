@@ -85,6 +85,8 @@ namespace RarbgAdvancedSearch
                         Application.DoEvents();
                         Thread.Sleep(1);
                     }
+                    if (!b.IsDisposed)
+                        b.Dispose();
                     goto retry_get;
                 }
 
