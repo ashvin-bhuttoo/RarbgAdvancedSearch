@@ -48,10 +48,13 @@
             this.dgImdb = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.clbGenre = new System.Windows.Forms.CheckedListBox();
+            this.btnReapplyFilter = new System.Windows.Forms.Button();
             this.dudSearchOrder = new System.Windows.Forms.DomainUpDown();
             this.cmbSearchOrder = new System.Windows.Forms.ComboBox();
             this.chkMaxYear = new System.Windows.Forms.CheckBox();
             this.dtpMaxYear = new System.Windows.Forms.DateTimePicker();
+            this.chkGenre = new System.Windows.Forms.CheckBox();
             this.chkSearchOrder = new System.Windows.Forms.CheckBox();
             this.chkMinYear = new System.Windows.Forms.CheckBox();
             this.dtpMinYear = new System.Windows.Forms.DateTimePicker();
@@ -66,15 +69,13 @@
             this.tstStatus = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolTip = new System.Windows.Forms.ToolTip(this.components);
             this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
-            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton1 = new System.Windows.Forms.ToolStripDropDownButton();
             this.exportEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this.importEntriesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.btnReapplyFilter = new System.Windows.Forms.Button();
-            this.clbGenre = new System.Windows.Forms.CheckedListBox();
-            this.chkGenre = new System.Windows.Forms.CheckBox();
+            this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbRESET = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -95,8 +96,10 @@
             "Games/PS3"});
             this.categ1.Location = new System.Drawing.Point(12, 29);
             this.categ1.Name = "categ1";
+            this.categ1.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ1.Size = new System.Drawing.Size(126, 94);
             this.categ1.TabIndex = 0;
+            this.categ1.Click += new System.EventHandler(this.categ_click);
             // 
             // categ2
             // 
@@ -110,8 +113,10 @@
             "Games/XBOX-360"});
             this.categ2.Location = new System.Drawing.Point(144, 29);
             this.categ2.Name = "categ2";
+            this.categ2.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ2.Size = new System.Drawing.Size(126, 94);
             this.categ2.TabIndex = 0;
+            this.categ2.Click += new System.EventHandler(this.categ_click);
             // 
             // categ3
             // 
@@ -125,8 +130,10 @@
             "Software/PC ISO"});
             this.categ3.Location = new System.Drawing.Point(276, 29);
             this.categ3.Name = "categ3";
+            this.categ3.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ3.Size = new System.Drawing.Size(126, 94);
             this.categ3.TabIndex = 0;
+            this.categ3.Click += new System.EventHandler(this.categ_click);
             // 
             // categ4
             // 
@@ -140,8 +147,10 @@
             "Games/PS4"});
             this.categ4.Location = new System.Drawing.Point(408, 29);
             this.categ4.Name = "categ4";
+            this.categ4.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ4.Size = new System.Drawing.Size(126, 94);
             this.categ4.TabIndex = 0;
+            this.categ4.Click += new System.EventHandler(this.categ_click);
             // 
             // btnSearch
             // 
@@ -304,6 +313,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Advanced Filters";
             // 
+            // clbGenre
+            // 
+            this.clbGenre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.clbGenre.Enabled = false;
+            this.clbGenre.FormattingEnabled = true;
+            this.clbGenre.Location = new System.Drawing.Point(589, 13);
+            this.clbGenre.MultiColumn = true;
+            this.clbGenre.Name = "clbGenre";
+            this.clbGenre.Size = new System.Drawing.Size(214, 109);
+            this.clbGenre.TabIndex = 10;
+            // 
+            // btnReapplyFilter
+            // 
+            this.btnReapplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnReapplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnReapplyFilter.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.btnReapplyFilter.Location = new System.Drawing.Point(809, 12);
+            this.btnReapplyFilter.Name = "btnReapplyFilter";
+            this.btnReapplyFilter.Size = new System.Drawing.Size(92, 110);
+            this.btnReapplyFilter.TabIndex = 7;
+            this.btnReapplyFilter.Text = "RELOAD FILTER";
+            this.btnReapplyFilter.UseVisualStyleBackColor = true;
+            this.btnReapplyFilter.Click += new System.EventHandler(this.btnReapplyFilter_Click);
+            // 
             // dudSearchOrder
             // 
             this.dudSearchOrder.Enabled = false;
@@ -351,6 +385,17 @@
             this.dtpMaxYear.Size = new System.Drawing.Size(60, 20);
             this.dtpMaxYear.TabIndex = 6;
             this.dtpMaxYear.Value = new System.DateTime(3000, 1, 1, 0, 0, 0, 0);
+            // 
+            // chkGenre
+            // 
+            this.chkGenre.AutoSize = true;
+            this.chkGenre.Location = new System.Drawing.Point(528, 23);
+            this.chkGenre.Name = "chkGenre";
+            this.chkGenre.Size = new System.Drawing.Size(55, 17);
+            this.chkGenre.TabIndex = 5;
+            this.chkGenre.Text = "Genre";
+            this.chkGenre.UseVisualStyleBackColor = true;
+            this.chkGenre.CheckedChanged += new System.EventHandler(this.chkGenre_CheckedChanged);
             // 
             // chkSearchOrder
             // 
@@ -495,38 +540,19 @@
             this.toolStripSplitButton1,
             this.toolStripSeparator2,
             this.toolStripSeparator1,
-            this.toolStripButton1});
+            this.tsbRESET});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(931, 25);
             this.toolStrip1.TabIndex = 6;
             this.toolStrip1.Text = "toolStrip1";
             // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(42, 22);
-            this.toolStripButton1.Text = "RESET";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
-            // 
-            // toolStripSeparator2
-            // 
-            this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
-            // 
             // toolStripSplitButton1
             // 
             this.toolStripSplitButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripSplitButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.exportEntriesToolStripMenuItem,
+            this.toolStripSeparator3,
             this.importEntriesToolStripMenuItem});
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
@@ -537,52 +563,41 @@
             // exportEntriesToolStripMenuItem
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
-            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
+            // 
+            // toolStripSeparator3
+            // 
+            this.toolStripSeparator3.Name = "toolStripSeparator3";
+            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
-            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
             // 
-            // btnReapplyFilter
+            // toolStripSeparator2
             // 
-            this.btnReapplyFilter.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnReapplyFilter.Font = new System.Drawing.Font("Segoe UI Semibold", 11.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnReapplyFilter.ForeColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.btnReapplyFilter.Location = new System.Drawing.Point(809, 12);
-            this.btnReapplyFilter.Name = "btnReapplyFilter";
-            this.btnReapplyFilter.Size = new System.Drawing.Size(92, 110);
-            this.btnReapplyFilter.TabIndex = 7;
-            this.btnReapplyFilter.Text = "RELOAD FILTER";
-            this.btnReapplyFilter.UseVisualStyleBackColor = true;
-            this.btnReapplyFilter.Click += new System.EventHandler(this.btnReapplyFilter_Click);
+            this.toolStripSeparator2.Name = "toolStripSeparator2";
+            this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
-            // clbGenre
+            // toolStripSeparator1
             // 
-            this.clbGenre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.clbGenre.Enabled = false;
-            this.clbGenre.FormattingEnabled = true;
-            this.clbGenre.Location = new System.Drawing.Point(589, 13);
-            this.clbGenre.MultiColumn = true;
-            this.clbGenre.Name = "clbGenre";
-            this.clbGenre.Size = new System.Drawing.Size(214, 109);
-            this.clbGenre.TabIndex = 10;
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 25);
             // 
-            // chkGenre
+            // tsbRESET
             // 
-            this.chkGenre.AutoSize = true;
-            this.chkGenre.Location = new System.Drawing.Point(528, 23);
-            this.chkGenre.Name = "chkGenre";
-            this.chkGenre.Size = new System.Drawing.Size(55, 17);
-            this.chkGenre.TabIndex = 5;
-            this.chkGenre.Text = "Genre";
-            this.chkGenre.UseVisualStyleBackColor = true;
-            this.chkGenre.CheckedChanged += new System.EventHandler(this.chkGenre_CheckedChanged);
+            this.tsbRESET.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbRESET.Image = ((System.Drawing.Image)(resources.GetObject("tsbRESET.Image")));
+            this.tsbRESET.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbRESET.Name = "tsbRESET";
+            this.tsbRESET.Size = new System.Drawing.Size(42, 22);
+            this.tsbRESET.Text = "RESET";
+            this.tsbRESET.Click += new System.EventHandler(this.tsbRESET_Click);
             // 
             // Main
             // 
@@ -655,7 +670,7 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgImdb;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton tsbRESET;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton1;
@@ -664,6 +679,7 @@
         private System.Windows.Forms.Button btnReapplyFilter;
         private System.Windows.Forms.CheckedListBox clbGenre;
         private System.Windows.Forms.CheckBox chkGenre;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
     }
 }
 

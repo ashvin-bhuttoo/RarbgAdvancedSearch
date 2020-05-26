@@ -160,7 +160,7 @@ namespace RarbgAdvancedSearch
                     }
                     else
                     {
-                        throw new Exception($"Error: Listing does not have 3 nodes, found {listing_nodes[1].ChildNodes} nodes!");
+                        throw new Exception($"Error: Listing does not have a nodes!");
                     }
                 }
 
@@ -255,10 +255,12 @@ namespace RarbgAdvancedSearch
         public static class HttpClient
         {
             private static int READTIMEOUT_CONST = 3000;
-
-
+            
             public static string Get(string url)
             {
+                //Ignore ssl errors
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
                 // Initialize the WebRequest.
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = WebRequestMethods.Http.Get;
@@ -281,6 +283,8 @@ namespace RarbgAdvancedSearch
                     if (stream.CanRead)
                     {
                         StreamReader reader = new StreamReader(stream);
+                        if (webResponse.ResponseUri.AbsoluteUri.Contains("threat_defence"))
+                            return webResponse.ResponseUri.AbsoluteUri;
                         return reader.ReadToEnd();
                     }
                 }

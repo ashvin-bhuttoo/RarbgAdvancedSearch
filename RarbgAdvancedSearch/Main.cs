@@ -43,19 +43,19 @@ namespace RarbgAdvancedSearch
             {
                 string category = string.Empty, order = string.Empty;
 
-                foreach(int index in categ1.SelectedIndices)
+                foreach(int index in categ1.CheckedIndices)
                 {
                     category += "&category[]=" + (new[] { $"{(int)RarbgCategory.XXX}", $"{(int)RarbgCategory.Movies_x264_1080p}", $"{(int)RarbgCategory.Movies_x265_4k}", $"{(int)RarbgCategory.Movies_x265_1080}", $"{(int)RarbgCategory.Music_MP3}", $"{(int)RarbgCategory.Games_PS3}" }[index]);
                 }
-                foreach (int index in categ2.SelectedIndices)
+                foreach (int index in categ2.CheckedIndices)
                 {
                     category += "&category[]=" + (new[] { $"{(int)RarbgCategory.Movies_XVID}", $"{(int)RarbgCategory.Movies_x264_720}", $"{(int)RarbgCategory.Movs_x265_4k_HDR}", $"{(int)RarbgCategory.TV_Episodes}", $"{(int)RarbgCategory.Music_FLAC}", $"{(int)RarbgCategory.Games_XBOX_360}" }[index]);
                 }
-                foreach (int index in categ3.SelectedIndices)
+                foreach (int index in categ3.CheckedIndices)
                 {
                     category += "&category[]=" + (new[] { $"{(int)RarbgCategory.Movies_XVID_720}", $"{(int)RarbgCategory.Movies_x264_3D}", $"{(int)RarbgCategory.Movies_Full_BD}", $"{(int)RarbgCategory.TV_HD_Episodes}", $"{(int)RarbgCategory.Games_PC_ISO}", $"{(int)RarbgCategory.Software_PC_ISO}" }[index]);
                 }
-                foreach (int index in categ4.SelectedIndices)
+                foreach (int index in categ4.CheckedIndices)
                 {
                     category += "&category[]=" + (new[] { $"{(int)RarbgCategory.Movies_x264}", $"{(int)RarbgCategory.Movies_x264_4k}", $"{(int)RarbgCategory.Movies_BD_Remux}", $"{(int)RarbgCategory.TV_UHD_Episodes}", $"{(int)RarbgCategory.Games_PC_RIP}", $"{(int)RarbgCategory.Games_PS4}" }[index]);
                 }
@@ -67,9 +67,16 @@ namespace RarbgAdvancedSearch
 
                 int entryCount = 0;
                 RarbgPageParser parser = new RarbgPageParser();
-
                 int maxPage = 1;
-                if(!chkPageLimit.Checked && parser.getLastPageNum(Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={9999999}"), ref maxPage))
+
+                string html = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={99999999}");
+                if (html.StartsWith("https://") && html.Contains("threat_defence"))
+                {
+                    //todo implement threat defense  handler
+                    ;
+                }
+
+                if (!chkPageLimit.Checked && parser.getLastPageNum(html, ref maxPage))
                 {
                     chkPageLimit.Checked = true;
                     nudPageLimit.Value = maxPage;
@@ -82,7 +89,7 @@ namespace RarbgAdvancedSearch
                     string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={pageNum}");
                     if(response.Contains("We have too many requests from your ip in the past 24h."))
                     {
-                        MessageBox.Show("Failed to gather listings, IP temporarily banned by server for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                        showMessage("Failed to gather listings, IP temporarily banned by server for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         pageNum--;
                         btnSearch.Text = "SEARCH";
                         btnSearch.ForeColor = Color.DarkGreen;
@@ -128,23 +135,28 @@ namespace RarbgAdvancedSearch
             {
                 btnSearch.Text = "SEARCH";
                 btnSearch.ForeColor = Color.DarkGreen;
-                showMessage("Error", "Please select a category first.", MessageBoxIcon.Error);
+                showMessage("Error", "Please select a category first.", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
         }
 
-        private void showMessage(string caption, string text, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxButtons buttons = MessageBoxButtons.OK)
+        private DialogResult showMessage(string text, string caption, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
         {
-            MessageBox.Show(text, caption, buttons, icon);
+            return MessageBox.Show(this, text, caption, buttons, icon, defaultButton);
         }
 
         private void exportEntriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if (saved_listings.Count > 0)
             {
+                var uniqueCategories = (from dbo in saved_listings select dbo.category).Distinct().Aggregate("", (current, next) => current + "_" + next).TrimStart(new[] { '_'});
+                string filename = $"{uniqueCategories}_export_{DateTime.Now.ToString().Replace("/","_").Replace(":","_").Replace(" ","_")}";
+                
+                               
                 SaveFileDialog saveFileDialog1 = new SaveFileDialog();
                 saveFileDialog1.InitialDirectory = Environment.CurrentDirectory;
                 saveFileDialog1.Title = "Save Listing";
                 //saveFileDialog1.CheckFileExists = true;
+                saveFileDialog1.FileName = filename;
                 saveFileDialog1.CheckPathExists = true;
                 saveFileDialog1.DefaultExt = "xml";
                 saveFileDialog1.Filter = "Xml files (*.xml)|*.xml";
@@ -153,13 +165,21 @@ namespace RarbgAdvancedSearch
                 if (saveFileDialog1.ShowDialog() == DialogResult.OK)
                 {
                     Utils.Serialize(saveFileDialog1.FileName, saved_listings);
-                    MessageBox.Show($"Listing saved succesfully to\n{saveFileDialog1.FileName}\n{saved_listings.Count} Entries Saved", "Export Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                    showMessage($"Listing saved succesfully to\n{saveFileDialog1.FileName}\n{saved_listings.Count} Entries Saved", "Export Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 }                
             }
+            else
+                showMessage($"There's nothing to export!", "Export Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
         }
 
         private void importEntriesToolStripMenuItem_Click(object sender, EventArgs e)
         {
+            if(saved_listings.Count > 0)
+            {
+                if (showMessage("This action will clear all current listings, do you wish to proceed ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                    return;
+            }
+
             OpenFileDialog openFileDialog1 = new OpenFileDialog
             {
                 InitialDirectory = Environment.CurrentDirectory,
@@ -184,7 +204,8 @@ namespace RarbgAdvancedSearch
                 int entryCount = 0;
                 populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
                 tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
-                MessageBox.Show($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                showMessage($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                Application.DoEvents();
             }
         }
 
@@ -291,13 +312,6 @@ namespace RarbgAdvancedSearch
         {
             dtpMaxYear.Enabled = chkMaxYear.Checked;
         }
-        
-        private void toolStripButton1_Click(object sender, EventArgs e)
-        {
-            saved_listings.Clear();
-            dgvListings.Rows.Clear();
-            clbGenre.Items.Clear();
-        }
 
         private void chkMinUpDate_CheckedChanged(object sender, EventArgs e)
         {
@@ -312,6 +326,44 @@ namespace RarbgAdvancedSearch
         private void chkGenre_CheckedChanged(object sender, EventArgs e)
         {
             clbGenre.Enabled = chkGenre.Enabled;
+        }
+
+        private void categ_click(object sender, EventArgs e)
+        {
+            var clb = sender as CheckedListBox;
+            for (int i = 0; i < clb.Items.Count; i++)
+            {
+                if (clb.GetItemRectangle(i).Contains(clb.PointToClient(MousePosition)))
+                {
+                    switch (clb.GetItemCheckState(i))
+                    {
+                        case CheckState.Checked:
+                            clb.SetItemCheckState(i, CheckState.Unchecked);
+                            break;
+                        case CheckState.Indeterminate:
+                        case CheckState.Unchecked:
+                            clb.SetItemCheckState(i, CheckState.Checked);
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void tsbRESET_Click(object sender, EventArgs e)
+        {
+            if (showMessage("This action will clear all current listings and disable all filters.\nDo you wish to proceed ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
+
+            saved_listings.Clear();
+            dgvListings.Rows.Clear();
+            clbGenre.Items.Clear();
+            categ1.CheckedIndices.Cast<int>().All(i => { categ1.SetItemChecked(i, false); return true; });
+            categ2.CheckedIndices.Cast<int>().All(i => { categ2.SetItemChecked(i, false); return true; });
+            categ3.CheckedIndices.Cast<int>().All(i => { categ3.SetItemChecked(i, false); return true; });
+            categ4.CheckedIndices.Cast<int>().All(i => { categ4.SetItemChecked(i, false); return true; });
+            chkMinImdb.Checked = chkMinYear.Checked = chkMaxYear.Checked = chkMinUpDate.Checked = chkSearchOrder.Checked = chkPageLimit.Checked = chkGenre.Checked = false;
+            tstProgress.Value = 0;
+            tstStatus.Text = "Idle..";
         }
     }
 }
