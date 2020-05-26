@@ -140,8 +140,9 @@ namespace RarbgAdvancedSearch
                     }
                 }
 
-                tstStatus.Text = $"Done.. Page {pageNum}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                tstStatus.Text = $"Done.. Page {pageNum}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";                
                 tstProgress.Value = tstProgress.Maximum;
+                reloadListingSorting();
             }
             else
             {
@@ -149,6 +150,14 @@ namespace RarbgAdvancedSearch
                 btnSearch.ForeColor = Color.DarkGreen;
                 showMessage("Please select a category first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
+        }
+
+        private void reloadListingSorting()
+        {
+            if(dgvListings.SortedColumn != null)
+            {
+                dgvListings.Sort(dgvListings.SortedColumn, dgvListings.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending : ListSortDirection.Descending);
+            }
         }
 
         private DialogResult showMessage(string text, string caption, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
@@ -216,6 +225,7 @@ namespace RarbgAdvancedSearch
                 int entryCount = 0;
                 populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
                 tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                reloadListingSorting();
                 showMessage($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
                 Application.DoEvents();
             }
@@ -324,6 +334,7 @@ namespace RarbgAdvancedSearch
             int entryCount = 0;
             populateGrid(saved_listings, saved_listings.Count / 25, ref entryCount, true);
             tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+            reloadListingSorting();
         }
 
         private void chkMinYear_CheckedChanged(object sender, EventArgs e)
