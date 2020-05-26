@@ -348,8 +348,8 @@ namespace RarbgAdvancedSearch
 
         private void chkGenre_CheckedChanged(object sender, EventArgs e)
         {
-            clbGenre.Enabled = chkGenre.Enabled;
-            clbGenre.ForeColor = chkGenre.Enabled ? SystemColors.ControlText : SystemColors.ControlDark;
+            clbGenre.Enabled = chkGenre.Checked;
+            clbGenre.ForeColor = chkGenre.Checked ? SystemColors.ControlText : SystemColors.ControlDark;
         }
 
         private void clb_click(object sender, EventArgs e)
