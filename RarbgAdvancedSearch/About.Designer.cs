@@ -112,9 +112,9 @@
             this.lblVersion.ForeColor = System.Drawing.Color.CornflowerBlue;
             this.lblVersion.Location = new System.Drawing.Point(218, 200);
             this.lblVersion.Name = "lblVersion";
-            this.lblVersion.Size = new System.Drawing.Size(96, 33);
+            this.lblVersion.Size = new System.Drawing.Size(111, 33);
             this.lblVersion.TabIndex = 1;
-            this.lblVersion.Text = "v1.0.0.0";
+            this.lblVersion.Text = "--------";
             // 
             // About
             // 
