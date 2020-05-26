@@ -24,6 +24,7 @@ namespace RarbgAdvancedSearch
         {
             saved_listings = new List<rarbgEntry>();
             InitializeComponent();
+            Text += $" v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
         }
 
         private void btnSearch_Click(object sender, EventArgs e)
@@ -431,6 +432,14 @@ namespace RarbgAdvancedSearch
                         m.Show(dgvListings, new Point(e.X, e.Y));
                 }
             }
+        }
+
+        private void tsbAbout_Click(object sender, EventArgs e)
+        {
+            About aboutpage = new About();
+            this.Controls.Add(aboutpage);
+            aboutpage.BringToFront();
+            aboutpage.Dock = DockStyle.Fill;            
         }
     }
 }
