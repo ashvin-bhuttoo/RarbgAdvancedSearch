@@ -198,6 +198,7 @@
             this.dgvListings.TabIndex = 2;
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
+            this.dgvListings.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvListings_MouseClick);
             // 
             // Category
             // 
@@ -573,19 +574,19 @@
             // exportEntriesToolStripMenuItem
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
-            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
-            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
             // 

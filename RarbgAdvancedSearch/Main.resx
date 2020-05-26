@@ -150,41 +150,8 @@
   <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>126, 17</value>
   </metadata>
-  <metadata name="Category.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgName.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgAdded.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgSize.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgS.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgL.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgUploader.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="Genre.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgYear.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
-  <metadata name="dgImdb.UserAddedColumn" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-    <value>True</value>
-  </metadata>
   <metadata name="statusStrip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>17, 17</value>
-  </metadata>
-  <metadata name="toolTip.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
-    <value>126, 17</value>
   </metadata>
   <metadata name="toolStrip1.TrayLocation" type="System.Drawing.Point, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a">
     <value>217, 17</value>
@@ -223,14 +190,14 @@
   <data name="tsbDonate.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
-        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVDhPYxh8YPehKx7avjOfavvNeI6EH7smzj82ffHB
-        dKgy3KBmwq5mBv32/wz6bZjYoOv/wvUno6BKsYPA3MVr4Bp0Gv4zaNcjsE7j/4yG9dOhSrEDTd8JV8Ga
-        9Vr+Mypk/GeUR8Jy6f9lM5c/uPfsnTxUOSr4//8/F5d551eY7WBNCpkIDDSAofvs3/rTb3qgWlDBlSu3
-        tBgMOiHO16xGGACiZdP+MyUu/8sw78H/hjNveqFaUMGaraeC4QYYNvxltmr8y2Tb8pcpYNpfpsYjYM0M
-        8x//33z1sRdUCypomrK7FhwD2s3/mRpP/GVY8PA/GIM0zrkH1Pzov+fG21uAXmWEakEFMcUrVoBt1wXa
-        OvHKX5Amljl3f9mtvH4waMONtdPPPE4FamaDKscElpGzLoAMYDLr+ss0+w7YAKeV1/ZCpQmDmv7t3UnV
-        K2d7lq3cAnIuyICs3femQKWJB8vOPYpkmAc0YN7D/3PPPUqGChMP/v37xw70qwQUYw8w6gAGBgBVNucl
-        YW38PAAAAABJRU5ErkJggg==
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGISURBVDhPYxh8YPehKx7aPjOeavvNeA7DWr7TH7smzDs2
+        ffHBdKgy3KBmwq5mBv32/wz6bZjYoOv/wvUno6BKsYPA3MVr4Bp0Gv4zaNcjsE7j/4yG9dOhSrEDDZ/+
+        q2DNei3/GRUy/jPKI2G59P8yGcsf3Hv2Th6qHBX8//+fi8u88yvMdrAmhUwEBhrA0H3mb/2pNz1QLajg
+        ypVbWgwGnRDna1YjDADRsmn/mRKW/2WY9+B/w5nXvVAtqGDN1lPBcAMMG/4yWzX+ZbJt+cvkP+0vU+Nh
+        sGaG+Y//b7762AuqBRU0TdldC44B7eb/TI3H/zIsePgfjEEa59wDan7033Pj7S1ArzJCtaCCmOIVK8C2
+        6wJtnXj5L0gTy5y7v+xWXj8YtP7G2ulnHqcCNbNBlWMCi8hZF0AGMJl1/WWafRtsgNOKa3uh0oRBTf/2
+        7qTqlbM9S1dsATkXZEDW7ntToNLEg2XnHkUyzAMaMO/h/7nnHiVDhYkH//79Ywf6VQKKsQcYdQADAwAZ
+        gOcLwoyCEwAAAABJRU5ErkJggg==
 </value>
   </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">

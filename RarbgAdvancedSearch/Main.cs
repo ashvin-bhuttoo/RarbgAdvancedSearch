@@ -407,5 +407,30 @@ namespace RarbgAdvancedSearch
         {
             Process.Start($"https://www.paypal.me/ABhuttoo");
         }
+
+        private void dgvListings_MouseClick(object sender, MouseEventArgs e)
+        {
+            if (e.Button == MouseButtons.Right)
+            {
+                int currentMouseOverRow = dgvListings.HitTest(e.X, e.Y).RowIndex;
+
+                if (currentMouseOverRow >= 0)
+                {
+                    ContextMenu m = new ContextMenu();
+                    dgvListings.Rows[currentMouseOverRow].Selected = true;
+
+                    rarbgEntry entry = ((rarbgEntry)dgvListings.Rows[currentMouseOverRow].Tag);
+
+                    if(!string.IsNullOrEmpty(entry.imdb_id))
+                        m.MenuItems.Add(new MenuItem("> Open IMDb Page", delegate { Process.Start($"https://www.imdb.com/title/{entry.imdb_id}"); }));
+
+                    if (!string.IsNullOrEmpty(entry.url))
+                        m.MenuItems.Add(new MenuItem("> Open RaRBG Page", delegate { Process.Start($"https://rarbgenter.org{entry.url}"); }));
+
+                    if (m.MenuItems.Count > 0)
+                        m.Show(dgvListings, new Point(e.X, e.Y));
+                }
+            }
+        }
     }
 }
