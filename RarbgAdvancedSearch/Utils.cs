@@ -124,7 +124,7 @@ namespace RarbgAdvancedSearch
                         entry.name = data_nodes[0].Attributes["title"]?.Value ?? data_nodes[0].InnerText;
 
                         string[] name = entry.name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
-                        foreach(var s in name)
+                        foreach(var s in name.Reverse())
                         {
                             if (s.Length == 4 && int.TryParse(s, out entry.year))
                             {

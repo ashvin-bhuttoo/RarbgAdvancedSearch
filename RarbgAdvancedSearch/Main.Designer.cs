@@ -99,7 +99,7 @@
             this.categ1.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ1.Size = new System.Drawing.Size(126, 94);
             this.categ1.TabIndex = 0;
-            this.categ1.Click += new System.EventHandler(this.categ_click);
+            this.categ1.Click += new System.EventHandler(this.clb_click);
             // 
             // categ2
             // 
@@ -116,7 +116,7 @@
             this.categ2.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ2.Size = new System.Drawing.Size(126, 94);
             this.categ2.TabIndex = 0;
-            this.categ2.Click += new System.EventHandler(this.categ_click);
+            this.categ2.Click += new System.EventHandler(this.clb_click);
             // 
             // categ3
             // 
@@ -133,7 +133,7 @@
             this.categ3.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ3.Size = new System.Drawing.Size(126, 94);
             this.categ3.TabIndex = 0;
-            this.categ3.Click += new System.EventHandler(this.categ_click);
+            this.categ3.Click += new System.EventHandler(this.clb_click);
             // 
             // categ4
             // 
@@ -150,7 +150,7 @@
             this.categ4.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.categ4.Size = new System.Drawing.Size(126, 94);
             this.categ4.TabIndex = 0;
-            this.categ4.Click += new System.EventHandler(this.categ_click);
+            this.categ4.Click += new System.EventHandler(this.clb_click);
             // 
             // btnSearch
             // 
@@ -317,13 +317,17 @@
             // 
             this.clbGenre.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this.clbGenre.BackColor = System.Drawing.SystemColors.Window;
             this.clbGenre.Enabled = false;
+            this.clbGenre.ForeColor = System.Drawing.SystemColors.ControlDark;
             this.clbGenre.FormattingEnabled = true;
             this.clbGenre.Location = new System.Drawing.Point(589, 13);
             this.clbGenre.MultiColumn = true;
             this.clbGenre.Name = "clbGenre";
+            this.clbGenre.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.clbGenre.Size = new System.Drawing.Size(214, 109);
             this.clbGenre.TabIndex = 10;
+            this.clbGenre.Click += new System.EventHandler(this.clb_click);
             // 
             // btnReapplyFilter
             // 

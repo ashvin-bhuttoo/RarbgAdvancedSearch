@@ -73,7 +73,8 @@ namespace RarbgAdvancedSearch
                 string html = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={99999999}");
                 if (html.StartsWith("https://") && html.Contains("threat_defence"))
                 {
-                    showMessage("Rarbg needs you to validate a captcha to be able to view listings\nPlease validate the captcha that will be displayed shortly.", "Captcha Required");
+                    tstStatus.Text = "Captcha validation..";
+                    showMessage("Rarbg needs you to validate a captcha.\nPlease validate the captcha and press enter.", "Captcha Required");
                     browser b = new browser();
                     b.navigateTo(html);
                     this.Controls.Add(b);
@@ -231,8 +232,18 @@ namespace RarbgAdvancedSearch
                         clbGenre.Items.AddRange(entry.genre.Where(g => !clbGenre.Items.Contains(g)).ToArray());
                     }
 
+                if (txtSearch.Text.Trim().Length > 0)
+                {
+                    if (!(entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper())))
+                    {
+                        goto skip_filters;
+                        //entryCount++;
+                        //continue;
+                    }
+                }
+
                 //Custom Filter
-                if(chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
+                if (chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
                 {
                     if(!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
                     {
@@ -258,7 +269,8 @@ namespace RarbgAdvancedSearch
                     dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
                 }
 
-                if(fromXML)
+                skip_filters:
+                if (fromXML)
                     tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
                 else
                     tstStatus.Text = $"Working.. Page {pageCount}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
@@ -337,9 +349,10 @@ namespace RarbgAdvancedSearch
         private void chkGenre_CheckedChanged(object sender, EventArgs e)
         {
             clbGenre.Enabled = chkGenre.Enabled;
+            clbGenre.ForeColor = chkGenre.Enabled ? SystemColors.ControlText : SystemColors.ControlDark;
         }
 
-        private void categ_click(object sender, EventArgs e)
+        private void clb_click(object sender, EventArgs e)
         {
             var clb = sender as CheckedListBox;
             for (int i = 0; i < clb.Items.Count; i++)
