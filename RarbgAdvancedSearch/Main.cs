@@ -389,5 +389,10 @@ namespace RarbgAdvancedSearch
             tstProgress.Value = 0;
             tstStatus.Text = "Idle..";
         }
+
+        private void tsbDonate_Click(object sender, EventArgs e)
+        {
+            Process.Start($"https://www.paypal.me/ABhuttoo");
+        }
     }
 }

@@ -76,6 +76,9 @@
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbRESET = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -544,7 +547,10 @@
             this.toolStripSplitButton1,
             this.toolStripSeparator2,
             this.toolStripSeparator1,
-            this.tsbRESET});
+            this.tsbRESET,
+            this.toolStripSeparator4,
+            this.toolStripSeparator5,
+            this.tsbDonate});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(931, 25);
@@ -561,25 +567,25 @@
             this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
-            this.toolStripSplitButton1.Size = new System.Drawing.Size(38, 22);
-            this.toolStripSplitButton1.Text = "File";
+            this.toolStripSplitButton1.Size = new System.Drawing.Size(41, 22);
+            this.toolStripSplitButton1.Text = "FILE";
             // 
             // exportEntriesToolStripMenuItem
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
-            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
-            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
             // 
@@ -602,6 +608,25 @@
             this.tsbRESET.Size = new System.Drawing.Size(42, 22);
             this.tsbRESET.Text = "RESET";
             this.tsbRESET.Click += new System.EventHandler(this.tsbRESET_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator5
+            // 
+            this.toolStripSeparator5.Name = "toolStripSeparator5";
+            this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // tsbDonate
+            // 
+            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
+            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDonate.Name = "tsbDonate";
+            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
+            this.tsbDonate.Text = "DONATE";
+            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
             // 
             // Main
             // 
@@ -684,6 +709,9 @@
         private System.Windows.Forms.CheckedListBox clbGenre;
         private System.Windows.Forms.CheckBox chkGenre;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator3;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
+        private System.Windows.Forms.ToolStripButton tsbDonate;
     }
 }
 

@@ -187,6 +187,19 @@
         TgDQASA1MVpwzwAAAABJRU5ErkJggg==
 </value>
   </data>
+  <data name="tsbDonate.Image" type="System.Drawing.Bitmap, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
+    <value>
+        iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAYAAAAf8/9hAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8
+        YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAGFSURBVDhPYxh8YPehKx7avjOfavvNeI6EH7smzj82ffHB
+        dKgy3KBmwq5mBv32/wz6bZjYoOv/wvUno6BKsYPA3MVr4Bp0Gv4zaNcjsE7j/4yG9dOhSrEDTd8JV8Ga
+        9Vr+Mypk/GeUR8Jy6f9lM5c/uPfsnTxUOSr4//8/F5d551eY7WBNCpkIDDSAofvs3/rTb3qgWlDBlSu3
+        tBgMOiHO16xGGACiZdP+MyUu/8sw78H/hjNveqFaUMGaraeC4QYYNvxltmr8y2Tb8pcpYNpfpsYjYM0M
+        8x//33z1sRdUCypomrK7FhwD2s3/mRpP/GVY8PA/GIM0zrkH1Pzov+fG21uAXmWEakEFMcUrVoBt1wXa
+        OvHKX5Amljl3f9mtvH4waMONtdPPPE4FamaDKscElpGzLoAMYDLr+ss0+w7YAKeV1/ZCpQmDmv7t3UnV
+        K2d7lq3cAnIuyICs3femQKWJB8vOPYpkmAc0YN7D/3PPPUqGChMP/v37xw70qwQUYw8w6gAGBgBVNucl
+        YW38PAAAAABJRU5ErkJggg==
+</value>
+  </data>
   <data name="$this.Icon" type="System.Drawing.Icon, System.Drawing" mimetype="application/x-microsoft.net.object.bytearray.base64">
     <value>
         AAABAAEAEBAAAAAAIABoBAAAFgAAACgAAAAQAAAAIAAAAAEAIAAAAAAAQAQAAAAAAAAAAAAAAAAAAAAA
