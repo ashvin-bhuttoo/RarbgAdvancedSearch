@@ -69,11 +69,22 @@ namespace RarbgAdvancedSearch
                 RarbgPageParser parser = new RarbgPageParser();
                 int maxPage = 1;
 
+                retry_get:
                 string html = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={99999999}");
                 if (html.StartsWith("https://") && html.Contains("threat_defence"))
                 {
-                    //todo implement threat defense  handler
-                    ;
+                    showMessage("Rarbg needs you to validate a captcha to be able to view listings\nPlease validate the captcha that will be displayed shortly.", "Captcha Required");
+                    browser b = new browser();
+                    b.navigateTo(html);
+                    this.Controls.Add(b);
+                    b.BringToFront();
+                    b.Dock = DockStyle.Fill;
+                    while(this.Controls.Contains(b))
+                    {
+                        Application.DoEvents();
+                        Thread.Sleep(1);
+                    }
+                    goto retry_get;
                 }
 
                 if (!chkPageLimit.Checked && parser.getLastPageNum(html, ref maxPage))
@@ -135,7 +146,7 @@ namespace RarbgAdvancedSearch
             {
                 btnSearch.Text = "SEARCH";
                 btnSearch.ForeColor = Color.DarkGreen;
-                showMessage("Error", "Please select a category first.", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                showMessage("Please select a category first.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }         
         }
 

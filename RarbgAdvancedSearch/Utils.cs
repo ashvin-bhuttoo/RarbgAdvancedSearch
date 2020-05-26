@@ -254,7 +254,7 @@ namespace RarbgAdvancedSearch
         #region WEB CLIENT
         public static class HttpClient
         {
-            private static int READTIMEOUT_CONST = 3000;
+            private const int READTIMEOUT_CONST = 3000;
             
             public static string Get(string url)
             {
@@ -269,7 +269,7 @@ namespace RarbgAdvancedSearch
                 webRequest.Headers["accept-encoding"] = "gzip, deflate";
                 webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
                 webRequest.Headers["cache-control"] = "max-age=0";
-                webRequest.Headers["cookie"] = "__cfduid=ddff68ee1ac0b4d0ffed0ec316d624e401588698506; skt=5SDCR79mf0; gaDts48g=q8h5pp9t; skt=5SDCR79mf0; gaDts48g=q8h5pp9t; aby=2";
+                webRequest.Headers["cookie"] = Reg.cookie;
                 webRequest.Headers["sec-fetch-dest"] = "document";
                 webRequest.Headers["sec-fetch-mode"] = "navigate";
                 webRequest.Headers["sec-fetch-site"] = "none";
@@ -312,6 +312,42 @@ namespace RarbgAdvancedSearch
                         break;
                 }
                 return stream;
+            }
+        }
+        #endregion
+
+
+        /// <summary>
+        /// Registry Wrapper
+        /// </summary>
+        /// 
+        #region Registry Wrapper
+        public static class Reg
+        {
+            static Microsoft.Win32.RegistryKey rootKey;
+
+            static Reg()
+            {
+                rootKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\RarbgAdvancedSearch");
+            }
+
+            //expiry date
+            public static string cookie
+            {
+                get
+                {
+                    var defaultValue = "aby=2;";
+                    var info = System.Reflection.MethodBase.GetCurrentMethod() as System.Reflection.MethodInfo;
+                    var name = info.Name.Substring(4);
+                    string str = rootKey.GetValue(name, defaultValue) as string;
+                    return (dynamic)Convert.ChangeType(str, info.ReturnType);
+                }
+
+                set
+                {
+                    var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Substring(4);
+                    rootKey.SetValue(name, value);
+                }
             }
         }
         #endregion
