@@ -40,7 +40,7 @@ namespace RarbgAdvancedSearch
             IReadOnlyList<Octokit.Release> rlsAll = await client.Repository.Release.GetAll(github_user, product_name);
             if (rlsAll != null && rlsAll.Count > 0)
             {
-                Octokit.Release latest = rlsAll.OrderBy(r => r.CreatedAt).Last();
+                Octokit.Release latest = rlsAll.OrderBy(r => r.PublishedAt).Last();
 
                 Version latest_version = null;
                 if (Version.TryParse(latest.TagName, out latest_version))
