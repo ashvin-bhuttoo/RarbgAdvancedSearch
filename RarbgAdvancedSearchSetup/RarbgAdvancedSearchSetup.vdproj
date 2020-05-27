@@ -21,8 +21,20 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
+        "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
         "OwnerKey" = "8:_D85ED442760E769ECA18FE54479586F1"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
+        "OwnerKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -47,6 +59,12 @@
         {
         "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -139,6 +157,20 @@
     {
         "CustomAction"
         {
+            "{4AA51A2D-7D85-4A59-BA75-B0809FC8B380}:_499189C9DA114CD4AD67F4CB5BAC78BA"
+            {
+            "Name" = "8:RarbgAdvancedSearch"
+            "Condition" = "8:"
+            "Object" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
+            "FileType" = "3:2"
+            "InstallAction" = "3:2"
+            "Arguments" = "8:INSTALLER"
+            "EntryPoint" = "8:"
+            "Sequence" = "3:1"
+            "Identifier" = "8:_CF0E5C7F_6634_4BC6_81A8_71075F8D5848"
+            "InstallerClass" = "11:FALSE"
+            "CustomActionData" = "8:"
+            }
         }
         "DefaultFeature"
         {
@@ -176,6 +208,37 @@
                     }
                 }
             "SourcePath" = "8:System.Net.Http.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_108CB59A48FA0C85A1B6D83ADAC72705"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Octokit, Version=0.47.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_108CB59A48FA0C85A1B6D83ADAC72705"
+                    {
+                    "Name" = "8:Octokit.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Octokit.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
@@ -330,20 +393,20 @@
         "Product"
         {
         "Name" = "8:Microsoft Visual Studio"
-        "ProductName" = "8:RarbgAdvancedSearchSetup"
+        "ProductName" = "8:RarbgAdvancedSearch"
         "ProductCode" = "8:{822FAD94-FB73-4902-B563-2C128EB4FFD8}"
-        "PackageCode" = "8:{DAAEB9CE-A57B-442B-8078-90450122582F}"
+        "PackageCode" = "8:{86799AE2-C575-49F6-9869-C71E14886BF1}"
         "UpgradeCode" = "8:{6E437ECD-F4CC-43C0-9703-A72E4F0E906C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
-        "RemovePreviousVersions" = "11:FALSE"
-        "DetectNewerInstalledVersion" = "11:TRUE"
-        "InstallAllUsers" = "11:FALSE"
+        "RemovePreviousVersions" = "11:TRUE"
+        "DetectNewerInstalledVersion" = "11:FALSE"
+        "InstallAllUsers" = "11:TRUE"
         "ProductVersion" = "8:1.0.0"
         "Manufacturer" = "8:Unkn0wn"
         "ARPHELPTELEPHONE" = "8:"
-        "ARPHELPLINK" = "8:"
-        "Title" = "8:RarbgAdvancedSearchSetup"
+        "ARPHELPLINK" = "8:https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch"
+        "Title" = "8:RarbgAdvancedSearch"
         "Subject" = "8:"
         "ARPCONTACT" = "8:Unkn0wn"
         "Keywords" = "8:"
