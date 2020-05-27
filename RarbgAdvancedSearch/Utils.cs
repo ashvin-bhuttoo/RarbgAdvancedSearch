@@ -1,17 +1,19 @@
 ﻿using HtmlAgilityPack;
+using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
+using System.Management;
 using System.Net;
+using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading.Tasks;
-using System.Xml;
-using System.Xml.Serialization;
-using static RarbgAdvancedSearch.RarbgPageParser;
+using static RarbgAdvancedSearch.Utils;
 
 namespace RarbgAdvancedSearch
 {
@@ -255,8 +257,42 @@ namespace RarbgAdvancedSearch
         public static class HttpClient
         {
             private const int READTIMEOUT_CONST = 3000;
-            
-            public static string Get(string url)
+
+            public static string Post(string url, string content = "", int RXTIMEO = READTIMEOUT_CONST)
+            {
+                //Ignore ssl errors
+                ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
+
+                // Initialize the WebRequest.
+                HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
+                webRequest.Method = WebRequestMethods.Http.Post;
+                webRequest.KeepAlive = true;
+                webRequest.Headers["Accept-Encoding"] = "gzip, deflate";
+                webRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
+                webRequest.Timeout = READTIMEOUT_CONST;
+                if (!string.IsNullOrEmpty(content))
+                {
+                    using (Stream postStream = webRequest.GetRequestStream())
+                    {
+                        byte[] data = Encoding.UTF8.GetBytes(content);
+                        postStream.Write(data, 0, data.Length);
+                    }
+                }
+
+                HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
+                using (Stream stream = GetStreamForResponse(webResponse, READTIMEOUT_CONST))
+                {
+                    if (stream.CanRead)
+                    {
+                        StreamReader reader = new StreamReader(stream);
+                        return reader.ReadToEnd();
+                    }
+                }
+
+                return string.Empty;
+            }
+
+            public static string Get(string url, bool addRarbgHeaders = true)
             {
                 //Ignore ssl errors
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -265,17 +301,26 @@ namespace RarbgAdvancedSearch
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = WebRequestMethods.Http.Get;
                 webRequest.KeepAlive = true;
-                webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
-                webRequest.Headers["accept-encoding"] = "gzip, deflate";
-                webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
-                webRequest.Headers["cache-control"] = "max-age=0";
-                webRequest.Headers["cookie"] = Reg.cookie;
-                webRequest.Headers["sec-fetch-dest"] = "document";
-                webRequest.Headers["sec-fetch-mode"] = "navigate";
-                webRequest.Headers["sec-fetch-site"] = "none";
-                webRequest.Headers["sec-fetch-user"] = "?1";
-                webRequest.Headers["upgrade-insecure-requests"] = "1";
-                webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
+                if(addRarbgHeaders)
+                {
+                    webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+                    webRequest.Headers["accept-encoding"] = "gzip, deflate";
+                    webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
+                    webRequest.Headers["cache-control"] = "max-age=0";
+                    webRequest.Headers["cookie"] = Reg.cookie;
+                    webRequest.Headers["sec-fetch-dest"] = "document";
+                    webRequest.Headers["sec-fetch-mode"] = "navigate";
+                    webRequest.Headers["sec-fetch-site"] = "none";
+                    webRequest.Headers["sec-fetch-user"] = "?1";
+                    webRequest.Headers["upgrade-insecure-requests"] = "1";
+                    webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
+                }
+                else
+                {
+                    webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
+                    webRequest.Headers["accept-encoding"] = "gzip, deflate";
+                    webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
+                }
 
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
                 using (Stream stream = GetStreamForResponse(webResponse, READTIMEOUT_CONST))
@@ -316,7 +361,6 @@ namespace RarbgAdvancedSearch
         }
         #endregion
 
-
         /// <summary>
         /// Registry Wrapper
         /// </summary>
@@ -328,7 +372,7 @@ namespace RarbgAdvancedSearch
 
             static Reg()
             {
-                rootKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey(@"Software\RarbgAdvancedSearch");
+                rootKey = Microsoft.Win32.Registry.CurrentUser.CreateSubKey($@"Software\{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
             }
 
             //expiry date
@@ -353,4 +397,131 @@ namespace RarbgAdvancedSearch
         #endregion
 
     }
+
+    public static class UsageStats
+    {
+        static string machinename = GetInfo.GetMachineName();
+        static string machinecode = GetInfo.GetMachineCode();
+
+        public static void Log(string stat, string msg = "", bool blocking = false)
+        {
+            Dictionary<string, object> Json = new Dictionary<string, object>()
+            {
+                {"app", Assembly.GetExecutingAssembly().GetName().Name},
+                {"version", Assembly.GetExecutingAssembly().GetName().Version.ToString()}
+            };
+            Json.Add("operation", stat);
+            if (msg.Length > 0)
+                Json.Add("msg", msg);
+            Json.Add("user", $"{machinename}/{Environment.UserName}");
+            Json.Add("mcode", machinecode);
+           
+            if(blocking)
+            {
+                SendLog(JsonConvert.SerializeObject(Json));
+            }
+            else
+            {
+                Task.Run(() =>
+                {
+                    SendLog(JsonConvert.SerializeObject(Json));
+                });
+            }            
+        }
+
+        /// <summary>
+        /// A generic update checker for github projects
+        /// The tag text is used as version field from github releases, the description text should contain an installer link pointed at raw.githubusercontent.com
+        /// </summary>
+        /// <returns></returns>
+        private static void SendLog(string jsonmessage)
+        {
+            HttpClient.Post($"https://iotsoftworks.com/stats.php", jsonmessage);
+        }
+    }
+
+    public static class GetInfo
+    {
+        /// <summary>
+        /// return Volume Serial Number from hard drive
+        /// </summary>
+        /// <param name="strDriveLetter">[optional] Drive letter</param>
+        /// <returns>[string] VolumeSerialNumber</returns>
+        public static string GetVolumeSerial(string strDriveLetter)
+        {
+            if (strDriveLetter == "" || strDriveLetter == null) strDriveLetter = Path.GetPathRoot(Environment.SystemDirectory)[0].ToString();/*"C"*/;
+            ManagementObject disk =
+                new ManagementObject("win32_logicaldisk.deviceid=\"" + strDriveLetter + ":\"");
+            disk.Get();
+            return disk["VolumeSerialNumber"].ToString();
+        }
+
+        /// <summary>
+        /// Returns MAC Address from first Network Card in Computer
+        /// </summary>
+        /// <returns>[string] MAC Address</returns>
+        public static string GetMACAddress()
+        {
+            ManagementClass mc = new ManagementClass("Win32_NetworkAdapterConfiguration");
+            ManagementObjectCollection moc = mc.GetInstances();
+            string MACAddress = String.Empty;
+            foreach (ManagementObject mo in moc)
+            {
+                if (MACAddress == String.Empty)  // only return MAC Address from first card
+                {
+                    if ((bool)mo["IPEnabled"] == true) MACAddress = mo["MacAddress"].ToString();
+                }
+                mo.Dispose();
+            }
+            MACAddress = MACAddress.Replace(":", "");
+            return MACAddress;
+        }
+        /// <summary>
+        /// Return processorId from first CPU in machine
+        /// </summary>
+        /// <returns>[string] ProcessorId</returns>
+        public static string GetCPUId()
+        {
+            string cpuInfo = String.Empty;
+            string temp = String.Empty;
+            ManagementClass mc = new ManagementClass("Win32_Processor");
+            ManagementObjectCollection moc = mc.GetInstances();
+            foreach (ManagementObject mo in moc)
+            {
+                if (cpuInfo == String.Empty)
+                {// only return cpuInfo from first CPU
+                    cpuInfo = mo.Properties["ProcessorId"].Value.ToString();
+                }
+            }
+            return cpuInfo;
+        }
+
+        private static string ComputeHash(string input)
+        {
+            using (SHA1Managed sha1 = new SHA1Managed())
+            {
+                var hash = sha1.ComputeHash(Encoding.UTF8.GetBytes(input));
+                var sb = new StringBuilder(hash.Length * 2);
+
+                foreach (byte b in hash)
+                {
+                    // can be "x2" if you want lowercase
+                    sb.Append(b.ToString("X2"));
+                }
+
+                return sb.ToString();
+            }
+        }
+
+        internal static string GetMachineCode()
+        {
+            return ComputeHash(GetVolumeSerial("") + /*GetMACAddress() +*/ GetCPUId());
+        }
+
+        internal static string GetMachineName()
+        {
+            return Environment.MachineName;
+        }
+    }
+
 }

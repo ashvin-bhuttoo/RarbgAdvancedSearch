@@ -31,19 +31,28 @@ namespace RarbgAdvancedSearch
                 ds.AddAccessRule(fsar);
                 di.SetAccessControl(ds);
 
-                Process.Start(Application.ExecutablePath);
+                UsageStats.Log("installed", "", true);
+                Process.Start(Application.ExecutablePath, "OVERRIDE_PROCESS_CHECK");
                 return;
             }
 
-            Thread.Sleep(2000);
+            Thread.Sleep(1500);
             Process[] runningProcesses = Process.GetProcessesByName(Process.GetCurrentProcess().ProcessName);
             if (runningProcesses.Length == 1 || (args.Length == 1 && args[0] == "OVERRIDE_PROCESS_CHECK")) // if its just me or OVERRIDE is set, let me run!
             {
                 Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                Updater.Run("RarbgAdvancedSearch");
-                Application.Run(new Main());
-            }                
+                Updater.Run(System.Reflection.Assembly.GetExecutingAssembly().GetName().Name);
+                UsageStats.Log("open");
+                try
+                {
+                    Application.Run(new Main());
+                }
+                catch(Exception e)
+                {
+                    UsageStats.Log("crash", e.Message + "\n" + e.StackTrace, true);
+                }
+            }
         }
     }
 }

@@ -28,7 +28,7 @@ namespace RarbgAdvancedSearch
 
         private void button2_Click(object sender, EventArgs e)
         {
-            Process.Start($"https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch");
+            Process.Start($"https://github.com/ashvin-bhuttoo/{System.Reflection.Assembly.GetExecutingAssembly().GetName().Name}");
         }
 
         private void button3_Click(object sender, EventArgs e)

@@ -674,6 +674,7 @@
             this.MinimumSize = new System.Drawing.Size(947, 676);
             this.Name = "Main";
             this.Text = "Rarbg Advanced Search";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.Main_FormClosing);
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

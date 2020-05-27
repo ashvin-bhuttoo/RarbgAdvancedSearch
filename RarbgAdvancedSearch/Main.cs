@@ -70,8 +70,11 @@ namespace RarbgAdvancedSearch
                 RarbgPageParser parser = new RarbgPageParser();
                 int maxPage = 1;
 
+                var searchurl = $"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}";
+
+                UsageStats.Log("search", searchurl);
                 retry_get:
-                string html = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={99999999}");
+                string html = Utils.HttpClient.Get($"{searchurl}&page={99999999}");
                 if (html.StartsWith("https://") && html.Contains("threat_defence"))
                 {
                     tstStatus.Text = "Captcha validation..";
@@ -101,7 +104,7 @@ namespace RarbgAdvancedSearch
                 saved_listings.Clear();
                 for (pageNum = 1; btnSearch.Text != "SEARCH"; pageNum++)
                 {
-                    string response = Utils.HttpClient.Get($"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}&page={pageNum}");
+                    string response = Utils.HttpClient.Get($"{searchurl}&page={pageNum}");
                     if(response.Contains("We have too many requests from your ip in the past 24h."))
                     {
                         showMessage("Failed to gather listings, IP temporarily banned by server for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -440,6 +443,15 @@ namespace RarbgAdvancedSearch
             this.Controls.Add(aboutpage);
             aboutpage.BringToFront();
             aboutpage.Dock = DockStyle.Fill;            
+        }
+
+        private void Main_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (btnSearch.Text == "STOP")
+            {
+                Application.Exit();
+                Environment.Exit(Environment.ExitCode);
+            }
         }
     }
 }
