@@ -29,7 +29,9 @@ namespace RarbgAdvancedSearch
 
         private void btnSearch_Click(object sender, EventArgs e)
         {
-            if(btnSearch.Text == "STOP")
+            byte[] response_bytes = { };
+
+            if (btnSearch.Text == "STOP")
             {
                 btnSearch.Text = "SEARCH";
                 btnSearch.ForeColor = Color.DarkGreen;
@@ -73,27 +75,7 @@ namespace RarbgAdvancedSearch
                 var searchurl = $"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}";
 
                 UsageStats.Log("search", searchurl);
-                retry_get:
-                string html = Utils.HttpClient.Get($"{searchurl}&page={99999999}");
-                if (html.StartsWith("https://") && html.Contains("threat_defence"))
-                {
-                    tstStatus.Text = "Captcha validation..";
-                    showMessage("Rarbg needs you to validate a captcha.\nPlease validate the captcha and press enter.", "Captcha Required");
-                    browser b = new browser();
-                    b.navigateTo(html);
-                    this.Controls.Add(b);
-                    b.BringToFront();
-                    b.Dock = DockStyle.Fill;
-                    while(this.Controls.Contains(b))
-                    {
-                        Application.DoEvents();
-                        Thread.Sleep(1);
-                    }
-                    if (!b.IsDisposed)
-                        b.Dispose();
-                    goto retry_get;
-                }
-
+                string html = GetRarbgPage($"{searchurl}&page={99999999}", ref response_bytes);
                 if (!chkPageLimit.Checked && parser.getLastPageNum(html, ref maxPage))
                 {
                     chkPageLimit.Checked = true;
@@ -104,10 +86,9 @@ namespace RarbgAdvancedSearch
                 saved_listings.Clear();
                 for (pageNum = 1; btnSearch.Text != "SEARCH"; pageNum++)
                 {
-                    string response = Utils.HttpClient.Get($"{searchurl}&page={pageNum}");
-                    if(response.Contains("We have too many requests from your ip in the past 24h."))
+                    string response = GetRarbgPage($"{searchurl}&page={pageNum}", ref response_bytes);
+                    if(response == string.Empty)
                     {
-                        showMessage("Failed to gather listings, IP temporarily banned by server for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         pageNum--;
                         btnSearch.Text = "SEARCH";
                         btnSearch.ForeColor = Color.DarkGreen;
@@ -164,6 +145,38 @@ namespace RarbgAdvancedSearch
             {
                 dgvListings.Sort(dgvListings.SortedColumn, dgvListings.SortOrder == SortOrder.Ascending ? ListSortDirection.Ascending : ListSortDirection.Descending);
             }
+        }
+
+        private string GetRarbgPage(string url, ref byte[] responseBytes, string referer = "")
+        {
+            retry_get:
+            string html = Utils.HttpClient.Get(url, ref responseBytes, referer);
+            if (html.StartsWith("https://") && html.Contains("threat_defence"))
+            {
+                tstStatus.Text = "Captcha validation..";
+                showMessage("Rarbg needs you to validate a captcha.\nPlease validate the captcha and press enter.", "Captcha Required");
+                browser b = new browser();
+                b.navigateTo(html);
+                this.Controls.Add(b);
+                b.BringToFront();
+                b.Dock = DockStyle.Fill;
+                while (this.Controls.Contains(b))
+                {
+                    Application.DoEvents();
+                    Thread.Sleep(1);
+                }
+                if (!b.IsDisposed)
+                    b.Dispose();
+                goto retry_get;
+            }
+
+            if (html.Contains("We have too many requests from your ip in the past 24h."))
+            {
+                showMessage("Failed fetch page, IP temporarily banned by Rarbg for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                html = string.Empty;
+            }                
+
+            return html;
         }
 
         private DialogResult showMessage(string text, string caption, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
@@ -412,6 +425,7 @@ namespace RarbgAdvancedSearch
 
         private void dgvListings_MouseClick(object sender, MouseEventArgs e)
         {
+            byte[] response_bytes = { };
             if (e.Button == MouseButtons.Right)
             {
                 int currentMouseOverRow = dgvListings.HitTest(e.X, e.Y).RowIndex;
@@ -427,7 +441,60 @@ namespace RarbgAdvancedSearch
                         m.MenuItems.Add(new MenuItem("> Open IMDb Page", delegate { Process.Start($"https://www.imdb.com/title/{entry.imdb_id}"); }));
 
                     if (!string.IsNullOrEmpty(entry.url))
+                    {
                         m.MenuItems.Add(new MenuItem("> Open RaRBG Page", delegate { Process.Start($"https://rarbgenter.org{entry.url}"); }));
+                        m.MenuItems.Add(new MenuItem("> Download using .Torrent File (opens using browser)", delegate {
+                            tstStatus.Text = "Looking for .Torrent file..";
+                            string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
+                            if(page_content.Length > 0)
+                            {
+                                if(page_content.Any(s => s.Contains(".torrent")))
+                                {
+                                    Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
+                                    //string torrent_file = GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
+                                    //System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                    //file.Directory.Create();
+
+                                    //System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
+                                    //try
+                                    //{
+                                    //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                    //}
+                                    //catch (Exception)
+                                    //{
+                                    //    showMessage("Could not locate your torrent application, please open the the torrent file using your torrent client.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                    //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
+                                    //}
+
+                                    return;
+                                }
+                            }
+                            tstStatus.Text = "Failed to Download .Torrent file..";
+                        }));
+                        m.MenuItems.Add(new MenuItem("> Download using Magnet Link", delegate {
+                            tstStatus.Text = "Looking for Magnet Link..";
+                            string page = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes);
+                            string[] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
+                            if (page_content.Length > 0)
+                            {
+                                if (page_content.Any(s => s.StartsWith("magnet:?")))
+                                {
+                                    tstStatus.Text = "Magnet Link Found..";
+                                    string magnet = page_content.FirstOrDefault(s => s.StartsWith("magnet:?"));
+                                    try
+                                    {
+                                        Process.Start(magnet);
+                                    }
+                                    catch (Exception) {
+                                        Clipboard.SetText(magnet);
+                                        showMessage("Could not locate your torrent application, magnet link was copied to clipboard.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                     }
+                                }
+                                return;
+                            }
+                            tstStatus.Text = "Failed to acquire Magnet Link..";
+                        }));
+                    }
 
                     if (m.MenuItems.Count > 0)
                         m.Show(dgvListings, new Point(e.X, e.Y));

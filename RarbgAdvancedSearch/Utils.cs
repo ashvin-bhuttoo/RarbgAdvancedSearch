@@ -1,5 +1,6 @@
 ﻿using HtmlAgilityPack;
 using Newtonsoft.Json;
+using Newtonsoft.Json.Serialization;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,8 +11,10 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Runtime.Serialization.Formatters.Soap;
 using System.Security.Cryptography;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using static RarbgAdvancedSearch.Utils;
 
@@ -292,7 +295,7 @@ namespace RarbgAdvancedSearch
                 return string.Empty;
             }
 
-            public static string Get(string url, bool addRarbgHeaders = true)
+            public static string Get(string url, ref byte[] responseBytes, string referer = "", string host = "rarbgenter.org", bool addRarbgHeaders = true)
             {
                 //Ignore ssl errors
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -301,19 +304,30 @@ namespace RarbgAdvancedSearch
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = WebRequestMethods.Http.Get;
                 webRequest.KeepAlive = true;
-                if(addRarbgHeaders)
+                bool hasreferer = !string.IsNullOrEmpty(referer);
+                if (addRarbgHeaders)
                 {
+                    if (hasreferer)
+                    {
+                        webRequest.Host = host;
+                        webRequest.KeepAlive = true;
+                    }                       
+
                     webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     webRequest.Headers["accept-encoding"] = "gzip, deflate";
                     webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
                     webRequest.Headers["cache-control"] = "max-age=0";
-                    webRequest.Headers["cookie"] = Reg.cookie;
+                    
+                    webRequest.Headers["cookie"] = Reg.cookie.Cast<Cookie>().Aggregate("", (current, next) => current + $"{next.Name}={next.Value}; ").TrimEnd(new[] { ';', ' ' });
+                    if(hasreferer)
+                        webRequest.Referer = referer;
                     webRequest.Headers["sec-fetch-dest"] = "document";
                     webRequest.Headers["sec-fetch-mode"] = "navigate";
-                    webRequest.Headers["sec-fetch-site"] = "none";
+                    webRequest.Headers["sec-fetch-site"] = hasreferer ? "same-origin" : "none";
                     webRequest.Headers["sec-fetch-user"] = "?1";
                     webRequest.Headers["upgrade-insecure-requests"] = "1";
-                    webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
+                    webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/83.0.4103.61 Safari/537.36";
+                    webRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                 }
                 else
                 {
@@ -327,10 +341,54 @@ namespace RarbgAdvancedSearch
                 {
                     if (stream.CanRead)
                     {
-                        StreamReader reader = new StreamReader(stream);
                         if (webResponse.ResponseUri.AbsoluteUri.Contains("threat_defence"))
                             return webResponse.ResponseUri.AbsoluteUri;
-                        return reader.ReadToEnd();
+
+                        MemoryStream ms = new MemoryStream();
+                        stream.CopyTo(ms);
+                        responseBytes = ms.ToArray();
+
+                        if (webResponse.Cookies.Count > 0 || webResponse.Headers["Set-Cookie"] != null)
+                        {
+                            List<Cookie> reg_cookies = Reg.cookie;
+                            foreach (Cookie cookie in webResponse.Cookies)
+                            {
+                                if (!reg_cookies.Any(c => c.Name == cookie.Name))
+                                {
+                                    reg_cookies.Add(cookie);
+                                }
+                                else
+                                {
+                                    reg_cookies.FirstOrDefault(c => c.Name == cookie.Name).Value = cookie.Value;
+                                }
+                            }
+
+                            if(webResponse.Headers["Set-Cookie"] != null)
+                            {
+                                CookieCollection newCookies = new CookieCollection();
+                                if (HttpCookieExtension.GetHttpCookiesFromHeader(webResponse.Headers["Set-Cookie"], out newCookies))
+                                {
+                                    foreach (Cookie cookie in newCookies)
+                                    {
+                                        if (cookie.Name != "__cfduid")
+                                            continue;
+
+                                        if (!reg_cookies.Any(c => c.Name == cookie.Name))
+                                        {
+                                            reg_cookies.Add(cookie);
+                                        }
+                                        else
+                                        {
+                                            reg_cookies.FirstOrDefault(c => c.Name == cookie.Name).Value = cookie.Value;
+                                        }
+                                    }
+                                }
+                            }
+
+                            Reg.cookie = reg_cookies;
+                        }                            
+
+                        return Encoding.ASCII.GetString(responseBytes);
                     }
                 }
 
@@ -376,21 +434,27 @@ namespace RarbgAdvancedSearch
             }
 
             //expiry date
-            public static string cookie
+            public static List<Cookie> cookie
             {
                 get
                 {
-                    var defaultValue = "aby=2;";
+                    var defaultValue = string.Empty;
                     var info = System.Reflection.MethodBase.GetCurrentMethod() as System.Reflection.MethodInfo;
                     var name = info.Name.Substring(4);
-                    string str = rootKey.GetValue(name, defaultValue) as string;
-                    return (dynamic)Convert.ChangeType(str, info.ReturnType);
+                    List<Cookie> cookies = new List<Cookie>();
+                    try
+                    {
+                        cookies = JsonConvert.DeserializeObject<List<Cookie>>((string)rootKey.GetValue(name, defaultValue));
+                    }
+                    catch (Exception) {
+                        Reg.cookie = cookies;
+                    }
+                    return (dynamic)Convert.ChangeType(cookies, info.ReturnType);
                 }
-
                 set
                 {
                     var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Substring(4);
-                    rootKey.SetValue(name, value);
+                    rootKey.SetValue(name, JsonConvert.SerializeObject(value));
                 }
             }
         }
@@ -437,6 +501,101 @@ namespace RarbgAdvancedSearch
         private static void SendLog(string jsonmessage)
         {
             HttpClient.Post($"https://iotsoftworks.com/stats.php", jsonmessage);
+        }
+    }
+
+    public static class HttpCookieExtension
+    {
+        static Regex rxCookieParts = new Regex(@"(?<name>.*?)\=(?<value>.*?)\;|(?<name>\bsecure\b|\bhttponly\b)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.IgnoreCase);
+        static Regex rxRemoveCommaFromDate = new Regex(@"\bexpires\b\=.*?(\;|$)", RegexOptions.Compiled | RegexOptions.Singleline | RegexOptions.Multiline);
+
+        public static bool GetHttpCookiesFromHeader(this string cookieHeader, out CookieCollection cookies)
+        {
+            cookies = new CookieCollection();
+
+
+            try
+            {
+
+                string rawcookieString = rxRemoveCommaFromDate.Replace(cookieHeader, new MatchEvaluator(RemoveComma));
+
+                string[] rawCookies = rawcookieString.Split(new char[] { ';' }, StringSplitOptions.RemoveEmptyEntries);
+
+                if (rawCookies.Length == 0)
+                {
+                    cookies.Add(rawcookieString.ToCookie());
+                }
+                else
+                {
+                    foreach (var rawCookie in rawCookies)
+                    {
+                        cookies.Add(rawCookie.ToCookie());
+                    }
+                }
+
+                return true;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+
+        public static Cookie ToCookie(this string rawCookie)
+        {
+
+            if (!rawCookie.EndsWith(";")) rawCookie += ";";
+
+            MatchCollection maches = rxCookieParts.Matches(rawCookie);
+
+            Cookie cookie = new Cookie(maches[0].Groups["name"].Value.Trim(), maches[0].Groups["value"].Value.Trim());
+
+            for (int i = 1; i < maches.Count; i++)
+            {
+                switch (maches[i].Groups["name"].Value.ToLower().Trim())
+                {
+                    case "domain":
+                        cookie.Domain = maches[i].Groups["value"].Value;
+                        break;
+                    case "expires":
+
+                        DateTime dt;
+
+                        if (DateTime.TryParse(maches[i].Groups["value"].Value, out dt))
+                        {
+                            cookie.Expires = dt;
+                        }
+                        else
+                        {
+                            cookie.Expires = DateTime.Now.AddDays(2);
+                        }
+                        break;
+                    case "path":
+                        cookie.Path = maches[i].Groups["value"].Value;
+                        break;
+                    case "secure":
+                        cookie.Secure = true;
+                        break;
+                    case "httponly":
+                        cookie.HttpOnly = true;
+                        break;
+                }
+            }
+            return cookie;
+
+
+        }
+
+        private static KeyValuePair<string, string> SplitToPair(this string input)
+        {
+            string[] parts = input.Split(new char[] { '=' }, StringSplitOptions.RemoveEmptyEntries);
+            return new KeyValuePair<string, string>(parts[0], parts[1]);
+        }
+
+        private static string RemoveComma(Match match)
+        {
+            return match.Value.Replace(',', ' ');
         }
     }
 
