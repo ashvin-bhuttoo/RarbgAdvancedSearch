@@ -10,6 +10,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using static RarbgAdvancedSearch.ContentTracker;
 using static RarbgAdvancedSearch.RarbgPageParser;
 
 namespace RarbgAdvancedSearch
@@ -19,6 +20,7 @@ namespace RarbgAdvancedSearch
     public partial class Main : Form
     {
         List<rarbgEntry> saved_listings;
+        ContentTracker ctracker = new ContentTracker();
 
         public Main()
         {
@@ -242,10 +244,14 @@ namespace RarbgAdvancedSearch
                 dgvListings.Rows.Clear();
                 saved_listings = Utils.Deserialize<List<rarbgEntry>>(openFileDialog1.FileName);
                 int entryCount = 0;
-                populateGrid(saved_listings, saved_listings.Count/25, ref entryCount, true);
-                tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
-                reloadListingSorting();
-                showMessage($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                try
+                {
+                    populateGrid(saved_listings, saved_listings.Count / 25, ref entryCount, true);
+                    tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                    reloadListingSorting();
+                    showMessage($"Listing loaded succesfully!\n{entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed", "Import Listing", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                catch (Exception) { }
                 Application.DoEvents();
             }
         }
@@ -253,10 +259,11 @@ namespace RarbgAdvancedSearch
         private void populateGrid(List<rarbgEntry> entries, int pageCount, ref int entryCount, bool fromXML = false)
         {
             int totalEntryCount = entries.Count;
+            
             foreach (var entry in entries)
             {
-                if(entry.genre.Count > 0)
-                    if(entry.genre.Any(g => !clbGenre.Items.Contains(g)))
+                if (entry.genre.Count > 0)
+                    if (entry.genre.Any(g => !clbGenre.Items.Contains(g)))
                     {
                         clbGenre.Items.AddRange(entry.genre.Where(g => !clbGenre.Items.Contains(g)).ToArray());
                     }
@@ -272,31 +279,87 @@ namespace RarbgAdvancedSearch
                 //Custom Filter
                 if (chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
                 {
-                    if(!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
+                    if (!chkMinImdb.Checked || entry.imdbRating >= (double)nudMinImdb.Value)
                     {
-                        if(!chkMinYear.Checked || entry.year >= dtpMinYear.Value.Year)
+                        if (!chkMinYear.Checked || entry.year >= dtpMinYear.Value.Year)
                         {
                             if (!chkMaxYear.Checked || entry.year <= dtpMaxYear.Value.Year)
                             {
-                                if(!chkMinUpDate.Checked || entry.dateAdded >= dtpMinUpDate.Value)
+                                if (!chkMinUpDate.Checked || entry.dateAdded >= dtpMinUpDate.Value)
                                 {
-                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || entry.genre.Any( g => clbGenre.CheckedItems.Contains(g)))
+                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || entry.genre.Any(g => clbGenre.CheckedItems.Contains(g)))
                                     {
-                                        dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating });
-                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
-                                    }                                    
-                                }                               
-                            }                           
-                        }                        
+                                        Status stat = Status.NotSet;
+                                        if (ctracker.contains(entry, ref stat))
+                                        {
+                                            Color backColor = Color.Empty;
+                                            switch (stat)
+                                            {
+                                                case Status.MarkedForDownload:
+                                                    backColor = Color.Yellow;
+                                                    break;
+                                                case Status.Downloading:
+                                                    backColor = Color.Orange;
+                                                    break;
+                                                case Status.Downloaded:
+                                                    backColor = Color.Green;
+                                                    break;
+                                                case Status.Deleted:
+                                                    backColor = Color.Red;
+                                                    break;
+                                            }
+
+                                            dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating, stat });
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                                        }
+                                        else
+                                        {
+                                            dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating, stat });
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                                        }
+                                    }
+                                }
+                            }
+                        }
                     }
                 }
                 else
                 {
-                    dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating });
-                    dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                    Status stat = Status.NotSet;
+                    if (ctracker.contains(entry, ref stat))
+                    {
+                        Color backColor = Color.Empty;
+                        switch (stat)
+                        {
+                            case Status.MarkedForDownload:
+                                backColor = Color.Yellow;
+                                break;
+                            case Status.Downloading:
+                                backColor = Color.Orange;
+                                break;
+                            case Status.Downloaded:
+                                backColor = Color.Green;
+                                break;
+                            case Status.Deleted:
+                                backColor = Color.Red;
+                                break;
+                        }
+
+                        dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating, stat });
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                    }
+                    else
+                    {
+                        dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating, stat });
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
+                    }
                 }
 
-                entry_filtered:
+            entry_filtered:
                 if (fromXML)
                     tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
                 else
@@ -304,13 +367,13 @@ namespace RarbgAdvancedSearch
 
                 if (entryCount % 25 == 0)
                 {
-                    if(fromXML)
+                    if (fromXML)
                     {
                         tstProgress.Value = (int)(((double)entryCount / totalEntryCount) * tstProgress.Maximum);
                     }
                     Application.DoEvents();
                 }
-            }
+            }       
 
             if(fromXML)
             {
@@ -443,34 +506,47 @@ namespace RarbgAdvancedSearch
                     if (!string.IsNullOrEmpty(entry.url))
                     {
                         m.MenuItems.Add(new MenuItem("> Open RaRBG Page", delegate { Process.Start($"https://rarbgenter.org{entry.url}"); }));
+
+                        Status stat = Status.NotSet;
+                        ctracker.contains(entry, ref stat);
+                        m.MenuItems.Add("> Set Status", new MenuItem[] {
+                            new MenuItem(stat == Status.NotSet ? ">Not Set<" : "Not Set", delegate { bool saved = ctracker.savetrack(entry, Status.NotSet); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.NotSet; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.MarkedForDownload ? ">Marked for Download<" : "Marked for Download", delegate {bool saved = ctracker.savetrack(entry, Status.MarkedForDownload); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Yellow : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.MarkedForDownload; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloading ? ">Downloading<" : "Downloading", delegate {bool saved = ctracker.savetrack(entry, Status.Downloading); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Orange: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloading; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloaded ? ">Downloaded<" : "Downloaded", delegate {bool saved = ctracker.savetrack(entry, Status.Downloaded); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Green : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloaded; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Deleted ? ">Deleted<" : "Deleted", delegate {bool saved = ctracker.savetrack(entry, Status.Deleted); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Red : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Deleted; UsageStats.Log("content_update", $"{entry.name} - {stat}"); })
+                        });
+
                         m.MenuItems.Add(new MenuItem("> Download using .Torrent File (opens using browser)", delegate {
-                            tstStatus.Text = "Looking for .Torrent file..";
-                            string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
-                            if(page_content.Length > 0)
+                        tstStatus.Text = "Looking for .Torrent file..";
+                        string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
+                        if(page_content.Length > 0)
+                        {
+                            if(page_content.Any(s => s.Contains(".torrent")))
                             {
-                                if(page_content.Any(s => s.Contains(".torrent")))
-                                {
-                                    Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
-                                    //string torrent_file = GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
-                                    //System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                    //file.Directory.Create();
+                                Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
 
-                                    //System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
-                                    //try
-                                    //{
-                                    //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                    //}
-                                    //catch (Exception)
-                                    //{
-                                    //    showMessage("Could not locate your torrent application, please open the the torrent file using your torrent client.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                    //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
-                                    //}
+                                ////need to deal with cloudflare jscookie problem before saving torrent file directly can work.. Potential fix using CefSharp..
+                                //string torrent_file = GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
+                                //System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                //file.Directory.Create();
 
-                                    return;
-                                }
+                                //System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
+                                //try
+                                //{
+                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                //}
+                                //catch (Exception)
+                                //{
+                                //    showMessage("Could not locate your torrent application, please open the the torrent file using your torrent client.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
+                                //}
+                                return;
                             }
-                            tstStatus.Text = "Failed to Download .Torrent file..";
+                        }
+                        tstStatus.Text = "Failed to Download .Torrent file..";
                         }));
+
                         m.MenuItems.Add(new MenuItem("> Download using Magnet Link", delegate {
                             tstStatus.Text = "Looking for Magnet Link..";
                             string page = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes);
@@ -516,6 +592,44 @@ namespace RarbgAdvancedSearch
             {
                 Application.Exit();
                 Environment.Exit(Environment.ExitCode);
+            }
+        }
+
+        private void tstView_Click(object sender, EventArgs e)
+        {
+            if (showMessage("This action will clear all current listings, do you wish to proceed ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
+
+            saved_listings.Clear();
+            dgvListings.Rows.Clear();            
+
+            switch ((sender as ToolStripMenuItem).Name)
+            {
+                case "tsmiMarkedForDownload":
+                    saved_listings.AddRange(ctracker.tracks.Where(t => t.stat == Status.MarkedForDownload).Select(x => x.entry).ToList());
+                    break;
+                case "tsmiDownloading":
+                    saved_listings.AddRange(ctracker.tracks.Where(t => t.stat == Status.Downloading).Select(x => x.entry).ToList());
+                    break;
+                case "tsmiDownloaded":
+                    saved_listings.AddRange(ctracker.tracks.Where(t => t.stat == Status.Downloaded).Select(x => x.entry).ToList());
+                    break;
+                case "tsmiDeleted":
+                    saved_listings.AddRange(ctracker.tracks.Where(t => t.stat == Status.Deleted).Select(x => x.entry).ToList());
+                    break;
+                default:
+                    saved_listings.AddRange(ctracker.tracks.Select(x => x.entry).ToList());
+                    break;
+            }
+
+            reloadGrid();
+        }
+
+        private void txtSearch_KeyUp(object sender, KeyEventArgs e)
+        {
+            if(e.KeyCode == Keys.Enter)
+            {
+                reloadGrid();
             }
         }
     }

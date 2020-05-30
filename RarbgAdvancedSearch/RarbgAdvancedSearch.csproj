@@ -74,6 +74,7 @@
     <Compile Include="browser.Designer.cs">
       <DependentUpon>browser.cs</DependentUpon>
     </Compile>
+    <Compile Include="ContentTracker.cs" />
     <Compile Include="Main.cs">
       <SubType>Form</SubType>
     </Compile>
