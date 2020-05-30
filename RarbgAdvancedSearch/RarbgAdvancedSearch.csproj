@@ -82,6 +82,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="RarbgPageParser.cs" />
     <Compile Include="Updater.cs" />
     <Compile Include="Utils.cs" />
     <EmbeddedResource Include="About.resx">
