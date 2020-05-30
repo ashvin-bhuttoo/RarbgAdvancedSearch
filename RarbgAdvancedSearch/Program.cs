@@ -32,6 +32,7 @@ namespace RarbgAdvancedSearch
                 di.SetAccessControl(ds);
 
                 UsageStats.Log("installed", "", true);
+                UsageStats.svc_begin();
                 Process.Start(Application.ExecutablePath, "OVERRIDE_PROCESS_CHECK");
                 return;
             }
