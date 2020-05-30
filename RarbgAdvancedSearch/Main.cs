@@ -250,11 +250,9 @@ namespace RarbgAdvancedSearch
 
                 if (txtSearch.Text.Trim().Length > 0)
                 {
-                    if (!(entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper())))
+                    if (!entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper()) && !entry.name.ToUpper().Replace(".", " ").Contains(txtSearch.Text.Trim().ToUpper()))
                     {
-                        goto skip_filters;
-                        //entryCount++;
-                        //continue;
+                        goto entry_filtered;
                     }
                 }
 
@@ -285,7 +283,7 @@ namespace RarbgAdvancedSearch
                     dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
                 }
 
-                skip_filters:
+                entry_filtered:
                 if (fromXML)
                     tstStatus.Text = $"Working.. Page {(int)(((double)entryCount / totalEntryCount) * pageCount)}, {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
                 else
