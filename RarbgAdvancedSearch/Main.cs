@@ -21,7 +21,12 @@ namespace RarbgAdvancedSearch
     {
         List<rarbgEntry> saved_listings;
         ContentTracker ctracker = new ContentTracker();
-
+        Color Not_Set = Color.Empty, 
+            Marked_For_Dld = Color.FromArgb(222, 232, 86), 
+            Downloading = Color.FromArgb(245, 186, 125), 
+            Downloaded = Color.FromArgb(143, 255, 135), 
+            Deleted = Color.FromArgb(247, 110, 72);
+        
         public Main()
         {
             saved_listings = new List<rarbgEntry>();
@@ -292,20 +297,20 @@ namespace RarbgAdvancedSearch
                                         Status stat = Status.NotSet;
                                         if (ctracker.contains(entry, ref stat))
                                         {
-                                            Color backColor = Color.Empty;
+                                            Color backColor = Not_Set;
                                             switch (stat)
                                             {
                                                 case Status.MarkedForDownload:
-                                                    backColor = Color.Yellow;
+                                                    backColor = Marked_For_Dld;
                                                     break;
                                                 case Status.Downloading:
-                                                    backColor = Color.Orange;
+                                                    backColor = Downloading;
                                                     break;
                                                 case Status.Downloaded:
-                                                    backColor = Color.Green;
+                                                    backColor = Downloaded;
                                                     break;
                                                 case Status.Deleted:
-                                                    backColor = Color.Red;
+                                                    backColor = Deleted;
                                                     break;
                                             }
 
@@ -334,23 +339,23 @@ namespace RarbgAdvancedSearch
                         switch (stat)
                         {
                             case Status.MarkedForDownload:
-                                backColor = Color.Yellow;
+                                backColor = Marked_For_Dld;
                                 break;
                             case Status.Downloading:
-                                backColor = Color.Orange;
+                                backColor = Downloading;
                                 break;
                             case Status.Downloaded:
-                                backColor = Color.Green;
+                                backColor = Downloaded;
                                 break;
                             case Status.Deleted:
-                                backColor = Color.Red;
+                                backColor = Deleted;
                                 break;
                         }
 
                         dgvListings.Rows.Add(new object[] { entry.category, entry.name, entry.dateAdded, Math.Round(entry.sizeInGb, 2), entry.seeders, entry.leechers, entry.uploader, string.Join(",", entry.genre), entry.year, entry.imdbRating, stat });
                         dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = entry;
                         dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
-                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                        //dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Not_Set;
                     }
                     else
                     {
@@ -510,11 +515,11 @@ namespace RarbgAdvancedSearch
                         Status stat = Status.NotSet;
                         ctracker.contains(entry, ref stat);
                         m.MenuItems.Add("> Set Status", new MenuItem[] {
-                            new MenuItem(stat == Status.NotSet ? ">Not Set<" : "Not Set", delegate { bool saved = ctracker.savetrack(entry, Status.NotSet); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.NotSet; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.MarkedForDownload ? ">Marked for Download<" : "Marked for Download", delegate {bool saved = ctracker.savetrack(entry, Status.MarkedForDownload); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Yellow : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.MarkedForDownload; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Downloading ? ">Downloading<" : "Downloading", delegate {bool saved = ctracker.savetrack(entry, Status.Downloading); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Orange: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloading; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Downloaded ? ">Downloaded<" : "Downloaded", delegate {bool saved = ctracker.savetrack(entry, Status.Downloaded); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Green : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloaded; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Deleted ? ">Deleted<" : "Deleted", delegate {bool saved = ctracker.savetrack(entry, Status.Deleted); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Color.Red : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Deleted; UsageStats.Log("content_update", $"{entry.name} - {stat}"); })
+                            new MenuItem(stat == Status.NotSet ? ">Not Set<" : "Not Set", delegate { bool saved = ctracker.savetrack(entry, Status.NotSet); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Not_Set; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.NotSet; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.MarkedForDownload ? ">Marked for Download<" : "Marked for Download", delegate {bool saved = ctracker.savetrack(entry, Status.MarkedForDownload); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Marked_For_Dld: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.MarkedForDownload; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloading ? ">Downloading<" : "Downloading", delegate {bool saved = ctracker.savetrack(entry, Status.Downloading); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloading: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloading; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloaded ? ">Downloaded<" : "Downloaded", delegate {bool saved = ctracker.savetrack(entry, Status.Downloaded); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloaded : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloaded; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Deleted ? ">Deleted<" : "Deleted", delegate {bool saved = ctracker.savetrack(entry, Status.Deleted); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Deleted : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Deleted; UsageStats.Log("content_update", $"{entry.name} - {stat}"); })
                         });
 
                         m.MenuItems.Add(new MenuItem("> Download using .Torrent File (opens using browser)", delegate {
