@@ -157,7 +157,7 @@ namespace RarbgAdvancedSearch
         private string GetRarbgPage(string url, ref byte[] responseBytes, string referer = "")
         {
             retry_get:
-            string html = Utils.HttpClient.Get(url, ref responseBytes, referer);
+            string html = Utils.HttpClient.Get(url, ref responseBytes, string.Empty, referer);
             if (html.StartsWith("https://") && html.Contains("threat_defence"))
             {
                 tstStatus.Text = "Captcha validation..";

