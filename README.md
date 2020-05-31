@@ -14,3 +14,14 @@ If you want to buy me a beer, here's the button for it<br/>
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US)
 
 This project was built using VS2019 Community Edition and is completely open source :)
+
+<b>Changelog</b>
+```
+v1.0.1
+- Added Option to Download Torrent File in Right Click context Menu
+- Added Option to Download using Magnet Link in Right Click context Menu
+- Added Ability to mark Entries as 'MarkedForDownload', 'Downloading', 'Downloaded', 'Deleted' in right click context menu. 
+- Added View Toolstrip menu item to View marked Entries.
+- Fixed a bug Related to Searching using the Search Text Bar
+- Can now press Enter on Search bar instead using the RELOAD filter button
+```
