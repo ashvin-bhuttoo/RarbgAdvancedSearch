@@ -8,7 +8,7 @@ Features:
 
 The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.1</a> 
 
-![alt text](https://i.imgur.com/G5sPyQ5.png)
+![alt text](https://i.imgur.com/CUxcDr7.png)
 
 If you want to buy me a beer, here's the button for it<br/>
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US)
