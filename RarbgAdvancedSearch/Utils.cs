@@ -126,13 +126,9 @@ namespace RarbgAdvancedSearch
                     webRequest.Headers["accept-encoding"] = "gzip, deflate";
                     webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
                     webRequest.Headers["cache-control"] = "max-age=0";
-                    try
-                    {
-                        webRequest.Headers["cookie"] = Reg.cookie.Cast<Cookie>().Aggregate("", (current, next) => current + $"{next.Name}={next.Value}; ").TrimEnd(new[] { ';', ' ' });
-                    }
-                    catch (Exception) { }
-                    
-                    if(hasreferer)
+                    webRequest.Headers["cookie"] = Reg.cookie.Cast<Cookie>().Aggregate("", (current, next) => current + $"{next.Name}={next.Value}; ").TrimEnd(new[] { ';', ' ' });
+
+                    if (hasreferer)
                         webRequest.Referer = referer;
                     webRequest.Headers["sec-fetch-dest"] = "document";
                     webRequest.Headers["sec-fetch-mode"] = "navigate";
@@ -261,7 +257,7 @@ namespace RarbgAdvancedSearch
                     catch (Exception) {
                         Reg.cookie = cookies;
                     }
-                    return (dynamic)Convert.ChangeType(cookies, info.ReturnType);
+                    return (dynamic)Convert.ChangeType(cookies ?? new List<Cookie>(), info.ReturnType);
                 }
                 set
                 {
