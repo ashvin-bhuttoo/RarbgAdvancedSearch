@@ -19,6 +19,9 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
+v1.0.2
+- Urgent Bugfix, crash related to cookies
+
 v1.0.1
 - Added Option to Download Torrent File in Right Click context Menu
 - Added Option to Download using Magnet Link in Right Click context Menu
