@@ -1,5 +1,5 @@
 # RarbgAdvancedSearch
-RarbgAdvancedSearch is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
+Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
 
 Features:
 1. Ability to export and import search entries using the FILE context menu.
