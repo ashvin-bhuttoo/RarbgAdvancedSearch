@@ -8,7 +8,7 @@ Features:
 4. Download Torrent using Magnet file or Torrent File directly from right click menu.
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
 
-The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.1</a> 
+The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.3</a> 
 
 ![alt text](https://i.imgur.com/CUxcDr7.png)
 
@@ -19,7 +19,7 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
-v1.0.2
+v1.0.3
 - Urgent Bugfix, crash related to cookies
 
 v1.0.1
