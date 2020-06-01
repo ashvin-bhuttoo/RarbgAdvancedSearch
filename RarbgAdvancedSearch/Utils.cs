@@ -126,8 +126,12 @@ namespace RarbgAdvancedSearch
                     webRequest.Headers["accept-encoding"] = "gzip, deflate";
                     webRequest.Headers["accept-language"] = "en-US,en;q=0.9";
                     webRequest.Headers["cache-control"] = "max-age=0";
+                    try
+                    {
+                        webRequest.Headers["cookie"] = Reg.cookie.Cast<Cookie>().Aggregate("", (current, next) => current + $"{next.Name}={next.Value}; ").TrimEnd(new[] { ';', ' ' });
+                    }
+                    catch (Exception) { }
                     
-                    webRequest.Headers["cookie"] = Reg.cookie.Cast<Cookie>().Aggregate("", (current, next) => current + $"{next.Name}={next.Value}; ").TrimEnd(new[] { ';', ' ' });
                     if(hasreferer)
                         webRequest.Referer = referer;
                     webRequest.Headers["sec-fetch-dest"] = "document";
