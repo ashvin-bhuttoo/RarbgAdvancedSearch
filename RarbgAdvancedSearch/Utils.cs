@@ -75,7 +75,6 @@ namespace RarbgAdvancedSearch
                 // Initialize the WebRequest.
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = WebRequestMethods.Http.Post;
-                webRequest.KeepAlive = true;
                 webRequest.Headers["Accept-Encoding"] = "gzip, deflate";
                 webRequest.AutomaticDecompression = DecompressionMethods.GZip | DecompressionMethods.Deflate;
                 webRequest.Timeout = READTIMEOUT_CONST;
@@ -112,14 +111,13 @@ namespace RarbgAdvancedSearch
                 // Initialize the WebRequest.
                 HttpWebRequest webRequest = (HttpWebRequest)WebRequest.Create(url);
                 webRequest.Method = WebRequestMethods.Http.Get;
-                webRequest.KeepAlive = true;
                 bool hasreferer = !string.IsNullOrEmpty(referer);
                 if (addRarbgHeaders)
                 {
                     if (hasreferer)
                     {
                         webRequest.Host = host;
-                        webRequest.KeepAlive = true;
+                        //webRequest.KeepAlive = true;
                     }                       
 
                     webRequest.Accept = "text/html,application/xhtml+xml,application/xml;q=0.9,image/webp,image/apng,*/*;q=0.8,application/signed-exchange;v=b3;q=0.9";
@@ -130,6 +128,7 @@ namespace RarbgAdvancedSearch
 
                     if (hasreferer)
                         webRequest.Referer = referer;
+
                     webRequest.Headers["sec-fetch-dest"] = "document";
                     webRequest.Headers["sec-fetch-mode"] = "navigate";
                     webRequest.Headers["sec-fetch-site"] = hasreferer ? "same-origin" : "none";
