@@ -36,6 +36,17 @@
             this.categ4 = new System.Windows.Forms.CheckedListBox();
             this.btnSearch = new System.Windows.Forms.Button();
             this.dgvListings = new System.Windows.Forms.DataGridView();
+            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgName = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgAdded = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgS = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgL = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgUploader = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.Genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.dgImdb = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this.txtSearch = new System.Windows.Forms.TextBox();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.clbGenre = new System.Windows.Forms.CheckedListBox();
@@ -72,25 +83,14 @@
             this.tsmiMarkedForDownload = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDownloading = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiDownloaded = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsmiDeleted = new System.Windows.Forms.ToolStripMenuItem();
             this.tsmiAllMarked = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
+            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
-            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
-            this.tsmiDeleted = new System.Windows.Forms.ToolStripMenuItem();
-            this.Category = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgName = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgAdded = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgSize = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgS = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgL = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgUploader = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.Genre = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgYear = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.dgImdb = new System.Windows.Forms.DataGridViewTextBoxColumn();
-            this.colStatus = new System.Windows.Forms.DataGridViewTextBoxColumn();
+            this.tsbAbout = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -212,6 +212,94 @@
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
             this.dgvListings.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvListings_MouseClick);
+            // 
+            // Category
+            // 
+            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Category.HeaderText = "Category";
+            this.Category.Name = "Category";
+            this.Category.ReadOnly = true;
+            this.Category.Width = 74;
+            // 
+            // dgName
+            // 
+            this.dgName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgName.HeaderText = "Name";
+            this.dgName.Name = "dgName";
+            this.dgName.ReadOnly = true;
+            this.dgName.Width = 60;
+            // 
+            // dgAdded
+            // 
+            this.dgAdded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgAdded.HeaderText = "Added";
+            this.dgAdded.Name = "dgAdded";
+            this.dgAdded.ReadOnly = true;
+            this.dgAdded.Width = 63;
+            // 
+            // dgSize
+            // 
+            this.dgSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgSize.HeaderText = "Size";
+            this.dgSize.Name = "dgSize";
+            this.dgSize.ReadOnly = true;
+            this.dgSize.Width = 52;
+            // 
+            // dgS
+            // 
+            this.dgS.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgS.HeaderText = "S";
+            this.dgS.Name = "dgS";
+            this.dgS.ReadOnly = true;
+            this.dgS.Width = 39;
+            // 
+            // dgL
+            // 
+            this.dgL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgL.HeaderText = "L";
+            this.dgL.Name = "dgL";
+            this.dgL.ReadOnly = true;
+            this.dgL.Width = 38;
+            // 
+            // dgUploader
+            // 
+            this.dgUploader.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgUploader.HeaderText = "Uploader";
+            this.dgUploader.Name = "dgUploader";
+            this.dgUploader.ReadOnly = true;
+            this.dgUploader.Width = 75;
+            // 
+            // Genre
+            // 
+            this.Genre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.Genre.HeaderText = "Genre";
+            this.Genre.Name = "Genre";
+            this.Genre.ReadOnly = true;
+            this.Genre.Width = 61;
+            // 
+            // dgYear
+            // 
+            this.dgYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgYear.HeaderText = "Year";
+            this.dgYear.Name = "dgYear";
+            this.dgYear.ReadOnly = true;
+            this.dgYear.Width = 54;
+            // 
+            // dgImdb
+            // 
+            this.dgImdb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.dgImdb.HeaderText = "Imdb";
+            this.dgImdb.Name = "dgImdb";
+            this.dgImdb.ReadOnly = true;
+            this.dgImdb.Width = 55;
+            // 
+            // colStatus
+            // 
+            this.colStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
+            this.colStatus.HeaderText = "Status";
+            this.colStatus.Name = "colStatus";
+            this.colStatus.ReadOnly = true;
+            this.colStatus.Width = 62;
             // 
             // txtSearch
             // 
@@ -505,7 +593,6 @@
             this.exportEntriesToolStripMenuItem,
             this.toolStripSeparator3,
             this.importEntriesToolStripMenuItem});
-            this.toolStripSplitButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripSplitButton1.Image")));
             this.toolStripSplitButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton1.Name = "toolStripSplitButton1";
             this.toolStripSplitButton1.Size = new System.Drawing.Size(41, 22);
@@ -514,19 +601,19 @@
             // exportEntriesToolStripMenuItem
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
-            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
-            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
+            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
             // 
@@ -543,7 +630,6 @@
             // tsbRESET
             // 
             this.tsbRESET.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbRESET.Image = ((System.Drawing.Image)(resources.GetObject("tsbRESET.Image")));
             this.tsbRESET.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tsbRESET.Name = "tsbRESET";
             this.tsbRESET.Size = new System.Drawing.Size(42, 22);
@@ -569,7 +655,6 @@
             this.tsmiDownloaded,
             this.tsmiDeleted,
             this.tsmiAllMarked});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
             this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
             this.toolStripDropDownButton1.Size = new System.Drawing.Size(45, 22);
@@ -596,6 +681,13 @@
             this.tsmiDownloaded.Text = "Downloaded";
             this.tsmiDownloaded.Click += new System.EventHandler(this.tstView_Click);
             // 
+            // tsmiDeleted
+            // 
+            this.tsmiDeleted.Name = "tsmiDeleted";
+            this.tsmiDeleted.Size = new System.Drawing.Size(191, 22);
+            this.tsmiDeleted.Text = "Deleted";
+            this.tsmiDeleted.Click += new System.EventHandler(this.tstView_Click);
+            // 
             // tsmiAllMarked
             // 
             this.tsmiAllMarked.Name = "tsmiAllMarked";
@@ -613,15 +705,14 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbAbout
+            // tsbDonate
             // 
-            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.tsbAbout.Image = ((System.Drawing.Image)(resources.GetObject("tsbAbout.Image")));
-            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbAbout.Name = "tsbAbout";
-            this.tsbAbout.Size = new System.Drawing.Size(49, 22);
-            this.tsbAbout.Text = "ABOUT";
-            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
+            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
+            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDonate.Name = "tsbDonate";
+            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
+            this.tsbDonate.Text = "DONATE";
+            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
             // 
             // toolStripSeparator8
             // 
@@ -633,109 +724,14 @@
             this.toolStripSeparator9.Name = "toolStripSeparator9";
             this.toolStripSeparator9.Size = new System.Drawing.Size(6, 25);
             // 
-            // tsbDonate
+            // tsbAbout
             // 
-            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
-            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDonate.Name = "tsbDonate";
-            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
-            this.tsbDonate.Text = "DONATE";
-            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
-            // 
-            // tsmiDeleted
-            // 
-            this.tsmiDeleted.Name = "tsmiDeleted";
-            this.tsmiDeleted.Size = new System.Drawing.Size(191, 22);
-            this.tsmiDeleted.Text = "Deleted";
-            this.tsmiDeleted.Click += new System.EventHandler(this.tstView_Click);
-            // 
-            // Category
-            // 
-            this.Category.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Category.HeaderText = "Category";
-            this.Category.Name = "Category";
-            this.Category.ReadOnly = true;
-            this.Category.Width = 74;
-            // 
-            // dgName
-            // 
-            this.dgName.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgName.HeaderText = "Name";
-            this.dgName.Name = "dgName";
-            this.dgName.ReadOnly = true;
-            this.dgName.Width = 60;
-            // 
-            // dgAdded
-            // 
-            this.dgAdded.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgAdded.HeaderText = "Added";
-            this.dgAdded.Name = "dgAdded";
-            this.dgAdded.ReadOnly = true;
-            this.dgAdded.Width = 63;
-            // 
-            // dgSize
-            // 
-            this.dgSize.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgSize.HeaderText = "Size";
-            this.dgSize.Name = "dgSize";
-            this.dgSize.ReadOnly = true;
-            this.dgSize.Width = 52;
-            // 
-            // dgS
-            // 
-            this.dgS.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgS.HeaderText = "S";
-            this.dgS.Name = "dgS";
-            this.dgS.ReadOnly = true;
-            this.dgS.Width = 39;
-            // 
-            // dgL
-            // 
-            this.dgL.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgL.HeaderText = "L";
-            this.dgL.Name = "dgL";
-            this.dgL.ReadOnly = true;
-            this.dgL.Width = 38;
-            // 
-            // dgUploader
-            // 
-            this.dgUploader.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgUploader.HeaderText = "Uploader";
-            this.dgUploader.Name = "dgUploader";
-            this.dgUploader.ReadOnly = true;
-            this.dgUploader.Width = 75;
-            // 
-            // Genre
-            // 
-            this.Genre.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.Genre.HeaderText = "Genre";
-            this.Genre.Name = "Genre";
-            this.Genre.ReadOnly = true;
-            this.Genre.Width = 61;
-            // 
-            // dgYear
-            // 
-            this.dgYear.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgYear.HeaderText = "Year";
-            this.dgYear.Name = "dgYear";
-            this.dgYear.ReadOnly = true;
-            this.dgYear.Width = 54;
-            // 
-            // dgImdb
-            // 
-            this.dgImdb.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.dgImdb.HeaderText = "Imdb";
-            this.dgImdb.Name = "dgImdb";
-            this.dgImdb.ReadOnly = true;
-            this.dgImdb.Width = 55;
-            // 
-            // colStatus
-            // 
-            this.colStatus.AutoSizeMode = System.Windows.Forms.DataGridViewAutoSizeColumnMode.AllCells;
-            this.colStatus.HeaderText = "Status";
-            this.colStatus.Name = "colStatus";
-            this.colStatus.ReadOnly = true;
-            this.colStatus.Width = 62;
+            this.tsbAbout.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.tsbAbout.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbAbout.Name = "tsbAbout";
+            this.tsbAbout.Size = new System.Drawing.Size(49, 22);
+            this.tsbAbout.Text = "ABOUT";
+            this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
             // Main
             // 
