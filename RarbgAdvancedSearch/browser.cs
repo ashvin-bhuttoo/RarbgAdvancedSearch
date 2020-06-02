@@ -42,43 +42,6 @@ namespace RarbgAdvancedSearch
         {
             if (e.Url.AbsolutePath == "/torrents.php")
             {
-                //for (int k = 0; k < 1000; k++)
-                //{
-                //    Thread.Sleep(1);
-                //    Application.DoEvents();
-                //}
-
-                ////e.Url.
-
-                //CookieCollection cookies = new CookieCollection();
-                //if (HttpCookieExtension.GetHttpCookiesFromHeader(webBrowser.Document.Cookie, out cookies))
-                //{
-                //    List<Cookie> reg_cookies = Reg.cookie;
-                //    foreach (Cookie cookie in cookies)
-                //    {
-                //        if (!reg_cookies.Any(c => c.Name == cookie.Name))
-                //        {
-                //            reg_cookies.Add(cookie);
-                //        }
-                //        else
-                //        {
-                //            reg_cookies.FirstOrDefault(c => c.Name == cookie.Name).Value = cookie.Value;
-                //        }
-                //    }
-                //    Reg.cookie = reg_cookies;
-                //}
-
-                //this.Parent.Controls.Remove(this);
-                this.webBrowser.Navigate("https://rarbgenter.org/torrent/4ix5319");                 
-            }
-            else if (e.Url.AbsolutePath == "/torrent/4ix5319")
-            {
-                for(int k=0;k<1000;k++)
-                {
-                    Thread.Sleep(1);
-                    Application.DoEvents();
-                }
-
                 CookieCollection cookies = new CookieCollection();
                 if (HttpCookieExtension.GetHttpCookiesFromHeader(webBrowser.Document.Cookie, out cookies))
                 {
@@ -97,8 +60,8 @@ namespace RarbgAdvancedSearch
                     Reg.cookie = reg_cookies;
                 }
 
-                this.Parent.Controls.Remove(this);               
-            }
+                this.Parent.Controls.Remove(this);
+            }           
         }
     }
 }
