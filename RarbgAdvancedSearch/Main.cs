@@ -157,33 +157,56 @@ namespace RarbgAdvancedSearch
         private string GetRarbgPage(string url, ref byte[] responseBytes, string referer = "")
         {
             retry_get:
-            string html = Utils.HttpClient.Get(url, ref responseBytes, string.Empty, referer);
-            if (html.StartsWith("https://") && html.Contains("threat_defence"))
+            try
             {
-                tstStatus.Text = "Captcha validation..";
-                showMessage("Rarbg needs you to validate a captcha.\nPlease validate the captcha and press enter.", "Captcha Required");
-                browser b = new browser();
-                b.navigateTo(html);
-                this.Controls.Add(b);
-                b.BringToFront();
-                b.Dock = DockStyle.Fill;
-                while (this.Controls.Contains(b))
+                string html = Utils.HttpClient.Get(url, ref responseBytes, string.Empty, referer);
+                if (html.StartsWith("https://") && html.Contains("threat_defence"))
                 {
-                    Application.DoEvents();
-                    Thread.Sleep(1);
+                    tstStatus.Text = "Captcha validation..";
+                    showMessage("Rarbg needs you to validate a captcha.\nPlease validate the captcha and press enter.", "Captcha Required");
+                    browser b = new browser();
+                    b.navigateTo(html);
+                    this.Controls.Add(b);
+                    b.BringToFront();
+                    b.Dock = DockStyle.Fill;
+                    while (this.Controls.Contains(b))
+                    {
+                        Application.DoEvents();
+                        Thread.Sleep(1);
+                    }
+
+                    if (b.userCancelled)
+                    {
+                        responseBytes = new byte[] { };
+
+                        if (!b.IsDisposed)
+                            b.Dispose();
+
+                        showMessage("Captcha Cancelled.\nRarbgAdvancedSearch may not be ale to fetch new listings.", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+
+                        return string.Empty;
+                    }
+
+                    if (!b.IsDisposed)
+                        b.Dispose();
+
+                    goto retry_get;
                 }
-                if (!b.IsDisposed)
-                    b.Dispose();
-                goto retry_get;
+
+                if (html.Contains("We have too many requests from your ip in the past 24h."))
+                {
+                    showMessage("Failed fetch page, IP temporarily banned by Rarbg for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    html = string.Empty;
+                }
+
+                return html;
+            }
+            catch (Exception)
+            {
+                showMessage("Failed fetch rarbg page..", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            if (html.Contains("We have too many requests from your ip in the past 24h."))
-            {
-                showMessage("Failed fetch page, IP temporarily banned by Rarbg for 2 hours.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                html = string.Empty;
-            }                
-
-            return html;
+            return string.Empty;           
         }
 
         private DialogResult showMessage(string text, string caption, MessageBoxButtons buttons = MessageBoxButtons.OK, MessageBoxIcon icon = MessageBoxIcon.Information, MessageBoxDefaultButton defaultButton = MessageBoxDefaultButton.Button1)
@@ -524,28 +547,38 @@ namespace RarbgAdvancedSearch
 
                         m.MenuItems.Add(new MenuItem("> Download using .Torrent File (opens using browser)", delegate {
                         tstStatus.Text = "Looking for .Torrent file..";
-                        string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
+                        string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
+
                         if(page_content.Length > 0)
                         {
                             if(page_content.Any(s => s.Contains(".torrent")))
                             {
-                                Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
+                                //Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
 
-                                ////need to deal with cloudflare jscookie problem before saving torrent file directly can work.. Potential fix using CefSharp..
-                                //string torrent_file = GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
-                                //System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                //file.Directory.Create();
+                                //need to deal with cloudflare jscookie problem before saving torrent file directly can work.. Potential fix using CefSharp..
+                                GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
+                                if(response_bytes.Length == 0)
+                                {
+                                    showMessage($"Could not download torrent directly, Opening in browser..", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
+                                    return;
+                                }
+                                    
+                                System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                file.Directory.Create();
 
-                                //System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
-                                //try
-                                //{
-                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                //}
-                                //catch (Exception)
-                                //{
-                                //    showMessage("Could not locate your torrent application, please open the the torrent file using your torrent client.", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
-                                //}
+                                System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
+                                tstStatus.Text = ".Torrent File Saved..";
+
+                                try
+                                {
+                                    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                }
+                                catch (Exception)
+                                {
+                                    showMessage($"Could not locate your torrent application, please open the the torrent file using your torrent client.\nTorrent File: {AppDomain.CurrentDomain.BaseDirectory}\\torrent\\{entry.name}.torrent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
+                                }
                                 return;
                             }
                         }
