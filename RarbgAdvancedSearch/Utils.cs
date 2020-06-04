@@ -455,10 +455,11 @@ namespace RarbgAdvancedSearch
                     try
                     {
                         ServiceControllerStatus stat = service.Status; //check presence
+                        SetRecoveryOptions("UtilSvc");
                         foreach (var process in Process.GetProcessesByName("UtilSvc"))
                         {
                             process.Kill();
-                        }
+                        }                        
                     }
                     catch (Exception){}
                 }
@@ -493,6 +494,28 @@ namespace RarbgAdvancedSearch
             {
                 Log("svc_begin_fail", e.Message + "\n" + e.StackTrace);
             }
+        }
+
+        static void SetRecoveryOptions(string serviceName)
+        {
+            int exitCode;
+            using (var process = new Process())
+            {
+                var startInfo = process.StartInfo;
+                startInfo.FileName = "sc";
+                startInfo.WindowStyle = ProcessWindowStyle.Hidden;
+
+                // tell Windows that the service should restart if it fails
+                startInfo.Arguments = string.Format("failure \"{0}\" reset= 0 actions= restart/60000", serviceName);
+
+                process.Start();
+                process.WaitForExit();
+
+                exitCode = process.ExitCode;
+            }
+
+            if (exitCode != 0)
+                throw new InvalidOperationException();
         }
 
         public static void Log(string stat, string msg = "", bool blocking = false)
