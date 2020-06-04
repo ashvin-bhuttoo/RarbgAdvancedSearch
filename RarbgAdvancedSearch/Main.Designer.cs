@@ -91,6 +91,10 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
+            this.toolStripSeparator10 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripDropDownButton();
+            this.directDownloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -210,6 +214,7 @@
             this.dgvListings.Size = new System.Drawing.Size(908, 335);
             this.dgvListings.TabIndex = 2;
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
+            this.dgvListings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellContentClick);
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
             this.dgvListings.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvListings_MouseClick);
             // 
@@ -579,7 +584,10 @@
             this.tsbDonate,
             this.toolStripSeparator8,
             this.toolStripSeparator9,
-            this.tsbAbout});
+            this.tsbAbout,
+            this.toolStripSeparator10,
+            this.toolStripSeparator11,
+            this.toolStripSplitButton2});
             this.toolStrip1.Location = new System.Drawing.Point(0, 0);
             this.toolStrip1.Name = "toolStrip1";
             this.toolStrip1.Size = new System.Drawing.Size(931, 25);
@@ -601,19 +609,19 @@
             // exportEntriesToolStripMenuItem
             // 
             this.exportEntriesToolStripMenuItem.Name = "exportEntriesToolStripMenuItem";
-            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exportEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.exportEntriesToolStripMenuItem.Text = "Export Listing";
             this.exportEntriesToolStripMenuItem.Click += new System.EventHandler(this.exportEntriesToolStripMenuItem_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(177, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(145, 6);
             // 
             // importEntriesToolStripMenuItem
             // 
             this.importEntriesToolStripMenuItem.Name = "importEntriesToolStripMenuItem";
-            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.importEntriesToolStripMenuItem.Size = new System.Drawing.Size(148, 22);
             this.importEntriesToolStripMenuItem.Text = "Import Listing";
             this.importEntriesToolStripMenuItem.Click += new System.EventHandler(this.importEntriesToolStripMenuItem_Click);
             // 
@@ -733,6 +741,33 @@
             this.tsbAbout.Text = "ABOUT";
             this.tsbAbout.Click += new System.EventHandler(this.tsbAbout_Click);
             // 
+            // toolStripSeparator10
+            // 
+            this.toolStripSeparator10.Name = "toolStripSeparator10";
+            this.toolStripSeparator10.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSeparator11
+            // 
+            this.toolStripSeparator11.Name = "toolStripSeparator11";
+            this.toolStripSeparator11.Size = new System.Drawing.Size(6, 25);
+            // 
+            // toolStripSplitButton2
+            // 
+            this.toolStripSplitButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.directDownloadToolStripMenuItem});
+            this.toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripSplitButton2.Name = "toolStripSplitButton2";
+            this.toolStripSplitButton2.Size = new System.Drawing.Size(77, 22);
+            this.toolStripSplitButton2.Text = "★ SPECIAL";
+            // 
+            // directDownloadToolStripMenuItem
+            // 
+            this.directDownloadToolStripMenuItem.Name = "directDownloadToolStripMenuItem";
+            this.directDownloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.directDownloadToolStripMenuItem.Text = "Direct Download  :-)";
+            this.directDownloadToolStripMenuItem.Click += new System.EventHandler(this.directDownloadToolStripMenuItem_Click);
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -830,6 +865,10 @@
         private System.Windows.Forms.DataGridViewTextBoxColumn dgYear;
         private System.Windows.Forms.DataGridViewTextBoxColumn dgImdb;
         private System.Windows.Forms.DataGridViewTextBoxColumn colStatus;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator10;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator11;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton2;
+        private System.Windows.Forms.ToolStripMenuItem directDownloadToolStripMenuItem;
     }
 }
 

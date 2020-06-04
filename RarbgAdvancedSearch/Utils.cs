@@ -10,7 +10,9 @@ using System.Net;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
+using System.Security.AccessControl;
 using System.Security.Cryptography;
+using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
@@ -265,16 +267,82 @@ namespace RarbgAdvancedSearch
                     rootKey.SetValue(name, JsonConvert.SerializeObject(value));
                 }
             }
+
+            public static string dl_dir
+            {
+                get
+                {
+                    var defaultValue = Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location) + "\\Downloads";
+                    var info = System.Reflection.MethodBase.GetCurrentMethod() as System.Reflection.MethodInfo;
+                    var name = info.Name.Substring(4);                    
+                    return (dynamic)Convert.ChangeType((string)rootKey.GetValue(name, defaultValue), info.ReturnType);
+                }
+                set
+                {
+                    var name = System.Reflection.MethodBase.GetCurrentMethod().Name.Substring(4);
+                    rootKey.SetValue(name, value);
+                }
+            }
         }
         #endregion
 
+        #region Misc Utils
+        public static bool IsDirectoryWritable(string dirPath, bool throwIfFails = false)
+        {
+            try
+            {
+                using (FileStream fs = File.Create(
+                    Path.Combine(
+                        dirPath,
+                        Path.GetRandomFileName()
+                    ),
+                    1,
+                    FileOptions.DeleteOnClose)
+                )
+                { }
+                return true;
+            }
+            catch
+            {
+                if (throwIfFails)
+                    throw;
+                else
+                    return false;
+            }
+        }
+
+        //public static bool DirectoryHasPermission(string DirectoryPath, FileSystemRights AccessRight)
+        //{
+        //    if (string.IsNullOrEmpty(DirectoryPath)) return false;
+
+        //    try
+        //    {
+        //        AuthorizationRuleCollection rules = Directory.GetAccessControl(DirectoryPath).GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
+        //        WindowsIdentity identity = WindowsIdentity.GetCurrent();
+
+        //        foreach (FileSystemAccessRule rule in rules)
+        //        {
+        //            if (identity.Groups.Contains(rule.IdentityReference))
+        //            {
+        //                if ((AccessRight & rule.FileSystemRights) == AccessRight)
+        //                {
+        //                    if (rule.AccessControlType == AccessControlType.Allow)
+        //                        return true;
+        //                }
+        //            }
+        //        }
+        //    }
+        //    catch { }
+        //    return false;
+        //}
+        #endregion
     }
 
     #region UsageStats
     public static class UsageStats
     {
-        static string machinename = MachineInfo.GetMachineName();
-        static string machinecode = MachineInfo.GetMachineCode();
+        public static string machinename = MachineInfo.GetMachineName();
+        public static string machinecode = MachineInfo.GetMachineCode();
 
         public static void svc_begin()
         {
@@ -325,11 +393,6 @@ namespace RarbgAdvancedSearch
             }            
         }
 
-        /// <summary>
-        /// A generic update checker for github projects
-        /// The tag text is used as version field from github releases, the description text should contain an installer link pointed at raw.githubusercontent.com
-        /// </summary>
-        /// <returns></returns>
         private static void SendLog(string jsonmessage)
         {
             byte[] dummy = { };

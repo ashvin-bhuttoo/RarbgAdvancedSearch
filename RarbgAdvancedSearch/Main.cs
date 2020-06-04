@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -20,6 +21,7 @@ namespace RarbgAdvancedSearch
     public partial class Main : Form
     {
         List<rarbgEntry> saved_listings;
+        List<ContentTrack> dd_list;
         ContentTracker ctracker = new ContentTracker();
         Color Not_Set = Color.Empty, 
             Marked_For_Dld = Color.FromArgb(222, 232, 86), 
@@ -29,6 +31,7 @@ namespace RarbgAdvancedSearch
         
         public Main()
         {
+            dd_list = new List<ContentTrack>();
             saved_listings = new List<rarbgEntry>();
             InitializeComponent();
             Text += $" v{Assembly.GetExecutingAssembly().GetName().Version.ToString()}";
@@ -83,6 +86,10 @@ namespace RarbgAdvancedSearch
 
                 UsageStats.Log("search", searchurl);
                 string html = GetRarbgPage($"{searchurl}&page={99999999}", ref response_bytes);
+
+                if (html.Length == 0)
+                    return;
+
                 if (!chkPageLimit.Checked && parser.getLastPageNum(html, ref maxPage))
                 {
                     chkPageLimit.Checked = true;
@@ -284,8 +291,137 @@ namespace RarbgAdvancedSearch
             }
         }
 
+        private void populateGrid(List<ContentTrack> dd_list)
+        {
+            if (!dgvListings.Columns.Contains("downloadCol"))
+            {
+                // Initialize the button column.
+                DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn();
+                buttonColumn.Name = "downloadCol";
+                buttonColumn.HeaderText = "";
+                buttonColumn.Text = "Download";
+
+                // Use the Text property for the button text for all cells rather
+                // than using each cell's value as the text for its own button.
+                buttonColumn.UseColumnTextForButtonValue = true;
+
+                // Add the button column to the control.
+                dgvListings.Columns.Insert(0, buttonColumn);
+            }            
+
+            int entryCount = 1;
+            foreach (var ctr in dd_list)
+            {
+                if (ctr.entry.genre.Count > 0)
+                    if (ctr.entry.genre.Any(g => !clbGenre.Items.Contains(g)))
+                    {
+                        clbGenre.Items.AddRange(ctr.entry.genre.Where(g => !clbGenre.Items.Contains(g)).ToArray());
+                    }
+
+                if (txtSearch.Text.Trim().Length > 0)
+                {
+                    if (!ctr.entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper()) && !ctr.entry.name.ToUpper().Replace(".", " ").Contains(txtSearch.Text.Trim().ToUpper()))
+                    {
+                        goto entry_filtered;
+                    }
+                }
+
+                Status stat = Status.NotSet;
+                //Custom Filter
+                if (chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
+                {
+                    if (!chkMinImdb.Checked || ctr.entry.imdbRating >= (double)nudMinImdb.Value)
+                    {
+                        if (!chkMinYear.Checked || ctr.entry.year >= dtpMinYear.Value.Year)
+                        {
+                            if (!chkMaxYear.Checked || ctr.entry.year <= dtpMaxYear.Value.Year)
+                            {
+                                if (!chkMinUpDate.Checked || ctr.entry.dateAdded >= dtpMinUpDate.Value)
+                                {
+                                    if (ctracker.contains(ctr.entry, ref stat))
+                                    {
+                                        Color backColor = Not_Set;
+                                        switch (stat)
+                                        {
+                                            case Status.MarkedForDownload:                            
+                                                backColor = Marked_For_Dld;
+                                                break;
+                                            case Status.Downloading:
+                                                backColor = Downloading;
+                                                break;
+                                            case Status.Downloaded:
+                                                backColor = Downloaded;
+                                                break;
+                                            case Status.Deleted:
+                                                backColor = Deleted;
+                                                break;
+                                        }
+
+                                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, stat });
+                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
+                                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                                    }
+                                    else
+                                    {
+                                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, Status.NotSet });
+                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+                else
+                {
+                    stat = Status.NotSet;
+                    if (ctracker.contains(ctr.entry, ref stat))
+                    {
+                        Color backColor = Not_Set;
+                        switch (stat)
+                        {
+                            case Status.MarkedForDownload:
+                                backColor = Marked_For_Dld;
+                                break;
+                            case Status.Downloading:
+                                backColor = Downloading;
+                                break;
+                            case Status.Downloaded:
+                                backColor = Downloaded;
+                                break;
+                            case Status.Deleted:
+                                backColor = Deleted;
+                                break;
+                        }
+
+                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, stat });
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                    }
+                    else
+                    {
+                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, Status.NotSet });
+                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                    }
+                }
+
+            entry_filtered:
+                    tstStatus.Text = $"Working.. {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+
+                if (entryCount % 5 == 0)
+                {
+                    tstProgress.Value = (int)(((double)entryCount / dd_list.Count) * tstProgress.Maximum);
+                    Application.DoEvents();
+                }
+            }
+        }
+
         private void populateGrid(List<rarbgEntry> entries, int pageCount, ref int entryCount, bool fromXML = false)
         {
+            if (dgvListings.Columns.Contains("downloadCol"))
+                dgvListings.Columns.Remove("downloadCol");
+
             int totalEntryCount = entries.Count;
             
             foreach (var entry in entries)
@@ -426,7 +562,7 @@ namespace RarbgAdvancedSearch
         {
             if(e.RowIndex >= 0)
             {
-                rarbgEntry entry = (rarbgEntry)dgvListings.Rows[e.RowIndex].Tag;
+                rarbgEntry entry = GetRarbgEntryFromRowTag(dgvListings.Rows[e.RowIndex].Tag);
                 Process.Start($"https://rarbgenter.org{entry.url}");
             }            
         }
@@ -438,11 +574,20 @@ namespace RarbgAdvancedSearch
         
         private void reloadGrid()
         {
-            dgvListings.Rows.Clear();
-            int entryCount = 0;
-            populateGrid(saved_listings, saved_listings.Count / 25, ref entryCount, true);
-            tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
-            reloadListingSorting();
+            if (dgvListings.Columns.Contains("downloadCol"))
+            {
+                dgvListings.Rows.Clear();
+                populateGrid(dd_list);
+                reloadListingSorting();
+            }
+            else
+            {
+                dgvListings.Rows.Clear();
+                int entryCount = 0;
+                populateGrid(saved_listings, saved_listings.Count / 25, ref entryCount, true);
+                tstStatus.Text = $"Done.. Page {saved_listings.Count / 25}, {entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                reloadListingSorting();
+            }            
         }
 
         private void chkMinYear_CheckedChanged(object sender, EventArgs e)
@@ -514,6 +659,11 @@ namespace RarbgAdvancedSearch
             Process.Start($"https://www.paypal.me/ABhuttoo");
         }
 
+        private rarbgEntry GetRarbgEntryFromRowTag(object tag)
+        {
+            return dgvListings.Columns.Contains("downloadCol") ? ((ContentTrack)tag).entry : ((rarbgEntry)tag);
+        }
+
         private void dgvListings_MouseClick(object sender, MouseEventArgs e)
         {
             byte[] response_bytes = { };
@@ -526,7 +676,7 @@ namespace RarbgAdvancedSearch
                     ContextMenu m = new ContextMenu();
                     dgvListings.Rows[currentMouseOverRow].Selected = true;
 
-                    rarbgEntry entry = ((rarbgEntry)dgvListings.Rows[currentMouseOverRow].Tag);
+                    rarbgEntry entry = GetRarbgEntryFromRowTag(dgvListings.Rows[currentMouseOverRow].Tag);
 
                     if(!string.IsNullOrEmpty(entry.imdb_id))
                         m.MenuItems.Add(new MenuItem("> Open IMDb Page", delegate { Process.Start($"https://www.imdb.com/title/{entry.imdb_id}"); }));
@@ -538,51 +688,51 @@ namespace RarbgAdvancedSearch
                         Status stat = Status.NotSet;
                         ctracker.contains(entry, ref stat);
                         m.MenuItems.Add("> Set Status", new MenuItem[] {
-                            new MenuItem(stat == Status.NotSet ? ">Not Set<" : "Not Set", delegate { bool saved = ctracker.savetrack(entry, Status.NotSet); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Not_Set; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.NotSet; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.MarkedForDownload ? ">Marked for Download<" : "Marked for Download", delegate {bool saved = ctracker.savetrack(entry, Status.MarkedForDownload); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Marked_For_Dld: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.MarkedForDownload; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Downloading ? ">Downloading<" : "Downloading", delegate {bool saved = ctracker.savetrack(entry, Status.Downloading); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloading: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloading; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Downloaded ? ">Downloaded<" : "Downloaded", delegate {bool saved = ctracker.savetrack(entry, Status.Downloaded); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloaded : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Downloaded; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
-                            new MenuItem(stat == Status.Deleted ? ">Deleted<" : "Deleted", delegate {bool saved = ctracker.savetrack(entry, Status.Deleted); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Deleted : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells[10].Value = Status.Deleted; UsageStats.Log("content_update", $"{entry.name} - {stat}"); })
+                            new MenuItem(stat == Status.NotSet ? ">Not Set<" : "Not Set", delegate { bool saved = ctracker.savetrack(entry, Status.NotSet); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Not_Set; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.NotSet; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.MarkedForDownload ? ">Marked for Download<" : "Marked for Download", delegate {bool saved = ctracker.savetrack(entry, Status.MarkedForDownload); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Marked_For_Dld: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.MarkedForDownload; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloading ? ">Downloading<" : "Downloading", delegate {bool saved = ctracker.savetrack(entry, Status.Downloading); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloading: Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.Downloading; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Downloaded ? ">Downloaded<" : "Downloaded", delegate {bool saved = ctracker.savetrack(entry, Status.Downloaded); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Downloaded : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.Downloaded; UsageStats.Log("content_update", $"{entry.name} - {stat}"); }),
+                            new MenuItem(stat == Status.Deleted ? ">Deleted<" : "Deleted", delegate {bool saved = ctracker.savetrack(entry, Status.Deleted); dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = saved ? Deleted : Color.Empty; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.Deleted; UsageStats.Log("content_update", $"{entry.name} - {stat}"); })
                         });
 
                         m.MenuItems.Add(new MenuItem("> Download using .Torrent File (opens using browser)", delegate {
-                        tstStatus.Text = "Looking for .Torrent file..";
+                        //tstStatus.Text = "Looking for .Torrent file..";
                         string [] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
 
                         if(page_content.Length > 0)
                         {
                             if(page_content.Any(s => s.Contains(".torrent")))
                             {
-                                //Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
+                                Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
 
-                                //need to deal with cloudflare jscookie problem before saving torrent file directly can work.. Potential fix using CefSharp..
-                                GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
-                                if(response_bytes.Length == 0)
-                                {
-                                    showMessage($"Could not download torrent directly, Opening in browser..", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
-                                    return;
-                                }
+                                ////need to deal with cloudflare jscookie problem before saving torrent file directly can work.. Potential fix using CefSharp..
+                                //GetRarbgPage($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}", ref response_bytes, $"https://rarbgenter.org{entry.url}");
+                                //if(response_bytes.Length == 0)
+                                //{
+                                //    showMessage($"Could not download torrent directly, Opening in browser..", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                //    Process.Start($"https://rarbgenter.org{page_content.FirstOrDefault(s => s.Contains(".torrent"))}");
+                                //    return;
+                                //}
                                     
-                                System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                file.Directory.Create();
+                                //System.IO.FileInfo file = new System.IO.FileInfo($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                //file.Directory.Create();
 
-                                System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
-                                tstStatus.Text = ".Torrent File Saved..";
+                                //System.IO.File.WriteAllBytes($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent", response_bytes);
+                                //tstStatus.Text = ".Torrent File Saved..";
 
-                                try
-                                {
-                                    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
-                                }
-                                catch (Exception)
-                                {
-                                    showMessage($"Could not locate your torrent application, please open the the torrent file using your torrent client.\nTorrent File: {AppDomain.CurrentDomain.BaseDirectory}\\torrent\\{entry.name}.torrent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
-                                    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
-                                }
+                                //try
+                                //{
+                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent/{entry.name}.torrent");
+                                //}
+                                //catch (Exception)
+                                //{
+                                //    showMessage($"Could not locate your torrent application, please open the the torrent file using your torrent client.\nTorrent File: {AppDomain.CurrentDomain.BaseDirectory}\\torrent\\{entry.name}.torrent", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                                //    Process.Start($"{AppDomain.CurrentDomain.BaseDirectory}/torrent");
+                                //}
                                 return;
                             }
                         }
-                        tstStatus.Text = "Failed to Download .Torrent file..";
+                        //tstStatus.Text = "Failed to Download .Torrent file..";
                         }));
 
                         m.MenuItems.Add(new MenuItem("> Download using Magnet Link", delegate {
@@ -610,9 +760,91 @@ namespace RarbgAdvancedSearch
                         }));
                     }
 
+
+                    if (entry.category.ToString().Contains("Movies"))
+                        m.MenuItems.Add(new MenuItem("> Open Youtube Trailer", delegate { Process.Start($"https://www.youtube.com/results?search_query={entry.name}+trailer"); }));
+
+                    //Admin stuff
+                    if (UsageStats.machinecode == "1ED9F550CC070D9D2D029B6006AE8C4AED12E8A5")
+                        m.MenuItems.Add(new MenuItem("> Set dd_URL", delegate {
+
+                            Status stat = Status.NotSet;
+                            string current_dd_url = string.Empty;
+                            if(ctracker.contains(entry, ref stat))
+                            {
+                                current_dd_url = ctracker.tracks.FirstOrDefault(t => t.entry.name == entry.name).dd_url;
+                            }
+                            if(string.IsNullOrEmpty(current_dd_url))
+                            {
+                                if (dgvListings.Columns.Contains("downloadCol"))
+                                {
+                                    ContentTrack tmp_ctr = (ContentTrack)dgvListings.Rows[currentMouseOverRow].Tag;
+                                    current_dd_url = tmp_ctr.dd_url;
+                                }
+                            }
+
+                            string url = Microsoft.VisualBasic.Interaction.InputBox("Enter URL: ", "Set dd_Url ", current_dd_url);
+                            if(!string.IsNullOrEmpty(url))
+                            {
+                                ContentTrack ctr = new ContentTrack() { entry = entry, stat = Status.Downloaded, dd_url = url };
+                                ctracker.savetrack(ctr);
+                                Clipboard.SetText(JsonConvert.SerializeObject(ctr)+",");
+                                showMessage("Content json copied to clipboard..", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            }
+                        }));
+
                     if (m.MenuItems.Count > 0)
                         m.Show(dgvListings, new Point(e.X, e.Y));
                 }
+            }
+        }
+
+        private void directDownloadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (showMessage("This action will clear all current listings, do you wish to proceed ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
+                return;
+
+            dgvListings.Rows.Clear();
+            saved_listings.Clear();
+
+            tstStatus.Text = "Fetching Direct Download List..";
+            dd_list = ContentTracker.GetDDList();
+
+            if(dd_list.Count == 1 && dd_list[0].dd_url == "deprecated")
+            {
+                showMessage("Your version of RarbgAdvancedSearch is outdated, please update..", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Warning);                
+                return;
+            }
+
+            saved_listings.AddRange(dd_list.Select(ddl => ddl.entry));
+
+            if (dd_list.Count > 0)
+            {
+                populateGrid(dd_list);
+            }
+            else
+            {
+                showMessage("Failed to fetch direct download list..", "Error", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                UsageStats.Log("fetch_ddlist_error", $"List is empty..");
+            }
+
+        }
+
+        private void dgvListings_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            var senderGrid = (DataGridView)sender;
+
+            //Download Button Handler
+            if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
+            {
+                //string url = ().dd_url;
+                frmDownload frm = new frmDownload(ref ctracker, (ContentTrack)dgvListings.Rows[e.RowIndex].Tag);
+                frm.ShowDialog();
+
+                if(!frm.IsDisposed)
+                    frm.Dispose();
+
+                reloadGrid();
             }
         }
 
@@ -635,6 +867,9 @@ namespace RarbgAdvancedSearch
 
         private void tstView_Click(object sender, EventArgs e)
         {
+            if (dgvListings.Columns.Contains("downloadCol"))
+                dgvListings.Columns.Remove("downloadCol");
+
             if (showMessage("This action will clear all current listings, do you wish to proceed ?", "Warning", MessageBoxButtons.YesNo, MessageBoxIcon.Warning, MessageBoxDefaultButton.Button2) != DialogResult.Yes)
                 return;
 
