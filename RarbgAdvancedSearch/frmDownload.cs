@@ -19,7 +19,6 @@ namespace RarbgAdvancedSearch
 {
     public partial class frmDownload : Form
     {
-        private FormWindowState LastWindowState = FormWindowState.Minimized;
         private Main frmMain;
         private ContentTracker.ContentTrack g_ctrack;
         private ContentTracker g_ctracker;

@@ -28,7 +28,7 @@
         "Entry"
         {
         "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
-        "OwnerKey" = "8:_D85ED442760E769ECA18FE54479586F1"
+        "OwnerKey" = "8:_76EE30A52A744CD8B58109A9345E43FF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -39,8 +39,26 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
+        "OwnerKey" = "8:_EA5C1B0524FD598220FB9FEC6170CD63"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_647E2B666C5B43778BFA00C507D783DD"
         "OwnerKey" = "8:_UNDEFINED"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_76EE30A52A744CD8B58109A9345E43FF"
+        "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_9E9816B6CD889915AA26A65CB7632ABE"
+        "OwnerKey" = "8:_EA5C1B0524FD598220FB9FEC6170CD63"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -57,7 +75,7 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_D85ED442760E769ECA18FE54479586F1"
+        "MsmKey" = "8:_EA5C1B0524FD598220FB9FEC6170CD63"
         "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
         "MsmSig" = "8:_UNDEFINED"
         }
@@ -82,13 +100,19 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
+        "OwnerKey" = "8:_EA5C1B0524FD598220FB9FEC6170CD63"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
+        "MsmKey" = "8:_UNDEFINED"
         "OwnerKey" = "8:_9E9816B6CD889915AA26A65CB7632ABE"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_D85ED442760E769ECA18FE54479586F1"
+        "OwnerKey" = "8:_76EE30A52A744CD8B58109A9345E43FF"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -319,6 +343,37 @@
             "IsDependency" = "11:FALSE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_76EE30A52A744CD8B58109A9345E43FF"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:HtmlAgilityPack, Version=1.11.24.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_76EE30A52A744CD8B58109A9345E43FF"
+                    {
+                    "Name" = "8:HtmlAgilityPack.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:HtmlAgilityPack.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_9E9816B6CD889915AA26A65CB7632ABE"
             {
             "AssemblyRegister" = "3:1"
@@ -350,20 +405,20 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_D85ED442760E769ECA18FE54479586F1"
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EA5C1B0524FD598220FB9FEC6170CD63"
             {
             "AssemblyRegister" = "3:1"
             "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:HtmlAgilityPack, Version=1.11.23.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL"
+            "AssemblyAsmDisplayName" = "8:MegaApiClient, Version=1.8.1.0, Culture=neutral, PublicKeyToken=0480d311efbeb4e2, processorArchitecture=MSIL"
                 "ScatterAssemblies"
                 {
-                    "_D85ED442760E769ECA18FE54479586F1"
+                    "_EA5C1B0524FD598220FB9FEC6170CD63"
                     {
-                    "Name" = "8:HtmlAgilityPack.dll"
+                    "Name" = "8:MegaApiClient.dll"
                     "Attributes" = "3:512"
                     }
                 }
-            "SourcePath" = "8:HtmlAgilityPack.dll"
+            "SourcePath" = "8:MegaApiClient.dll"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
@@ -437,15 +492,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RarbgAdvancedSearch"
-        "ProductCode" = "8:{841535FB-F62E-4DA3-A144-EAA35CE2FB03}"
-        "PackageCode" = "8:{472E1C2B-34A3-41BD-AE14-2146DF0CFF17}"
+        "ProductCode" = "8:{9881B956-3DE8-421E-B023-6875A029E0E7}"
+        "PackageCode" = "8:{1A8167EF-E57A-4222-8DBD-F323F99DEA35}"
         "UpgradeCode" = "8:{6E437ECD-F4CC-43C0-9703-A72E4F0E906C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.8"
+        "ProductVersion" = "8:1.0.12"
         "Manufacturer" = "8:Unkn0wn"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch"

