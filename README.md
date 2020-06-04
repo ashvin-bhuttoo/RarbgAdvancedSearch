@@ -19,6 +19,10 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
+v1.0.4
+- Added Special Menu, Direct Download :)
+- Added Youtube trailer option in right click listing context menu.
+
 v1.0.3
 - Urgent Bugfix, crash related to cookies
 
