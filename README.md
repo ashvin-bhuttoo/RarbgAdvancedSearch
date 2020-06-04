@@ -8,7 +8,7 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 4. Download Torrent using Magnet file or Torrent File directly from right click menu.
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
 
-The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.3</a> 
+The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.4</a> 
 
 ![alt text](https://i.imgur.com/CUxcDr7.png)
 
