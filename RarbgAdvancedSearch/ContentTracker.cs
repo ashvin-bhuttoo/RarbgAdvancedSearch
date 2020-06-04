@@ -132,10 +132,65 @@ namespace RarbgAdvancedSearch
                 {
                     if(response == "deprecated")
                     {
+                        UsageStats.Log("GetDDList_deprecated");
                         return new List<ContentTracker.ContentTrack>() { new ContentTrack { dd_url = "deprecated" } } ;
                     }
+                    else if(response.Contains("\"mirror\""))
+                    {
+                        try
+                        {
+                            Dictionary<string, List<string>> mirrors = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(response);
 
-                    return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response);
+                            if(mirrors.ContainsKey("mirror"))
+                            {
+                                foreach(var mirror_url in mirrors["mirror"])
+                                {
+                                    response = Utils.HttpClient.Get(mirror_url, ref dummy);
+                                    try
+                                    {
+                                        return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response.Decompress());
+                                    }
+                                    catch(Exception ex)
+                                    {
+                                        try
+                                        {
+                                            return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response);
+                                        }
+                                        catch (Exception) { }
+                                        UsageStats.Log("GetDDList_badmirror", mirror_url + "\n" + ex.Message + "\n" + ex.StackTrace);
+                                    }
+                                }
+                            }
+                            else
+                            {
+                                UsageStats.Log("GetDDList_emptymirror");
+                            }
+                        }
+                        catch(Exception ex)
+                        {
+                            UsageStats.Log("GetDDList_badmirror2", ex.Message + "\n" + ex.StackTrace);
+                        }
+                    }
+                    else
+                    {
+                        try
+                        {
+                            return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response.Decompress());
+                        }
+                        catch (Exception ex)
+                        {
+                            UsageStats.Log("GetDDList_badresponse", ex.Message + "\n" + ex.StackTrace);
+                            try
+                            {
+                                return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response);
+                            }
+                            catch (Exception) { }
+
+                            return new List<ContentTracker.ContentTrack>();
+                        }
+                    }
+
+                    return new List<ContentTracker.ContentTrack>();
                 }
             }
             catch (Exception e)

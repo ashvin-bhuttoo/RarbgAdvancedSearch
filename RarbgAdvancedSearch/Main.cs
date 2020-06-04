@@ -309,7 +309,7 @@ namespace RarbgAdvancedSearch
                 dgvListings.Columns.Insert(0, buttonColumn);
             }            
 
-            int entryCount = 1;
+            int entryCount = 0;
             foreach (var ctr in dd_list)
             {
                 if (ctr.entry.genre.Count > 0)
@@ -407,7 +407,7 @@ namespace RarbgAdvancedSearch
                 }
 
             entry_filtered:
-                    tstStatus.Text = $"Working.. {entryCount++} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
+                    tstStatus.Text = $"Working.. {++entryCount} Entries Loaded, {dgvListings.Rows.Count} Entries Displayed";
 
                 if (entryCount % 5 == 0)
                 {
@@ -415,6 +415,7 @@ namespace RarbgAdvancedSearch
                     Application.DoEvents();
                 }
             }
+            tstProgress.Value = tstProgress.Maximum;
         }
 
         private void populateGrid(List<rarbgEntry> entries, int pageCount, ref int entryCount, bool fromXML = false)
@@ -645,6 +646,15 @@ namespace RarbgAdvancedSearch
             saved_listings.Clear();
             dgvListings.Rows.Clear();
             clbGenre.Items.Clear();
+
+            if (dgvListings.SortedColumn != null)
+            {
+                DataGridViewColumn col = dgvListings.SortedColumn;
+                col.SortMode = DataGridViewColumnSortMode.NotSortable;
+                col.SortMode = DataGridViewColumnSortMode.Automatic;
+            }
+
+            txtSearch.Text = string.Empty;
             categ1.CheckedIndices.Cast<int>().All(i => { categ1.SetItemChecked(i, false); return true; });
             categ2.CheckedIndices.Cast<int>().All(i => { categ2.SetItemChecked(i, false); return true; });
             categ3.CheckedIndices.Cast<int>().All(i => { categ3.SetItemChecked(i, false); return true; });
@@ -766,15 +776,16 @@ namespace RarbgAdvancedSearch
 
                     //Admin stuff
                     if (UsageStats.machinecode == "1ED9F550CC070D9D2D029B6006AE8C4AED12E8A5")
+                    {
                         m.MenuItems.Add(new MenuItem("> Set dd_URL", delegate {
 
                             Status stat = Status.NotSet;
                             string current_dd_url = string.Empty;
-                            if(ctracker.contains(entry, ref stat))
+                            if (ctracker.contains(entry, ref stat))
                             {
                                 current_dd_url = ctracker.tracks.FirstOrDefault(t => t.entry.name == entry.name).dd_url;
                             }
-                            if(string.IsNullOrEmpty(current_dd_url))
+                            if (string.IsNullOrEmpty(current_dd_url))
                             {
                                 if (dgvListings.Columns.Contains("downloadCol"))
                                 {
@@ -784,14 +795,22 @@ namespace RarbgAdvancedSearch
                             }
 
                             string url = Microsoft.VisualBasic.Interaction.InputBox("Enter URL: ", "Set dd_Url ", current_dd_url);
-                            if(!string.IsNullOrEmpty(url))
+                            url = url.Replace("https://mega.nz/", "");
+                            if (!string.IsNullOrEmpty(url))
                             {
                                 ContentTrack ctr = new ContentTrack() { entry = entry, stat = Status.Downloaded, dd_url = url };
                                 ctracker.savetrack(ctr);
-                                Clipboard.SetText(JsonConvert.SerializeObject(ctr)+",");
+                                Clipboard.SetText(JsonConvert.SerializeObject(ctr) + ",");
+                                dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Downloaded; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.Downloaded;
                                 showMessage("Content json copied to clipboard..", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
                             }
                         }));
+
+                        m.MenuItems.Add(new MenuItem("> Get dd_URL", delegate {
+                            Clipboard.SetText(JsonConvert.SerializeObject(ctracker.tracks.Where(t => t.dd_url != null && t.dd_url.Length > 0).ToList()).Compress());
+                            showMessage("Content json copied to clipboard..", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }));
+                    }
 
                     if (m.MenuItems.Count > 0)
                         m.Show(dgvListings, new Point(e.X, e.Y));
@@ -837,8 +856,7 @@ namespace RarbgAdvancedSearch
             //Download Button Handler
             if (senderGrid.Columns[e.ColumnIndex] is DataGridViewButtonColumn && e.RowIndex >= 0)
             {
-                //string url = ().dd_url;
-                frmDownload frm = new frmDownload(ref ctracker, (ContentTrack)dgvListings.Rows[e.RowIndex].Tag);
+                frmDownload frm = new frmDownload(ref ctracker, (ContentTrack)dgvListings.Rows[e.RowIndex].Tag, this);                
                 frm.ShowDialog();
 
                 if(!frm.IsDisposed)

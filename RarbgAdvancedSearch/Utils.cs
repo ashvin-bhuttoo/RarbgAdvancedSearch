@@ -2,12 +2,14 @@
 using RarbgAdvancedSearch.Properties;
 using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.IO.Compression;
 using System.Linq;
 using System.Management;
 using System.Net;
 using System.Reflection;
+using System.Runtime.InteropServices;
 using System.Runtime.Serialization;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Security.AccessControl;
@@ -17,6 +19,7 @@ using System.ServiceProcess;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using static RarbgAdvancedSearch.Utils;
 
 namespace RarbgAdvancedSearch
@@ -311,32 +314,128 @@ namespace RarbgAdvancedSearch
             }
         }
 
-        //public static bool DirectoryHasPermission(string DirectoryPath, FileSystemRights AccessRight)
-        //{
-        //    if (string.IsNullOrEmpty(DirectoryPath)) return false;
-
-        //    try
-        //    {
-        //        AuthorizationRuleCollection rules = Directory.GetAccessControl(DirectoryPath).GetAccessRules(true, true, typeof(System.Security.Principal.SecurityIdentifier));
-        //        WindowsIdentity identity = WindowsIdentity.GetCurrent();
-
-        //        foreach (FileSystemAccessRule rule in rules)
-        //        {
-        //            if (identity.Groups.Contains(rule.IdentityReference))
-        //            {
-        //                if ((AccessRight & rule.FileSystemRights) == AccessRight)
-        //                {
-        //                    if (rule.AccessControlType == AccessControlType.Allow)
-        //                        return true;
-        //                }
-        //            }
-        //        }
-        //    }
-        //    catch { }
-        //    return false;
-        //}
+       
         #endregion
     }
+
+    #region Misc Extensions
+    static class MiscExtensions
+    {
+        /// <summary>
+        /// Compresses a string and returns a deflate compressed, Base64 encoded string.
+        /// </summary>
+        /// <param name="uncompressedString">String to compress</param>
+        public static string Compress(this string uncompressedString)
+        {
+            byte[] compressedBytes;
+
+            using (var uncompressedStream = new MemoryStream(Encoding.UTF8.GetBytes(uncompressedString)))
+            {
+                var compressedStream = new MemoryStream();
+
+                // setting the leaveOpen parameter to true to ensure that compressedStream will not be closed when compressorStream is disposed
+                // this allows compressorStream to close and flush its buffers to compressedStream and guarantees that compressedStream.ToArray() can be called afterward
+                // although MSDN documentation states that ToArray() can be called on a closed MemoryStream, this approach avoids relying on that very odd behavior should it ever change
+                using (var compressorStream = new DeflateStream(compressedStream, CompressionLevel.Optimal, true))
+                {
+                    uncompressedStream.CopyTo(compressorStream);
+                }
+
+                // call compressedStream.ToArray() after the enclosing DeflateStream has closed and flushed its buffer to compressedStream
+                compressedBytes = compressedStream.ToArray();
+            }
+
+            return Convert.ToBase64String(compressedBytes);
+        }
+
+        /// <summary>
+        /// Decompresses a deflate compressed, Base64 encoded string and returns an uncompressed string.
+        /// </summary>
+        /// <param name="compressedString">String to decompress.</param>
+        public static string Decompress(this string compressedString)
+        {
+            byte[] decompressedBytes;
+
+            var compressedStream = new MemoryStream(Convert.FromBase64String(compressedString));
+
+            using (var decompressorStream = new DeflateStream(compressedStream, CompressionMode.Decompress))
+            {
+                using (var decompressedStream = new MemoryStream())
+                {
+                    decompressorStream.CopyTo(decompressedStream);
+
+                    decompressedBytes = decompressedStream.ToArray();
+                }
+            }
+
+            return Encoding.UTF8.GetString(decompressedBytes);
+        }
+    }
+
+
+    public static class RichTextBoxExtensions
+    {
+        public static void AppendText(this RichTextBox box, string text, Color color, Form _frmx)
+        {
+            _frmx.PerformSafely(() => {
+                box.SelectionStart = box.TextLength;
+                box.SelectionLength = 0;
+                box.SelectionColor = color;
+                box.AppendText(text);
+                box.SelectionColor = box.ForeColor;
+            });
+        }
+    }
+
+    public static class ModifyProgressBarColor
+    {
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
+        public static void SetState(this ProgressBar pBar, int state)
+        {
+            SendMessage(pBar.Handle, 1040, (IntPtr)state, IntPtr.Zero);
+        }
+    }
+
+    public static class CrossThreadExtensions
+    {
+        public static void PerformSafely(this Control target, Action action)
+        {
+            if (target.InvokeRequired)
+            {
+                target.Invoke(action);
+            }
+            else
+            {
+                action();
+            }
+        }
+
+        public static void PerformSafely<T1>(this Control target, Action<T1> action, T1 parameter)
+        {
+            if (target.InvokeRequired)
+            {
+                target.Invoke(action, parameter);
+            }
+            else
+            {
+                action(parameter);
+            }
+        }
+
+        public static void PerformSafely<T1, T2>(this Control target, Action<T1, T2> action, T1 p1, T2 p2)
+        {
+            if (target.InvokeRequired)
+            {
+                target.Invoke(action, p1, p2);
+            }
+            else
+            {
+                action(p1, p2);
+            }
+        }
+    }
+    #endregion
 
     #region UsageStats
     public static class UsageStats

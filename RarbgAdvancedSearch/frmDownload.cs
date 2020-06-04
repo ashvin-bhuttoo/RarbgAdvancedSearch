@@ -19,6 +19,8 @@ namespace RarbgAdvancedSearch
 {
     public partial class frmDownload : Form
     {
+        private FormWindowState LastWindowState = FormWindowState.Minimized;
+        private Main frmMain;
         private ContentTracker.ContentTrack g_ctrack;
         private ContentTracker g_ctracker;
         private Uri g_dlUri = null;
@@ -31,14 +33,15 @@ namespace RarbgAdvancedSearch
         private INode g_currentDownloadFile;
         private string g_downloadRootDir = string.Empty;
 
-        public frmDownload(ref ContentTracker ctracker, ContentTracker.ContentTrack ctrack)
+        public frmDownload(ref ContentTracker ctracker, ContentTracker.ContentTrack ctrack, Main frmMain)
         {
             InitializeComponent();
             try
             {
+                this.frmMain = frmMain;
                 this.g_ctrack = ctrack;
                 this.g_ctracker = ctracker;
-                ctracker.savetrack(ctrack.entry, ContentTracker.Status.MarkedForDownload);
+                //ctracker.savetrack(ctrack.entry, ContentTracker.Status.MarkedForDownload);
                 g_dlUri = new Uri($"https://mega.nz/{ctrack.dd_url}");
                 g_megaCli = new MegaApiClient();
             }
@@ -107,7 +110,7 @@ namespace RarbgAdvancedSearch
                             DisplayNodesRecursive(nodes, parent, ref g_totalDownloadSizeBytes);
                             this.PerformSafely(() => { lblSize.Text = $"{displaySizeStr(g_totalDownloadSizeBytes)}"; lblSize.ForeColor = Color.ForestGreen; });
                             this.PerformSafely(() => btnStartDownload.Enabled = true);
-                            this.PerformSafely(() => { lblDLProgress.Text = "Please start download.."; lblDLProgress.ForeColor = Color.RoyalBlue; });
+                            this.PerformSafely(() => { lblDLProgress.Text = "Download ready, press Start Download to begin.."; lblDLProgress.ForeColor = Color.RoyalBlue; });
                         }
                         else
                         {
@@ -219,7 +222,7 @@ namespace RarbgAdvancedSearch
                         }
                         if (g_currentDownloadTask == null || g_currentDownloadTask.IsCanceled)
                         {
-                            g_ctracker.savetrack(g_ctrack.entry, ContentTracker.Status.NotSet);
+                            //g_ctracker.savetrack(g_ctrack.entry, ContentTracker.Status.NotSet);
                             pbDownload.SetState(3);
                             pbDownload.BackColor = Color.OrangeRed;
                             lblDLProgress.Text = "Download Cancelled!";
@@ -303,6 +306,11 @@ namespace RarbgAdvancedSearch
             }
         }
 
+        private void frmDownload_Resize(object sender, EventArgs e)
+        {
+            frmMain.WindowState = this.WindowState;
+        }
+
         private void ReportProgress(double obj)
         {
             long currentDownloadBytes = (long)(g_completedSize + (g_currentDownloadFile.Size * (obj / 100)));
@@ -321,68 +329,5 @@ namespace RarbgAdvancedSearch
         //        return myCp;
         //    }
         //}
-    }
-
-    public static class RichTextBoxExtensions
-    {
-        public static void AppendText(this RichTextBox box, string text, Color color, Form _frmx)
-        {
-            _frmx.PerformSafely(() => {
-                box.SelectionStart = box.TextLength;
-                box.SelectionLength = 0;
-                box.SelectionColor = color;
-                box.AppendText(text);
-                box.SelectionColor = box.ForeColor;
-            });            
-        }
-    }
-
-    public static class ModifyProgressBarColor
-    {
-        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
-        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
-        public static void SetState(this ProgressBar pBar, int state)
-        {
-            SendMessage(pBar.Handle, 1040, (IntPtr)state, IntPtr.Zero);
-        }
-    }
-
-    public static class CrossThreadExtensions
-    {
-        public static void PerformSafely(this Control target, Action action)
-        {
-            if (target.InvokeRequired)
-            {
-                target.Invoke(action);
-            }
-            else
-            {
-                action();
-            }
-        }
-
-        public static void PerformSafely<T1>(this Control target, Action<T1> action, T1 parameter)
-        {
-            if (target.InvokeRequired)
-            {
-                target.Invoke(action, parameter);
-            }
-            else
-            {
-                action(parameter);
-            }
-        }
-
-        public static void PerformSafely<T1, T2>(this Control target, Action<T1, T2> action, T1 p1, T2 p2)
-        {
-            if (target.InvokeRequired)
-            {
-                target.Invoke(action, p1, p2);
-            }
-            else
-            {
-                action(p1, p2);
-            }
-        }
     }
 }
