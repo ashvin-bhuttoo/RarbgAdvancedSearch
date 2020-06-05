@@ -7,8 +7,12 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 3. Double click on an entry to open a listing on rarbg, right click for context menufor each listing, with options to open the imdb page or rarbg page.
 4. Download Torrent using Magnet file or Torrent File directly from right click menu.
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
+6. Special Menu, Ability to Directly Download some movies.
+7. Youtube trailer option in right click listing context menu.
 
 The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.5</a> 
+
+![alt text](https://i.imgur.com/Rc9P3Es.png)
 
 ![alt text](https://i.imgur.com/CUxcDr7.png)
 
