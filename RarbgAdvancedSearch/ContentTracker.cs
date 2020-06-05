@@ -144,10 +144,10 @@ namespace RarbgAdvancedSearch
                             if(mirrors.ContainsKey("mirror"))
                             {
                                 foreach(var mirror_url in mirrors["mirror"])
-                                {
-                                    response = Utils.HttpClient.Get(mirror_url, ref dummy);
+                                {                                    
                                     try
                                     {
+                                        response = Utils.HttpClient.Get(mirror_url, ref dummy);
                                         return JsonConvert.DeserializeObject<List<ContentTracker.ContentTrack>>(response.Decompress());
                                     }
                                     catch(Exception ex)
