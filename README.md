@@ -10,6 +10,8 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 
 The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.5</a> 
 
+![alt text](https://i.imgur.com/Rc9P3Es.png)
+
 ![alt text](https://i.imgur.com/CUxcDr7.png)
 
 If you want to buy me a beer, here's the button for it<br/>
