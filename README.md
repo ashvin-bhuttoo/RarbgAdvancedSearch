@@ -1,12 +1,18 @@
 # RarbgAdvancedSearch
 
-![alt text](https://i.postimg.cc/jS2Tjg2f/download-1.png)
+<table style="width:100%">
+  <tr>
+    <td><img src="https://i.postimg.cc/jS2Tjg2f/download-1.png"></td>
+    <td>Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.</td>    
+  </tr>
+</table>
 
-Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
-
-The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
-
-[![Download](http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png)](https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi)
+<table style="width:100%">
+  <tr>
+    <td>The latest installer can be downloaded from here:</td>
+    <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
+  </tr>
+</table>
 
 <b>Features:</b>
 1. Ability to export and import search entries using the FILE context menu.
