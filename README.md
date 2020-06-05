@@ -10,7 +10,7 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 6. Special Menu, Ability to Directly Download some movies.
 7. Youtube trailer option in right click listing context menu.
 
-The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.5</a> 
+The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
 
 ![alt text](https://i.imgur.com/Rc9P3Es.png)
 
