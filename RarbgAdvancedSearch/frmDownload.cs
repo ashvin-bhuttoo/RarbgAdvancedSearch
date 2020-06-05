@@ -41,13 +41,15 @@ namespace RarbgAdvancedSearch
                 this.g_ctrack = ctrack;
                 this.g_ctracker = ctracker;
                 //ctracker.savetrack(ctrack.entry, ContentTracker.Status.MarkedForDownload);
+                this.Text += $" [{ctrack.entry.name}]";
                 g_dlUri = new Uri($"https://mega.nz/{ctrack.dd_url}");
+                UsageStats.Log("download", $"init - {g_dlUri.AbsolutePath} [{ctrack.entry.name}]");
                 g_megaCli = new MegaApiClient();
             }
             catch(Exception ex)
             {
                 rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}", Color.LightCoral, this);
-                UsageStats.Log("download_failure", g_dlUri.AbsolutePath + "\n" + ex.Message + "\n" + ex.StackTrace);
+                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
@@ -100,30 +102,36 @@ namespace RarbgAdvancedSearch
 
                     await g_megaCli.LoginAnonymousAsync().ContinueWith(task =>
                     {
-                        IEnumerable<INode> nodes = g_megaCli.GetNodesFromLink(g_dlUri);
-                        if (nodes.Count() > 0)
+                        try
                         {
-                            g_dlNodes = nodes.ToList();
-                            INode parent = nodes.Single(n => n.Type == NodeType.Root);
-                            g_rootNode = parent;
-                            DisplayNodesRecursive(nodes, parent, ref g_totalDownloadSizeBytes);
-                            this.PerformSafely(() => { lblSize.Text = $"{displaySizeStr(g_totalDownloadSizeBytes)}"; lblSize.ForeColor = Color.ForestGreen; });
-                            this.PerformSafely(() => btnStartDownload.Enabled = true);
-                            this.PerformSafely(() => { lblDLProgress.Text = "Download ready, press Start Download to begin.."; lblDLProgress.ForeColor = Color.RoyalBlue; });
+                            IEnumerable<INode> nodes = g_megaCli.GetNodesFromLink(g_dlUri);
+                            if (nodes.Count() > 0)
+                            {
+                                g_dlNodes = nodes.ToList();
+                                INode parent = nodes.Single(n => n.Type == NodeType.Root);
+                                g_rootNode = parent;
+                                DisplayNodesRecursive(nodes, parent, ref g_totalDownloadSizeBytes);
+                                this.PerformSafely(() => { lblSize.Text = $"{displaySizeStr(g_totalDownloadSizeBytes)}"; lblSize.ForeColor = Color.ForestGreen; });
+                                this.PerformSafely(() => btnStartDownload.Enabled = true);
+                                this.PerformSafely(() => { lblDLProgress.Text = "Download ready, press Start Download to begin.."; lblDLProgress.ForeColor = Color.RoyalBlue; });
+                            }
+                            else
+                            {
+                                this.PerformSafely(() => lblDLProgress.Text = "Failed!");
+                                rtbLog.AppendText($"Error: Bad Link, No Files found..\n", Color.LightCoral, this);
+                                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + ", nodes.Count() = 0");
+                            }                            
                         }
-                        else
-                        {
-                            this.PerformSafely(() => lblDLProgress.Text = "Failed!");
-                            rtbLog.AppendText($"Error: Bad Link, No Files found..\n", Color.LightCoral, this);
-                            UsageStats.Log("download_failure", g_dlUri.AbsolutePath + ", nodes.Count() = 0");
-                        }
+                        catch (Exception ex){
+                            UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
+                        }                        
                     });
                 }
                 catch (Exception ex)
                 {
                     this.PerformSafely(() => lblDLProgress.Text = "Failed!");
                     rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}\n", Color.LightCoral, this);
-                    UsageStats.Log("download_failure", g_dlUri.AbsolutePath + "\n" + ex.Message + "\n" + ex.StackTrace);
+                    UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
                 }
             });            
         }
@@ -186,6 +194,7 @@ namespace RarbgAdvancedSearch
             {
                 try
                 {
+                    UsageStats.Log("download", $"begin - {g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]");
                     g_downloadRootDir = $"{Utils.Reg.dl_dir}\\{getNodePath(g_dlNodes, g_rootNode)}";
 
                     //Delete Existing If Downloaded
@@ -257,10 +266,14 @@ namespace RarbgAdvancedSearch
                 {                   
                     this.PerformSafely(() => { lblDLProgress.Text = "Error!"; lblDLProgress.ForeColor = Color.DarkRed; } );
                     rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}\n", Color.LightCoral, this);
-                    UsageStats.Log("download_failure", g_dlUri.AbsolutePath + "\n" + ex.Message + "\n" + ex.StackTrace);
+                    UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
                     pbDownload.SetState(1);
                 }
                 
+            }
+            else
+            {
+                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}] - g_dlNodes.Count = 0");
             }
         }
 
