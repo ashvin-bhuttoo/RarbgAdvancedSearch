@@ -1,6 +1,8 @@
 # RarbgAdvancedSearch
 Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
 
+The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
+
 <b>Features:</b>
 1. Ability to export and import search entries using the FILE context menu.
 2. Advanced filtering based on Minimum Imdb Rating, Minimum Content Year (for movies), Maximum content year (for movies), Genre (for movies), Minimum upload date, Content Genre (for movies)
