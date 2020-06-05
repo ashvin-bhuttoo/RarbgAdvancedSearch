@@ -3,6 +3,8 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 
 The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
 
+[![Download](http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png)](https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi)
+
 <b>Features:</b>
 1. Ability to export and import search entries using the FILE context menu.
 2. Advanced filtering based on Minimum Imdb Rating, Minimum Content Year (for movies), Maximum content year (for movies), Genre (for movies), Minimum upload date, Content Genre (for movies)
