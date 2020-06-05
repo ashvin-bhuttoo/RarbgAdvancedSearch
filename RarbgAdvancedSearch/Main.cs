@@ -802,13 +802,34 @@ namespace RarbgAdvancedSearch
                                 ctracker.savetrack(ctr);
                                 Clipboard.SetText(JsonConvert.SerializeObject(ctr) + ",");
                                 dgvListings.Rows[currentMouseOverRow].DefaultCellStyle.BackColor = Downloaded; dgvListings.Rows[currentMouseOverRow].Cells["colStatus"].Value = Status.Downloaded;
-                                showMessage("Content json copied to clipboard..", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                if (dgvListings.Columns.Contains("dd_url"))
+                                {
+                                    dgvListings.Rows[currentMouseOverRow].Cells["dd_url"].Value = url;
+                                }
                             }
                         }));
 
                         m.MenuItems.Add(new MenuItem("> Get dd_URL", delegate {
-                            Clipboard.SetText(JsonConvert.SerializeObject(ctracker.tracks.Where(t => t.dd_url != null && t.dd_url.Length > 0).ToList()).Compress());
-                            showMessage("Content json copied to clipboard..", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            List<ContentTrack> dd_list = ctracker.tracks.Where(t => t.dd_url != null && t.dd_url.Length > 0).ToList();
+
+                            Clipboard.SetText(JsonConvert.SerializeObject(dd_list).Compress());
+
+                            showMessage($"ddList copied to clipboard.. {dd_list.Count} items", "Copied", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                        }));
+
+                        m.MenuItems.Add(new MenuItem("> Show dd_URL", delegate {
+                            List<ContentTrack> dd_list = ctracker.tracks.Where(t => t.dd_url != null && t.dd_url.Length > 0).ToList();
+                            if(!dgvListings.Columns.Contains("dd_url"))
+                            {
+                                dgvListings.Columns.Add("dd_url", "dd_url");                                
+                            }
+                            foreach(DataGridViewRow row in dgvListings.Rows)
+                            {
+                                if(dd_list.Any(dd => dd.entry.name == GetRarbgEntryFromRowTag(row.Tag).name))
+                                {
+                                    row.Cells["dd_url"].Value = dd_list.FirstOrDefault(dd => dd.entry.name == GetRarbgEntryFromRowTag(row.Tag).name).dd_url;
+                                }
+                            }
                         }));
                     }
 
