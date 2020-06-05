@@ -1,4 +1,7 @@
 # RarbgAdvancedSearch
+
+![alt text](https://i.postimg.cc/jS2Tjg2f/download-1.png)
+
 Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
 
 The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
