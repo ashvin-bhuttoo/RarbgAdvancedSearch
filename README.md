@@ -2,7 +2,7 @@
 
 <table style="width:100%">
   <tr>
-    <td><img src="https://i.postimg.cc/jS2Tjg2f/download-1.png"></td>
+    <td><img src="https://i.postimg.cc/BnFj6nXH/Webp-net-resizeimage.png"></td>
     <td>Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.</td>    
   </tr>
 </table>
