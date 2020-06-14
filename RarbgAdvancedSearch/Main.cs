@@ -748,7 +748,7 @@ namespace RarbgAdvancedSearch
                         m.MenuItems.Add(new MenuItem("> Download using Magnet Link", delegate {
                             tstStatus.Text = "Looking for Magnet Link..";
                             string page = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes);
-                            string[] page_content = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes).Split(new[] { '"' });
+                            string[] page_content = page.Split(new[] { '"' });
                             if (page_content.Length > 0)
                             {
                                 if (page_content.Any(s => s.StartsWith("magnet:?")))
@@ -768,11 +768,47 @@ namespace RarbgAdvancedSearch
                             }
                             tstStatus.Text = "Failed to acquire Magnet Link..";
                         }));
+
+                        m.MenuItems.Add(new MenuItem("> Copy Magnet Link", delegate {
+                            tstStatus.Text = "Looking for Magnet Link..";
+                            string page = GetRarbgPage($"https://rarbgenter.org{entry.url}", ref response_bytes);
+                            string[] page_content = page.Split(new[] { '"' });
+                            if (page_content.Length > 0)
+                            {
+                                if (page_content.Any(s => s.StartsWith("magnet:?")))
+                                {
+                                    tstStatus.Text = "Magnet Link Found..";
+                                    string magnet = page_content.FirstOrDefault(s => s.StartsWith("magnet:?"));
+                                    Clipboard.SetText(magnet);
+                                    showMessage("Magnet link was copied to clipboard.", "Magnet", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                                }
+                                return;
+                            }
+                            tstStatus.Text = "Failed to acquire Magnet Link..";
+                        }));
                     }
 
-
                     if (entry.category.ToString().Contains("Movies"))
-                        m.MenuItems.Add(new MenuItem("> Open Youtube Trailer", delegate { Process.Start($"https://www.youtube.com/results?search_query={entry.name}+trailer"); }));
+                        m.MenuItems.Add(new MenuItem("> Open Youtube Trailer", delegate {
+                            string [] entry_name = entry.name.Split(new[] { '.' }, StringSplitOptions.RemoveEmptyEntries);
+                            string youtube_search_name = string.Empty;
+                            foreach(var enm in entry_name)
+                            {
+                                youtube_search_name += enm + " ";
+                                if (enm == $"{entry.year}")
+                                {
+                                    break;
+                                }
+                            }
+                            Process.Start($"https://www.youtube.com/results?search_query={youtube_search_name.TrimEnd()}+trailer"); 
+                        }));
+
+                    if (entry.category.ToString().Contains("Movies_x265_1080") && !dgvListings.Columns.Contains("downloadCol"))
+                        m.MenuItems.Add(new MenuItem("> Request Direct Download", delegate {
+                            showMessage("Your Direct Download Request has been sent.\nYou will receive a notification in case it is available for download.", "Direct Download Request", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                            var genre = entry.genre.Distinct().Aggregate("", (current, next) => current + "_" + next).TrimStart(new[] { '_' });
+                            UsageStats.Log("DD_REQUEST", $"[{entry.name}][{entry.url}][{genre}][Size:{entry.sizeInGb}][Rating:{entry.imdbRating}]");
+                        }));
 
                     //Admin stuff
                     if (UsageStats.machinecode == "1ED9F550CC070D9D2D029B6006AE8C4AED12E8A5")

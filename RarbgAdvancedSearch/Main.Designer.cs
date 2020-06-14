@@ -756,6 +756,7 @@
             this.toolStripSplitButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
             this.toolStripSplitButton2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.directDownloadToolStripMenuItem});
+            this.toolStripSplitButton2.ForeColor = System.Drawing.Color.Goldenrod;
             this.toolStripSplitButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.toolStripSplitButton2.Name = "toolStripSplitButton2";
             this.toolStripSplitButton2.Size = new System.Drawing.Size(77, 22);
@@ -764,8 +765,8 @@
             // directDownloadToolStripMenuItem
             // 
             this.directDownloadToolStripMenuItem.Name = "directDownloadToolStripMenuItem";
-            this.directDownloadToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.directDownloadToolStripMenuItem.Text = "Direct Download  :-)";
+            this.directDownloadToolStripMenuItem.Size = new System.Drawing.Size(183, 22);
+            this.directDownloadToolStripMenuItem.Text = "Direct Download List";
             this.directDownloadToolStripMenuItem.Click += new System.EventHandler(this.directDownloadToolStripMenuItem_Click);
             // 
             // Main
