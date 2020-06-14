@@ -925,7 +925,11 @@ namespace RarbgAdvancedSearch
 
         private void tsbReadNotify_Click(object sender, EventArgs e)
         {
-            
+            tsbReadNotify.Visible = false;
+            Notifications notifpage = new Notifications();
+            this.Controls.Add(notifpage);
+            notifpage.BringToFront();
+            notifpage.Dock = DockStyle.Fill;
         }
 
         private void Main_Load(object sender, EventArgs e)

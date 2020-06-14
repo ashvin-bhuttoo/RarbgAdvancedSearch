@@ -18,8 +18,7 @@ namespace RarbgAdvancedSearch
         {
             InitializeComponent();
         }
-
-
+        
         public static int GetNotifCount()
         {
             Dictionary<string, object> Json = new Dictionary<string, object>()
@@ -62,6 +61,84 @@ namespace RarbgAdvancedSearch
             }
 
             return 0;
+        }
+
+        private void btnClose_Click(object sender, EventArgs e)
+        {
+            this.Parent.Controls.Remove(this);
+            this.Dispose();
+        }
+
+        private void Notifications_Load(object sender, EventArgs e)
+        {
+            Dictionary<string, object> Json = new Dictionary<string, object>()
+            {
+                {"app", Assembly.GetExecutingAssembly().GetName().Name},
+                {"version", Assembly.GetExecutingAssembly().GetName().Version.ToString()},
+                {"user",  $"{UsageStats.machinename}/{Environment.UserName}"},
+                {"mcode", UsageStats.machinecode},
+                {"op", "nlist"}
+            };
+
+            try
+            {
+                byte[] dummy = { };
+                string response = Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
+
+                pbLoading.Visible = false;
+                if (response.Length > 0)
+                {
+                    tlpNotifs.Visible = true;
+                    if (response == "deprecated")
+                    {
+                        AddRowToPanel(tlpNotifs, new[] { "Error", "Your client is too old, please update." });
+                    }
+                    else if (response.Contains("\"message\""))
+                    {
+                        try
+                        {
+                            List<Dictionary<string, string>> notifs = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(response);
+                            Json["op"] = "clnotif";
+                            Json.Add("ldate", notifs.FirstOrDefault()["dateadd"]);
+                            Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
+                            foreach (var n in notifs)
+                            {
+                                AddRowToPanel(tlpNotifs, new[] { n["dateadd"], n["message"] });
+                            }
+                        }
+                        catch (Exception ex)
+                        {
+                            UsageStats.Log("Notifications_Load_badresponse", ex.Message + "\n" + ex.StackTrace);
+                        }
+                    }
+                }
+                else
+                {
+                    tlpNotifs.Visible = true;
+                    AddRowToPanel(tlpNotifs, new[] { "Error", "Failed to fetch notifications.." });
+                }
+            }
+            catch (Exception ex)
+            {
+                UsageStats.Log("Notifications_Load_Fail", ex.Message + "\n" + ex.StackTrace);
+            }
+        }
+
+        private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)
+        {
+            if (panel.ColumnCount != rowElements.Length)
+                throw new Exception("Elements number doesn't match!");
+            //get a reference to the previous existent row
+            RowStyle temp = panel.RowStyles[panel.RowCount - 1];
+            //increase panel rows count by one
+            panel.RowCount++;
+            //add a new RowStyle as a copy of the previous one
+            panel.RowStyles.Add(new RowStyle(temp.SizeType, temp.Height));
+            //add the control
+            for (int i = 0; i < rowElements.Length; i++)
+            {
+                panel.Controls.Add(new Label() { Text = rowElements[i], AutoSize = true }, i, panel.RowCount - 1);
+            }
         }
     }
 }
