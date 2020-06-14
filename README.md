@@ -1,5 +1,21 @@
 # RarbgAdvancedSearch
-Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.
+
+<table style="width:100%">
+  <tr>
+    <td><img src="https://i.postimg.cc/BnFj6nXH/Webp-net-resizeimage.png"></td>
+    <td>Rarbg Advanced Search is an advanced search tool for the popular torrent site rarbg. This tool will help you quickly search based on a multiple criteria not available on the original site's filters.</td>    
+  </tr>
+</table>
+
+<table style="width:100%">
+  <tr>
+    <td>The latest installer can be downloaded from here:</td>
+    <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
+  </tr>
+</table>
+
+If you want to buy me a beer or say thanks, here's the buttons for it<br/>
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US) | [![Thanks](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ashvin.bhuttoo%40gmail.com)
 
 <b>Features:</b>
 1. Ability to export and import search entries using the FILE context menu.
@@ -10,14 +26,9 @@ Rarbg Advanced Search is an advanced search tool for the popular torrent site ra
 6. Special Menu, Ability to Directly Download some movies.
 7. Youtube trailer option in right click listing context menu.
 
-The latest installer can be downloaded from here: <a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"> v1.0.6</a> 
-
 ![alt text](https://i.imgur.com/Rc9P3Es.png)
 
 ![alt text](https://i.imgur.com/CUxcDr7.png)
-
-If you want to buy me a beer, here's the button for it<br/>
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US)
 
 This project was built using VS2019 Community Edition and is completely open source :)
 
