@@ -43,13 +43,13 @@ namespace RarbgAdvancedSearch
                 //ctracker.savetrack(ctrack.entry, ContentTracker.Status.MarkedForDownload);
                 this.Text += $" [{ctrack.entry.name}]";
                 g_dlUri = new Uri($"https://mega.nz/{ctrack.dd_url}");
-                UsageStats.Log("download", $"init - {g_dlUri.AbsolutePath} [{ctrack.entry.name}]");
+                UsageStats.Log("download", $"init - [{g_dlUri.AbsolutePath}] [{ctrack.entry.name}]");
                 g_megaCli = new MegaApiClient();
             }
             catch(Exception ex)
             {
                 rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}", Color.LightCoral, this);
-                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
+                UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
             }
         }
 
@@ -119,11 +119,11 @@ namespace RarbgAdvancedSearch
                             {
                                 this.PerformSafely(() => lblDLProgress.Text = "Failed!");
                                 rtbLog.AppendText($"Error: Bad Link, No Files found..\n", Color.LightCoral, this);
-                                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + ", nodes.Count() = 0");
+                                UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]" + ", nodes.Count() = 0");
                             }                            
                         }
                         catch (Exception ex){
-                            UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
+                            UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
                         }                        
                     });
                 }
@@ -131,7 +131,7 @@ namespace RarbgAdvancedSearch
                 {
                     this.PerformSafely(() => lblDLProgress.Text = "Failed!");
                     rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}\n", Color.LightCoral, this);
-                    UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
+                    UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
                 }
             });            
         }
@@ -185,6 +185,7 @@ namespace RarbgAdvancedSearch
                     g_currentDownloadTask = null;
                 });
 
+                UsageStats.Log("download", $"cancel - [{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]");
                 lblDLProgress.Text = "Cancelling!";
                 lblDLProgress.ForeColor = Color.OrangeRed;
                 return;
@@ -194,7 +195,7 @@ namespace RarbgAdvancedSearch
             {
                 try
                 {
-                    UsageStats.Log("download", $"begin - {g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]");
+                    UsageStats.Log("download", $"begin - [{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]");
                     g_downloadRootDir = $"{Utils.Reg.dl_dir}\\{getNodePath(g_dlNodes, g_rootNode)}";
 
                     //Delete Existing If Downloaded
@@ -266,14 +267,14 @@ namespace RarbgAdvancedSearch
                 {                   
                     this.PerformSafely(() => { lblDLProgress.Text = "Error!"; lblDLProgress.ForeColor = Color.DarkRed; } );
                     rtbLog.AppendText($"Error: Download Failure \n{ex.Message + "\n" + ex.StackTrace}\n", Color.LightCoral, this);
-                    UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
+                    UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}]" + "\n" + ex.Message + "\n" + ex.StackTrace);
                     pbDownload.SetState(1);
                 }
                 
             }
             else
             {
-                UsageStats.Log("download_failure", $"{g_dlUri.AbsolutePath} [{g_ctrack.entry.name}] - g_dlNodes.Count = 0");
+                UsageStats.Log("download_failure", $"[{g_dlUri.AbsolutePath}] [{g_ctrack.entry.name}] - g_dlNodes.Count = 0");
             }
         }
 
