@@ -14,6 +14,9 @@
   </tr>
 </table>
 
+If you want to buy me a beer or say thanks, here's the buttons for it<br/>
+[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US) | [![Thanks](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ashvin.bhuttoo%40gmail.com)
+
 <b>Features:</b>
 1. Ability to export and import search entries using the FILE context menu.
 2. Advanced filtering based on Minimum Imdb Rating, Minimum Content Year (for movies), Maximum content year (for movies), Genre (for movies), Minimum upload date, Content Genre (for movies)
@@ -26,9 +29,6 @@
 ![alt text](https://i.imgur.com/Rc9P3Es.png)
 
 ![alt text](https://i.imgur.com/CUxcDr7.png)
-
-If you want to buy me a beer or say thanks, here's the buttons for it<br/>
-[![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US) | [![Thanks](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ashvin.bhuttoo%40gmail.com)
 
 This project was built using VS2019 Community Edition and is completely open source :)
 
