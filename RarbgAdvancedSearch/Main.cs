@@ -923,6 +923,23 @@ namespace RarbgAdvancedSearch
             }
         }
 
+        private void tsbReadNotify_Click(object sender, EventArgs e)
+        {
+            
+        }
+
+        private void Main_Load(object sender, EventArgs e)
+        {
+            Task.Run(async () =>
+            {
+                while(true)
+                {
+                    UpdateNotifCounter();
+                    Thread.Sleep(30000);
+                }               
+            });
+        }
+
         private void tsbAbout_Click(object sender, EventArgs e)
         {
             About aboutpage = new About();
@@ -978,6 +995,24 @@ namespace RarbgAdvancedSearch
             if(e.KeyCode == Keys.Enter)
             {
                 reloadGrid();
+            }
+        }
+
+        private void UpdateNotifCounter()
+        {
+            int counter = Notifications.GetNotifCount();
+            if (counter > 0)
+            {
+                this.PerformSafely(() => {
+                    tsbReadNotify.Text = $"You have {counter} unread notifications.";
+                    tsbReadNotify.Visible = true;
+                });                
+            }
+            else
+            {
+                this.PerformSafely(() => {
+                    tsbReadNotify.Visible = false;
+                });
             }
         }
     }
