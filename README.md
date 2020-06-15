@@ -25,6 +25,7 @@ If you want to buy me a beer or say thanks, here's the buttons for it<br/>
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
 6. Special Menu, Ability to Directly Download some movies.
 7. Youtube trailer option in right click listing context menu.
+8. You can request for direct links for x265 Movies using the right click context menu on any listing.
 
 ![alt text](https://i.imgur.com/Rc9P3Es.png)
 
@@ -34,6 +35,13 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
+v1.0.7
+- YouTube trailer search optimization
+- Added copy magnet link option
+- Added backup updater
+- Added ability for user to request for direct links (x265 Movies only)
+- Added notification support
+
 v1.0.6
 - Direct Downloader Fixes & Updates
 
