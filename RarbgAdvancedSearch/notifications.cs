@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Reflection;
 using Newtonsoft.Json;
+using System.Threading;
 
 namespace RarbgAdvancedSearch
 {
@@ -71,57 +72,76 @@ namespace RarbgAdvancedSearch
 
         private void Notifications_Load(object sender, EventArgs e)
         {
-            Dictionary<string, object> Json = new Dictionary<string, object>()
+            Task.Run(async () =>
             {
-                {"app", Assembly.GetExecutingAssembly().GetName().Name},
-                {"version", Assembly.GetExecutingAssembly().GetName().Version.ToString()},
-                {"user",  $"{UsageStats.machinename}/{Environment.UserName}"},
-                {"mcode", UsageStats.machinecode},
-                {"op", "nlist"}
-            };
+                Thread.Sleep(2000);
 
-            try
-            {
-                byte[] dummy = { };
-                string response = Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
-
-                pbLoading.Visible = false;
-                if (response.Length > 0)
+                try
                 {
-                    tlpNotifs.Visible = true;
-                    if (response == "deprecated")
+                    Dictionary<string, object> Json = new Dictionary<string, object>()
                     {
-                        AddRowToPanel(tlpNotifs, new[] { "Error", "Your client is too old, please update." });
-                    }
-                    else if (response.Contains("\"message\""))
-                    {
-                        try
+                        {"app", Assembly.GetExecutingAssembly().GetName().Name},
+                        {"version", Assembly.GetExecutingAssembly().GetName().Version.ToString()},
+                        {"user",  $"{UsageStats.machinename}/{Environment.UserName}"},
+                        {"mcode", UsageStats.machinecode},
+                        {"op", "nlist"}
+                    };
+
+                    byte[] dummy = { };
+                    string response = Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
+
+                    this.PerformSafely(() => {
+                        pbLoading.Visible = false;
+                    });
+                    
+                    if (response.Length > 0)
+                    {                        
+                        if (response == "deprecated")
                         {
-                            List<Dictionary<string, string>> notifs = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(response);
-                            Json["op"] = "clnotif";
-                            Json.Add("ldate", notifs.FirstOrDefault()["dateadd"]);
-                            Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
-                            foreach (var n in notifs)
+                            this.PerformSafely(() => {
+                                tlpNotifs.Visible = true;
+                                AddRowToPanel(tlpNotifs, new[] { "Error", "Your client is too old, please update." });
+                            });
+                        }
+                        else if (response.Contains("\"message\""))
+                        {
+                            try
                             {
-                                AddRowToPanel(tlpNotifs, new[] { n["dateadd"], n["message"] });
+                                List<Dictionary<string, string>> notifs = JsonConvert.DeserializeObject<List<Dictionary<string, string>>>(response);
+                                Json["op"] = "clnotif";
+                                Json.Add("ldate", notifs.FirstOrDefault()["dateadd"]);
+                                Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
+                                foreach (var n in notifs)
+                                {
+                                    this.PerformSafely(() => {
+                                        tlpNotifs.Visible = true;
+                                        AddRowToPanel(tlpNotifs, new[] { n["dateadd"], n["message"] });
+                                    });
+                                }
+                            }
+                            catch (Exception ex)
+                            {
+                                this.PerformSafely(() => {
+                                    tlpNotifs.Visible = true;
+                                    AddRowToPanel(tlpNotifs, new[] { "Error", "Failed to fetch notifications.." });
+                                });
+                                UsageStats.Log("Notifications_Load_badresponse", ex.Message + "\n" + ex.StackTrace);
                             }
                         }
-                        catch (Exception ex)
-                        {
-                            UsageStats.Log("Notifications_Load_badresponse", ex.Message + "\n" + ex.StackTrace);
-                        }
+                    }
+                    else
+                    {
+                        this.PerformSafely(() => {
+                            tlpNotifs.Visible = true;
+                            AddRowToPanel(tlpNotifs, new[] { "Error", "Failed to fetch notifications.." });
+                        });
                     }
                 }
-                else
+                catch (Exception ex)
                 {
-                    tlpNotifs.Visible = true;
-                    AddRowToPanel(tlpNotifs, new[] { "Error", "Failed to fetch notifications.." });
+                    UsageStats.Log("Notifications_Load_Fail", ex.Message + "\n" + ex.StackTrace);
                 }
-            }
-            catch (Exception ex)
-            {
-                UsageStats.Log("Notifications_Load_Fail", ex.Message + "\n" + ex.StackTrace);
-            }
+            });            
         }
 
         private void AddRowToPanel(TableLayoutPanel panel, string[] rowElements)

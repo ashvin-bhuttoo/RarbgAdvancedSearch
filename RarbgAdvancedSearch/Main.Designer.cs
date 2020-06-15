@@ -87,6 +87,7 @@
             this.tsmiAllMarked = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
@@ -94,7 +95,6 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.directDownloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
             this.tsbReadNotify = new System.Windows.Forms.ToolStripButton();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -716,6 +716,15 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbDonate
+            // 
+            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
+            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDonate.Name = "tsbDonate";
+            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
+            this.tsbDonate.Text = "DONATE";
+            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
+            // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
@@ -763,18 +772,10 @@
             this.directDownloadToolStripMenuItem.Text = "Direct Download List";
             this.directDownloadToolStripMenuItem.Click += new System.EventHandler(this.directDownloadToolStripMenuItem_Click);
             // 
-            // tsbDonate
-            // 
-            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
-            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDonate.Name = "tsbDonate";
-            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
-            this.tsbDonate.Text = "DONATE";
-            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
-            // 
             // tsbReadNotify
             // 
             this.tsbReadNotify.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.tsbReadNotify.AutoToolTip = false;
             this.tsbReadNotify.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tsbReadNotify.ForeColor = System.Drawing.Color.Salmon;
             this.tsbReadNotify.Image = ((System.Drawing.Image)(resources.GetObject("tsbReadNotify.Image")));
@@ -782,7 +783,6 @@
             this.tsbReadNotify.Name = "tsbReadNotify";
             this.tsbReadNotify.Size = new System.Drawing.Size(192, 22);
             this.tsbReadNotify.Text = "You have ? unread notifications";
-            this.tsbReadNotify.ToolTipText = "Read Notifications";
             this.tsbReadNotify.Visible = false;
             this.tsbReadNotify.Click += new System.EventHandler(this.tsbReadNotify_Click);
             // 
