@@ -492,15 +492,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RarbgAdvancedSearch"
-        "ProductCode" = "8:{C31A2740-B2A2-49B3-A308-2188DB86640A}"
-        "PackageCode" = "8:{2CFB22B0-AF84-491E-B4F1-ABC5364BD77F}"
+        "ProductCode" = "8:{8D938BD2-5E37-4F31-B161-13ECEF39DB53}"
+        "PackageCode" = "8:{BB038AEA-384A-4DA7-B027-C888F4860C10}"
         "UpgradeCode" = "8:{6E437ECD-F4CC-43C0-9703-A72E4F0E906C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.17"
+        "ProductVersion" = "8:1.0.20"
         "Manufacturer" = "8:Unkn0wn"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch"
@@ -1070,7 +1070,7 @@
             }
             "{5259A561-127C-4D43-A0A1-72F10C7B3BF8}:_C5D4ECC6EB8A4685AE9152A27E0535F5"
             {
-            "SourcePath" = "8:..\\RarbgAdvancedSearch\\obj\\Debug\\RarbgAdvancedSearch.exe"
+            "SourcePath" = "8:..\\RarbgAdvancedSearch\\obj\\Release\\RarbgAdvancedSearch.exe"
             "TargetName" = "8:"
             "Tag" = "8:"
             "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"

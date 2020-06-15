@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
@@ -36,56 +37,144 @@ namespace RarbgAdvancedSearch
         private static async Task UpdaterThreadAsync()
         {
         retry:
-            Octokit.GitHubClient client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue(product_name));
-            IReadOnlyList<Octokit.Release> rlsAll = await client.Repository.Release.GetAll(github_user, product_name);
-            if (rlsAll != null && rlsAll.Count > 0)
+            try
             {
-                Octokit.Release latest = rlsAll.OrderBy(r => r.PublishedAt).Last();
-
-                Version latest_version = null;
-                if (Version.TryParse(latest.TagName, out latest_version))
+                Octokit.GitHubClient client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue(product_name));
+                IReadOnlyList<Octokit.Release> rlsAll = await client.Repository.Release.GetAll(github_user, product_name);
+                if (rlsAll != null && rlsAll.Count > 0)
                 {
-                    if (Assembly.GetExecutingAssembly().GetName().Version < latest_version)
+                    Octokit.Release latest = rlsAll.OrderBy(r => r.PublishedAt).Last();
+
+                    Version latest_version = null;
+                    if (Version.TryParse(latest.TagName, out latest_version))
                     {
-                        if (MessageBox.Show($"A New Version {latest.TagName} of {product_name} has been released, do you wish to update?", "New Version Available!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                        if (Assembly.GetExecutingAssembly().GetName().Version < latest_version)
                         {
-                            string[] body = latest.Body.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
-
-                            string installerUrl = string.Empty;
-                            foreach (var tmp in body)
+                            if (MessageBox.Show($"A New Version {latest.TagName} of {product_name} has been released, do you wish to update?", "New Version Available!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
                             {
-                                if (tmp.Contains("raw.githubusercontent.com"))
-                                {
-                                    installerUrl = tmp;
-                                    break;
-                                }
-                            }
+                                string[] body = latest.Body.Split(new[] { '"' }, StringSplitOptions.RemoveEmptyEntries);
 
-                            if (installerUrl != string.Empty)
-                            {
-                                if (File.Exists("update.msi"))
-                                    File.Delete("update.msi");
-
-                                using (var _client = new WebClient())
+                                string installerUrl = string.Empty;
+                                foreach (var tmp in body)
                                 {
-                                    _client.DownloadFile(installerUrl, "update.msi");
+                                    if (tmp.Contains("raw.githubusercontent.com"))
+                                    {
+                                        installerUrl = tmp;
+                                        break;
+                                    }
                                 }
 
-                                Process.Start("update.msi");
-                                Application.Exit();
-                                Environment.Exit(Environment.ExitCode);
-                            }
-                            else
-                            {
-                                Process.Start($"https://github.com/{github_user}/{product_name}/releases");
+                                if (installerUrl != string.Empty)
+                                {
+                                    if (File.Exists("update.msi"))
+                                        File.Delete("update.msi");
+
+                                    using (var _client = new WebClient())
+                                    {
+                                        _client.DownloadFile(installerUrl, "update.msi");
+                                    }
+
+                                    Process.Start("update.msi");
+                                    Application.Exit();
+                                    Environment.Exit(Environment.ExitCode);
+                                }
+                                else
+                                {
+                                    Process.Start($"https://github.com/{github_user}/{product_name}/releases");
+                                }
                             }
                         }
                     }
+                    runBackupUpdater();
                 }
+                else
+                    throw new Exception();
             }
+            catch (Exception)
+            {
+                runBackupUpdater();
+            }            
 
             await Task.Delay(updatecheck_interval_mins * 60000);
             goto retry;
+        }
+
+
+        //A backup updater in case github fails
+        private static void runBackupUpdater()
+        {
+            Dictionary<string, object> Json = new Dictionary<string, object>()
+            {
+                {"app", Assembly.GetExecutingAssembly().GetName().Name},
+                {"version", Assembly.GetExecutingAssembly().GetName().Version.ToString()},
+                {"user",  $"{UsageStats.machinename}/{Environment.UserName}"},
+                {"mcode", UsageStats.machinecode},
+                {"op", "update"}
+            };
+
+            try
+            {
+                byte[] dummy = { };
+                string response = Utils.HttpClient.Post($"https://iotsoftworks.com/stats.php", ref dummy, JsonConvert.SerializeObject(Json));
+
+                if (response.Length > 0)
+                {
+                    try
+                    {
+                        Dictionary<string, List<string>> Update = JsonConvert.DeserializeObject<Dictionary<string, List<string>>>(response);
+
+                        Version latest_version = null;
+                        if (Version.TryParse(Update.FirstOrDefault().Key, out latest_version))
+                        {
+                            if (Assembly.GetExecutingAssembly().GetName().Version < latest_version)
+                            {
+                                if (MessageBox.Show($"A New Version {Update.FirstOrDefault().Key} of {product_name} has been released, do you wish to update?", "New Version Available!", MessageBoxButtons.YesNo, MessageBoxIcon.Information) == DialogResult.Yes)
+                                {                                    
+                                    foreach(var installerUrl in Update.FirstOrDefault().Value)
+                                    {
+                                        try
+                                        {
+                                            if (installerUrl != string.Empty)
+                                            {
+                                                if (File.Exists("update.msi"))
+                                                    File.Delete("update.msi");
+
+                                                using (var _client = new WebClient())
+                                                {
+                                                    _client.DownloadFile(installerUrl, "update.msi");
+                                                }
+
+                                                Process.Start("update.msi");
+                                                Application.Exit();
+                                                Environment.Exit(Environment.ExitCode);
+                                            }
+                                            else
+                                            {
+                                                continue;
+                                            }
+                                        }
+                                        catch (Exception e) {
+                                            UsageStats.Log("runBackupUpdater_fail", $"Url: {installerUrl}\n" + e.Message + "\n" + e.StackTrace);
+                                        }                                        
+                                    }                                    
+                                }
+                            }
+                        }
+                    }
+                    catch (Exception ex)
+                    {
+                        UsageStats.Log("runBackupUpdater_badresponse", ex.Message + "\n" + ex.StackTrace);
+                    }
+                }
+                else
+                {
+                    UsageStats.Log("runBackupUpdater_badresponse", "empty response..");
+                }
+            }
+            catch (Exception e)
+            {
+                UsageStats.Log("runBackupUpdater_Fail", e.Message + "\n" + e.StackTrace);
+            }
         }
     }
 }
