@@ -987,16 +987,21 @@ namespace RarbgAdvancedSearch
                                     if(info.Image != null)
                                     {
                                         pbTooltipImg.Image = info.Image;
-                                    }                                        
-                                    //else
-                                    //{
-                                    //    pbTooltipImg.Load(info.imgUrl);
-                                    //    imdB.cacheImage(entry.imdb_id, pbTooltipImg.Image);
-                                    //}                                        
-
+                                    }
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
-                                    lblttRating.Text = $"Rating: {info.RatingValue}/10";
-                                    lblttRatingCount.Text = $"Rated By: {info.RatingCount} Users";
+                                    lblttRating.Text = $"{info.RatingValue}/10";
+                                    double ratingPercent = ((double)info.RatingValue / 8.5) * 100;
+                                    lblttRating.ForeColor = Utils.GetBlendedColor((int)(ratingPercent > 100 ? 100 : ratingPercent));
+                                    lblttRatingCount.Text = $"{info.RatingCount} Users";
+                                    lblttGenre.Text = string.Empty;
+                                    if(!string.IsNullOrEmpty(info.Genre.String))
+                                    {
+                                        lblttGenre.Text = $"{lblttGenre.Text}{info.Genre.String}\n";
+                                    }
+                                    else foreach(var g in info.Genre.StringArray)
+                                    {
+                                            lblttGenre.Text = $"{lblttGenre.Text}{g}\n";
+                                    }
                                     pnlImdbInfo.Visible = true;
                                 });
                             }                                

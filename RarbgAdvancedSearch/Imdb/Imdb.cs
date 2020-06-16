@@ -22,7 +22,7 @@ namespace RarbgAdvancedSearch
             public string imgUrl;
             public DateTimeOffset DatePublished;
             public string[] Keywords;
-            public string RatingValue, WorstRating, BestRating;
+            public float RatingValue, WorstRating, BestRating;
             public long RatingCount;
             public Genre Genre;
         }
@@ -79,9 +79,9 @@ namespace RarbgAdvancedSearch
                             Genre = imdbJsonObj.Genre ?? new Genre(),
                             DatePublished = imdbJsonObj.DatePublished ?? DateTimeOffset.Now,
                             Keywords = imdbJsonObj.Keywords?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[] { },
-                            RatingValue = imdbJsonObj.AggregateRating?.RatingValue ?? "?",
-                            WorstRating = imdbJsonObj.AggregateRating?.WorstRating ?? "?",
-                            BestRating = imdbJsonObj.AggregateRating?.BestRating ?? "?",
+                            RatingValue = imdbJsonObj.AggregateRating?.RatingValue != null ? float.Parse(imdbJsonObj.AggregateRating?.RatingValue) : 0.0f,
+                            WorstRating = imdbJsonObj.AggregateRating?.WorstRating != null ? float.Parse(imdbJsonObj.AggregateRating?.WorstRating) : 0.0f,
+                            BestRating = imdbJsonObj.AggregateRating?.BestRating != null ? float.Parse(imdbJsonObj.AggregateRating?.BestRating) : 0.0f,
                             RatingCount = imdbJsonObj.AggregateRating?.RatingCount ?? 0
                         };
 
