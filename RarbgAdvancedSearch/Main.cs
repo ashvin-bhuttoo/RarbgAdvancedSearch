@@ -958,7 +958,7 @@ namespace RarbgAdvancedSearch
         private void dgvListings_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
         {
             gCurrentRow = e.RowIndex;
-
+            Thread.Sleep(10);
             DataGridView dgv_sender = sender as DataGridView;
             DataGridViewCell dgv_MouseOverCell = null;
             if (gCurrentRow == e.RowIndex && e.RowIndex >= 0 && e.ColumnIndex > 0 && e.RowIndex < dgv_sender.RowCount && e.ColumnIndex < dgv_sender.ColumnCount)
@@ -969,7 +969,7 @@ namespace RarbgAdvancedSearch
 
             Task.Run(async () =>
             {
-                Thread.Sleep(500);
+                Thread.Sleep(300);
                 
                 if (dgv_MouseOverCell != null && gCurrentRow == e.RowIndex)
                 {
@@ -979,16 +979,23 @@ namespace RarbgAdvancedSearch
                         if(dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
                         {
                             var info = imdB.GetImdbInfo(entry.imdb_id);
-                            if (dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
+                            if (!string.IsNullOrEmpty(info.imgUrl) && dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
                             {
                                 this.PerformSafely(() => {
-                                    pbTooltipImg.Image = info.Image;
+                                    if(info.Image != null)
+                                    {
+                                        pbTooltipImg.Image = info.Image;
+                                    }                                        
+                                    //else
+                                    //{
+                                    //    pbTooltipImg.Load(info.imgUrl);
+                                    //    imdB.cacheImage(entry.imdb_id, pbTooltipImg.Image);
+                                    //}                                        
+
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
                                     lblttRating.Text = $"Rating: {info.RatingValue}/10";
-                                    lblttRatingCount.Text = $"Rate By: {info.RatingCount} Users";
-                                    //pnlImdbInfo.Location = new System.Drawing.Point(Cursor.Position.X - this.Location.X, Cursor.Position.Y - this.Location.Y);
-                                    if (pbTooltipImg.Image != null)
-                                        pnlImdbInfo.Visible = true;
+                                    lblttRatingCount.Text = $"Rated By: {info.RatingCount} Users";
+                                    pnlImdbInfo.Visible = true;
                                 });
                             }                                
                         }                        

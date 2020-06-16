@@ -8,6 +8,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 
 namespace RarbgAdvancedSearch
@@ -16,8 +17,9 @@ namespace RarbgAdvancedSearch
     {
         public struct ImdbInfo
         {
-            public string Name, Description;
+            public string Name, Description, imdbId;
             public Image Image;
+            public string imgUrl;
             public DateTimeOffset DatePublished;
             public string[] Keywords;
             public string RatingValue, WorstRating, BestRating;
@@ -38,6 +40,20 @@ namespace RarbgAdvancedSearch
             }
         }
 
+        public void cacheImage(string imdbId, Image img)
+        {
+            if(tmpImdbCache.ContainsKey(imdbId))
+            {
+                try
+                {
+                    var NewInfoBackup = tmpImdbCache[imdbId];
+                    NewInfoBackup.Image = img;
+                    tmpImdbCache[imdbId] = NewInfoBackup;
+                }
+                catch (Exception) { }
+            }
+        }
+
         private ImdbInfo fetchImdbInfo(string imdbId)
         {
             try
@@ -55,8 +71,10 @@ namespace RarbgAdvancedSearch
 
                         var info = new ImdbInfo
                         {
+                            imdbId = imdbId,
                             Name = imdbJsonObj.Name,
                             Description = imdbJsonObj.Description,
+                            imgUrl = imdbJsonObj.Image?.OriginalString,
                             Image = imdbJsonObj.Image != null ? DownloadImage(imdbJsonObj.Image.OriginalString) : null,
                             Genre = imdbJsonObj.Genre ?? new Genre(),
                             DatePublished = imdbJsonObj.DatePublished ?? DateTimeOffset.Now,
@@ -72,35 +90,10 @@ namespace RarbgAdvancedSearch
                     catch (Exception e1)
                     {
                         ;
-                        //try
-                        //{
-                        //    var imdbJsonObj = JsonConvert.DeserializeObject<QuickType.ImdbJson2>(nodes[0].InnerText);
-
-                        //    var info = new ImdbInfo
-                        //    {
-                        //        Name = imdbJsonObj.Name,
-                        //        Description = imdbJsonObj.Description,
-                        //        Image = DownloadImage(imdbJsonObj.Image.OriginalString),
-                        //        Genre = new []{ imdbJsonObj.Genre },
-                        //        DatePublished = imdbJsonObj.DatePublished,
-                        //        Keywords = imdbJsonObj.Keywords.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries),
-                        //        RatingValue = imdbJsonObj.AggregateRating.RatingValue,
-                        //        WorstRating = imdbJsonObj.AggregateRating.WorstRating,
-                        //        BestRating = imdbJsonObj.AggregateRating.BestRating,
-                        //        RatingCount = imdbJsonObj.AggregateRating.RatingCount ?? 0
-                        //    };
-
-                        //    return info;
-                        //}
-                        //catch (Exception e2)
-                        //{
-                        //    ;
-                        //}
-                    }
-                    
+                    }                    
                 }
             }
-            catch (Exception e3) {
+            catch (Exception e2) {
                 ;
             }           
             
@@ -109,19 +102,24 @@ namespace RarbgAdvancedSearch
 
         public ImdbInfo GetImdbInfo(string imdbId)
         {
+            Thread.Sleep(100);
             if (tmpImdbCache.ContainsKey(imdbId))
                 return tmpImdbCache[imdbId];
+            else
+                tmpImdbCache.Add(imdbId, new ImdbInfo());
 
             var info = fetchImdbInfo(imdbId);
 
             try
             {
-                if(!string.IsNullOrEmpty( info.Name))
+                if(!string.IsNullOrEmpty(info.Name))
                 {
-                    if (tmpImdbCache.Count > 50)
-                        tmpImdbCache.Remove(tmpImdbCache.FirstOrDefault().Key);
-                    tmpImdbCache.Add(imdbId, info);
-                }                
+                    tmpImdbCache[imdbId] = info;
+                }             
+                else
+                {
+                    tmpImdbCache.Remove(imdbId);
+                }
             } catch (Exception) { }
 
             return tmpImdbCache.ContainsKey(imdbId) ? tmpImdbCache[imdbId] : new ImdbInfo();

@@ -31,13 +31,13 @@
         public string ContentRating { get; set; }
 
         [JsonProperty("actor", NullValueHandling = NullValueHandling.Ignore)]
-        public Tor[] Actor { get; set; }
+        public ActorUnion? Actor { get; set; }
 
         [JsonProperty("director", NullValueHandling = NullValueHandling.Ignore)]
-        public Director? Director { get; set; }
+        public ActorUnion? Director { get; set; }
 
         [JsonProperty("creator", NullValueHandling = NullValueHandling.Ignore)]
-        public CreatorUnion? Creator { get; set; }
+        public ActorUnion? Creator { get; set; }
 
         [JsonProperty("description", NullValueHandling = NullValueHandling.Ignore)]
         public string Description { get; set; }
@@ -61,7 +61,7 @@
         public Trailer Trailer { get; set; }
     }
 
-    public partial class Tor
+    public partial class ActorElement
     {
         [JsonProperty("@type", NullValueHandling = NullValueHandling.Ignore)]
         public TypeEnum? Type { get; set; }
@@ -91,22 +91,13 @@
         public string RatingValue { get; set; }
     }
 
-    public partial class CreatorClass
-    {
-        [JsonProperty("@type", NullValueHandling = NullValueHandling.Ignore)]
-        public string Type { get; set; }
-
-        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
-        public string Url { get; set; }
-    }
-
     public partial class Review
     {
         [JsonProperty("@type", NullValueHandling = NullValueHandling.Ignore)]
         public string Type { get; set; }
 
         [JsonProperty("itemReviewed", NullValueHandling = NullValueHandling.Ignore)]
-        public CreatorClass ItemReviewed { get; set; }
+        public ItemReviewed ItemReviewed { get; set; }
 
         [JsonProperty("author", NullValueHandling = NullValueHandling.Ignore)]
         public Author Author { get; set; }
@@ -134,6 +125,15 @@
 
         [JsonProperty("name", NullValueHandling = NullValueHandling.Ignore)]
         public string Name { get; set; }
+    }
+
+    public partial class ItemReviewed
+    {
+        [JsonProperty("@type", NullValueHandling = NullValueHandling.Ignore)]
+        public string Type { get; set; }
+
+        [JsonProperty("url", NullValueHandling = NullValueHandling.Ignore)]
+        public string Url { get; set; }
     }
 
     public partial class Trailer
@@ -171,22 +171,13 @@
 
     public enum TypeEnum { Organization, Person };
 
-    public partial struct CreatorUnion
+    public partial struct ActorUnion
     {
-        public CreatorClass CreatorClass;
-        public Tor[] TorArray;
+        public ActorElement ActorElement;
+        public ActorElement[] ActorElementArray;
 
-        public static implicit operator CreatorUnion(CreatorClass CreatorClass) => new CreatorUnion { CreatorClass = CreatorClass };
-        public static implicit operator CreatorUnion(Tor[] TorArray) => new CreatorUnion { TorArray = TorArray };
-    }
-
-    public partial struct Director
-    {
-        public Tor Tor;
-        public Tor[] TorArray;
-
-        public static implicit operator Director(Tor Tor) => new Director { Tor = Tor };
-        public static implicit operator Director(Tor[] TorArray) => new Director { TorArray = TorArray };
+        public static implicit operator ActorUnion(ActorElement ActorElement) => new ActorUnion { ActorElement = ActorElement };
+        public static implicit operator ActorUnion(ActorElement[] ActorElementArray) => new ActorUnion { ActorElementArray = ActorElementArray };
     }
 
     public partial struct Genre
@@ -206,13 +197,49 @@
             DateParseHandling = DateParseHandling.None,
             Converters =
             {
+                ActorUnionConverter.Singleton,
                 TypeEnumConverter.Singleton,
-                CreatorUnionConverter.Singleton,
-                DirectorConverter.Singleton,
                 GenreConverter.Singleton,
                 new IsoDateTimeConverter { DateTimeStyles = DateTimeStyles.AssumeUniversal }
             },
         };
+    }
+
+    internal class ActorUnionConverter : JsonConverter
+    {
+        public override bool CanConvert(Type t) => t == typeof(ActorUnion) || t == typeof(ActorUnion?);
+
+        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
+        {
+            switch (reader.TokenType)
+            {
+                case JsonToken.StartObject:
+                    var objectValue = serializer.Deserialize<ActorElement>(reader);
+                    return new ActorUnion { ActorElement = objectValue };
+                case JsonToken.StartArray:
+                    var arrayValue = serializer.Deserialize<ActorElement[]>(reader);
+                    return new ActorUnion { ActorElementArray = arrayValue };
+            }
+            throw new Exception("Cannot unmarshal type ActorUnion");
+        }
+
+        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
+        {
+            var value = (ActorUnion)untypedValue;
+            if (value.ActorElementArray != null)
+            {
+                serializer.Serialize(writer, value.ActorElementArray);
+                return;
+            }
+            if (value.ActorElement != null)
+            {
+                serializer.Serialize(writer, value.ActorElement);
+                return;
+            }
+            throw new Exception("Cannot marshal type ActorUnion");
+        }
+
+        public static readonly ActorUnionConverter Singleton = new ActorUnionConverter();
     }
 
     internal class TypeEnumConverter : JsonConverter
@@ -254,80 +281,6 @@
         }
 
         public static readonly TypeEnumConverter Singleton = new TypeEnumConverter();
-    }
-
-    internal class CreatorUnionConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(CreatorUnion) || t == typeof(CreatorUnion?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            switch (reader.TokenType)
-            {
-                case JsonToken.StartObject:
-                    var objectValue = serializer.Deserialize<CreatorClass>(reader);
-                    return new CreatorUnion { CreatorClass = objectValue };
-                case JsonToken.StartArray:
-                    var arrayValue = serializer.Deserialize<Tor[]>(reader);
-                    return new CreatorUnion { TorArray = arrayValue };
-            }
-            throw new Exception("Cannot unmarshal type CreatorUnion");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            var value = (CreatorUnion)untypedValue;
-            if (value.TorArray != null)
-            {
-                serializer.Serialize(writer, value.TorArray);
-                return;
-            }
-            if (value.CreatorClass != null)
-            {
-                serializer.Serialize(writer, value.CreatorClass);
-                return;
-            }
-            throw new Exception("Cannot marshal type CreatorUnion");
-        }
-
-        public static readonly CreatorUnionConverter Singleton = new CreatorUnionConverter();
-    }
-
-    internal class DirectorConverter : JsonConverter
-    {
-        public override bool CanConvert(Type t) => t == typeof(Director) || t == typeof(Director?);
-
-        public override object ReadJson(JsonReader reader, Type t, object existingValue, JsonSerializer serializer)
-        {
-            switch (reader.TokenType)
-            {
-                case JsonToken.StartObject:
-                    var objectValue = serializer.Deserialize<Tor>(reader);
-                    return new Director { Tor = objectValue };
-                case JsonToken.StartArray:
-                    var arrayValue = serializer.Deserialize<Tor[]>(reader);
-                    return new Director { TorArray = arrayValue };
-            }
-            throw new Exception("Cannot unmarshal type Director");
-        }
-
-        public override void WriteJson(JsonWriter writer, object untypedValue, JsonSerializer serializer)
-        {
-            var value = (Director)untypedValue;
-            if (value.TorArray != null)
-            {
-                serializer.Serialize(writer, value.TorArray);
-                return;
-            }
-            if (value.Tor != null)
-            {
-                serializer.Serialize(writer, value.Tor);
-                return;
-            }
-            throw new Exception("Cannot marshal type Director");
-        }
-
-        public static readonly DirectorConverter Singleton = new DirectorConverter();
     }
 
     internal class GenreConverter : JsonConverter

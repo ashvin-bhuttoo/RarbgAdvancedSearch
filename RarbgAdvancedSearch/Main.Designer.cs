@@ -816,9 +816,9 @@
             this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
             this.pnlImdbInfo.Controls.Add(this.lblttRating);
             this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
-            this.pnlImdbInfo.Location = new System.Drawing.Point(575, 5);
+            this.pnlImdbInfo.Location = new System.Drawing.Point(576, 4);
             this.pnlImdbInfo.Name = "pnlImdbInfo";
-            this.pnlImdbInfo.Size = new System.Drawing.Size(345, 263);
+            this.pnlImdbInfo.Size = new System.Drawing.Size(344, 263);
             this.pnlImdbInfo.TabIndex = 12;
             this.pnlImdbInfo.Visible = false;
             this.pnlImdbInfo.MouseEnter += new System.EventHandler(this.pnlImdbInfo_MouseEnter);
@@ -828,7 +828,7 @@
             this.lblttName.AutoSize = true;
             this.lblttName.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
             this.lblttName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblttName.Location = new System.Drawing.Point(213, 9);
+            this.lblttName.Location = new System.Drawing.Point(212, 9);
             this.lblttName.Name = "lblttName";
             this.lblttName.Size = new System.Drawing.Size(120, 21);
             this.lblttName.TabIndex = 12;
@@ -839,7 +839,7 @@
             this.lblttRatingCount.AutoSize = true;
             this.lblttRatingCount.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
             this.lblttRatingCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.lblttRatingCount.Location = new System.Drawing.Point(214, 67);
+            this.lblttRatingCount.Location = new System.Drawing.Point(213, 67);
             this.lblttRatingCount.Name = "lblttRatingCount";
             this.lblttRatingCount.Size = new System.Drawing.Size(126, 13);
             this.lblttRatingCount.TabIndex = 12;
@@ -850,7 +850,7 @@
             this.lblttRating.AutoSize = true;
             this.lblttRating.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
             this.lblttRating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.lblttRating.Location = new System.Drawing.Point(214, 39);
+            this.lblttRating.Location = new System.Drawing.Point(213, 39);
             this.lblttRating.Name = "lblttRating";
             this.lblttRating.Size = new System.Drawing.Size(76, 15);
             this.lblttRating.TabIndex = 12;
