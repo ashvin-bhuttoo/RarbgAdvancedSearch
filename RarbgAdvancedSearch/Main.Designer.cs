@@ -799,8 +799,8 @@
             // 
             this.pbTooltipImg.Location = new System.Drawing.Point(0, 0);
             this.pbTooltipImg.Name = "pbTooltipImg";
-            this.pbTooltipImg.Size = new System.Drawing.Size(207, 289);
-            this.pbTooltipImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbTooltipImg.Size = new System.Drawing.Size(207, 258);
+            this.pbTooltipImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pbTooltipImg.TabIndex = 11;
             this.pbTooltipImg.TabStop = false;
             this.pbTooltipImg.MouseEnter += new System.EventHandler(this.pbTooltipImg_MouseEnter);
@@ -816,9 +816,9 @@
             this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
             this.pnlImdbInfo.Controls.Add(this.lblttRating);
             this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
-            this.pnlImdbInfo.Location = new System.Drawing.Point(568, 4);
+            this.pnlImdbInfo.Location = new System.Drawing.Point(575, 5);
             this.pnlImdbInfo.Name = "pnlImdbInfo";
-            this.pnlImdbInfo.Size = new System.Drawing.Size(359, 294);
+            this.pnlImdbInfo.Size = new System.Drawing.Size(345, 263);
             this.pnlImdbInfo.TabIndex = 12;
             this.pnlImdbInfo.Visible = false;
             this.pnlImdbInfo.MouseEnter += new System.EventHandler(this.pnlImdbInfo_MouseEnter);
@@ -830,9 +830,9 @@
             this.lblttName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.lblttName.Location = new System.Drawing.Point(213, 9);
             this.lblttName.Name = "lblttName";
-            this.lblttName.Size = new System.Drawing.Size(110, 21);
+            this.lblttName.Size = new System.Drawing.Size(120, 21);
             this.lblttName.TabIndex = 12;
-            this.lblttName.Text = "Looper (2012)";
+            this.lblttName.Text = "Unknown (????)";
             // 
             // lblttRatingCount
             // 
@@ -841,9 +841,9 @@
             this.lblttRatingCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.lblttRatingCount.Location = new System.Drawing.Point(214, 67);
             this.lblttRatingCount.Name = "lblttRatingCount";
-            this.lblttRatingCount.Size = new System.Drawing.Size(140, 13);
+            this.lblttRatingCount.Size = new System.Drawing.Size(126, 13);
             this.lblttRatingCount.TabIndex = 12;
-            this.lblttRatingCount.Text = "Rating count: 522371 users";
+            this.lblttRatingCount.Text = "Rated By: 999999 Users";
             // 
             // lblttRating
             // 
@@ -852,9 +852,9 @@
             this.lblttRating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
             this.lblttRating.Location = new System.Drawing.Point(214, 39);
             this.lblttRating.Name = "lblttRating";
-            this.lblttRating.Size = new System.Drawing.Size(80, 15);
+            this.lblttRating.Size = new System.Drawing.Size(76, 15);
             this.lblttRating.TabIndex = 12;
-            this.lblttRating.Text = "Rating: 7.4/10";
+            this.lblttRating.Text = "Rating: 10/10";
             // 
             // Main
             // 

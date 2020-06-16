@@ -985,7 +985,7 @@ namespace RarbgAdvancedSearch
                                     pbTooltipImg.Image = info.Image;
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
                                     lblttRating.Text = $"Rating: {info.RatingValue}/10";
-                                    lblttRatingCount.Text = $"Rating count: {info.RatingCount} users";
+                                    lblttRatingCount.Text = $"Rate By: {info.RatingCount} Users";
                                     //pnlImdbInfo.Location = new System.Drawing.Point(Cursor.Position.X - this.Location.X, Cursor.Position.Y - this.Location.Y);
                                     if (pbTooltipImg.Image != null)
                                         pnlImdbInfo.Visible = true;
