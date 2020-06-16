@@ -816,7 +816,7 @@
             this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
             this.pnlImdbInfo.Controls.Add(this.lblttRating);
             this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
-            this.pnlImdbInfo.Location = new System.Drawing.Point(576, 4);
+            this.pnlImdbInfo.Location = new System.Drawing.Point(565, 330);
             this.pnlImdbInfo.Name = "pnlImdbInfo";
             this.pnlImdbInfo.Size = new System.Drawing.Size(344, 263);
             this.pnlImdbInfo.TabIndex = 12;

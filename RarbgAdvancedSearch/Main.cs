@@ -937,6 +937,8 @@ namespace RarbgAdvancedSearch
 
         private void Main_Load(object sender, EventArgs e)
         {
+            pnlImdbInfo.Location = new Point(576, 4);
+
             Task.Run(async () =>
             {
                 while(true)
