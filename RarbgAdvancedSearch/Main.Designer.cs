@@ -96,12 +96,19 @@
             this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.directDownloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.tsbReadNotify = new System.Windows.Forms.ToolStripButton();
+            this.pbTooltipImg = new System.Windows.Forms.PictureBox();
+            this.pnlImdbInfo = new System.Windows.Forms.Panel();
+            this.lblttName = new System.Windows.Forms.Label();
+            this.lblttRatingCount = new System.Windows.Forms.Label();
+            this.lblttRating = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.nudMinImdb)).BeginInit();
             this.statusStrip.SuspendLayout();
             this.toolStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTooltipImg)).BeginInit();
+            this.pnlImdbInfo.SuspendLayout();
             this.SuspendLayout();
             // 
             // categ1
@@ -218,6 +225,8 @@
             this.toolTip.SetToolTip(this.dgvListings, "Double Click entry to Open in Browser");
             this.dgvListings.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellContentClick);
             this.dgvListings.CellDoubleClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellDoubleClick);
+            this.dgvListings.CellMouseEnter += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellMouseEnter);
+            this.dgvListings.CellMouseLeave += new System.Windows.Forms.DataGridViewCellEventHandler(this.dgvListings_CellMouseLeave);
             this.dgvListings.MouseClick += new System.Windows.Forms.MouseEventHandler(this.dgvListings_MouseClick);
             // 
             // Category
@@ -786,11 +795,73 @@
             this.tsbReadNotify.Visible = false;
             this.tsbReadNotify.Click += new System.EventHandler(this.tsbReadNotify_Click);
             // 
+            // pbTooltipImg
+            // 
+            this.pbTooltipImg.Location = new System.Drawing.Point(0, 0);
+            this.pbTooltipImg.Name = "pbTooltipImg";
+            this.pbTooltipImg.Size = new System.Drawing.Size(207, 289);
+            this.pbTooltipImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbTooltipImg.TabIndex = 11;
+            this.pbTooltipImg.TabStop = false;
+            this.pbTooltipImg.MouseEnter += new System.EventHandler(this.pbTooltipImg_MouseEnter);
+            // 
+            // pnlImdbInfo
+            // 
+            this.pnlImdbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlImdbInfo.AutoSize = true;
+            this.pnlImdbInfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlImdbInfo.BackColor = System.Drawing.SystemColors.ControlLightLight;
+            this.pnlImdbInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlImdbInfo.Controls.Add(this.lblttName);
+            this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
+            this.pnlImdbInfo.Controls.Add(this.lblttRating);
+            this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
+            this.pnlImdbInfo.Location = new System.Drawing.Point(568, 4);
+            this.pnlImdbInfo.Name = "pnlImdbInfo";
+            this.pnlImdbInfo.Size = new System.Drawing.Size(359, 294);
+            this.pnlImdbInfo.TabIndex = 12;
+            this.pnlImdbInfo.Visible = false;
+            this.pnlImdbInfo.MouseEnter += new System.EventHandler(this.pnlImdbInfo_MouseEnter);
+            // 
+            // lblttName
+            // 
+            this.lblttName.AutoSize = true;
+            this.lblttName.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.lblttName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblttName.Location = new System.Drawing.Point(213, 9);
+            this.lblttName.Name = "lblttName";
+            this.lblttName.Size = new System.Drawing.Size(110, 21);
+            this.lblttName.TabIndex = 12;
+            this.lblttName.Text = "Looper (2012)";
+            // 
+            // lblttRatingCount
+            // 
+            this.lblttRatingCount.AutoSize = true;
+            this.lblttRatingCount.Font = new System.Drawing.Font("Segoe UI Semibold", 8F, System.Drawing.FontStyle.Bold);
+            this.lblttRatingCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.lblttRatingCount.Location = new System.Drawing.Point(214, 67);
+            this.lblttRatingCount.Name = "lblttRatingCount";
+            this.lblttRatingCount.Size = new System.Drawing.Size(140, 13);
+            this.lblttRatingCount.TabIndex = 12;
+            this.lblttRatingCount.Text = "Rating count: 522371 users";
+            // 
+            // lblttRating
+            // 
+            this.lblttRating.AutoSize = true;
+            this.lblttRating.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblttRating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.lblttRating.Location = new System.Drawing.Point(214, 39);
+            this.lblttRating.Name = "lblttRating";
+            this.lblttRating.Size = new System.Drawing.Size(80, 15);
+            this.lblttRating.TabIndex = 12;
+            this.lblttRating.Text = "Rating: 7.4/10";
+            // 
             // Main
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(931, 637);
+            this.Controls.Add(this.pnlImdbInfo);
             this.Controls.Add(this.toolStrip1);
             this.Controls.Add(this.statusStrip);
             this.Controls.Add(this.groupBox1);
@@ -816,6 +887,9 @@
             this.statusStrip.PerformLayout();
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pbTooltipImg)).EndInit();
+            this.pnlImdbInfo.ResumeLayout(false);
+            this.pnlImdbInfo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -889,6 +963,11 @@
         private System.Windows.Forms.ToolStripDropDownButton toolStripSplitButton2;
         private System.Windows.Forms.ToolStripMenuItem directDownloadToolStripMenuItem;
         private System.Windows.Forms.ToolStripButton tsbReadNotify;
+        private System.Windows.Forms.PictureBox pbTooltipImg;
+        private System.Windows.Forms.Panel pnlImdbInfo;
+        private System.Windows.Forms.Label lblttRating;
+        private System.Windows.Forms.Label lblttName;
+        private System.Windows.Forms.Label lblttRatingCount;
     }
 }
 

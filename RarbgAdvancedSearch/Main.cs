@@ -28,7 +28,10 @@ namespace RarbgAdvancedSearch
             Downloading = Color.FromArgb(245, 186, 125), 
             Downloaded = Color.FromArgb(143, 255, 135), 
             Deleted = Color.FromArgb(247, 110, 72);
-        
+
+        Imdb imdB = new Imdb();
+        private int gCurrentRow = -1;
+
         public Main()
         {
             dd_list = new List<ContentTrack>();
@@ -950,6 +953,66 @@ namespace RarbgAdvancedSearch
             this.Controls.Add(aboutpage);
             aboutpage.BringToFront();
             aboutpage.Dock = DockStyle.Fill;            
+        }
+
+        private void dgvListings_CellMouseEnter(object sender, DataGridViewCellEventArgs e)
+        {
+            gCurrentRow = e.RowIndex;
+
+            DataGridView dgv_sender = sender as DataGridView;
+            DataGridViewCell dgv_MouseOverCell = null;
+            if (gCurrentRow == e.RowIndex && e.RowIndex >= 0 && e.ColumnIndex > 0 && e.RowIndex < dgv_sender.RowCount && e.ColumnIndex < dgv_sender.ColumnCount)
+            {
+                dgv_MouseOverCell = dgv_sender.Rows[e.RowIndex].Cells[e.ColumnIndex];
+                dgvListings.Rows[e.RowIndex].Selected = true;
+            }
+
+            Task.Run(async () =>
+            {
+                Thread.Sleep(500);
+                
+                if (dgv_MouseOverCell != null && gCurrentRow == e.RowIndex)
+                {
+                    rarbgEntry entry = GetRarbgEntryFromRowTag(dgvListings.Rows[e.RowIndex].Tag);
+                    if(!string.IsNullOrEmpty(entry.imdb_id))
+                    {                        
+                        if(dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
+                        {
+                            var info = imdB.GetImdbInfo(entry.imdb_id);
+                            if (dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
+                            {
+                                this.PerformSafely(() => {
+                                    pbTooltipImg.Image = info.Image;
+                                    lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
+                                    lblttRating.Text = $"Rating: {info.RatingValue}/10";
+                                    lblttRatingCount.Text = $"Rating count: {info.RatingCount} users";
+                                    //pnlImdbInfo.Location = new System.Drawing.Point(Cursor.Position.X - this.Location.X, Cursor.Position.Y - this.Location.Y);
+                                    if (pbTooltipImg.Image != null)
+                                        pnlImdbInfo.Visible = true;
+                                });
+                            }                                
+                        }                        
+                    }                               
+                }
+            });            
+        }
+
+        private void dgvListings_CellMouseLeave(object sender, DataGridViewCellEventArgs e)
+        {
+            pbTooltipImg.Image = null;
+            pnlImdbInfo.Visible = false;
+        }
+
+        private void pbTooltipImg_MouseEnter(object sender, EventArgs e)
+        {
+            pbTooltipImg.Image = null;
+            pnlImdbInfo.Visible = false;
+        }
+
+        private void pnlImdbInfo_MouseEnter(object sender, EventArgs e)
+        {
+            pbTooltipImg.Image = null;
+            pnlImdbInfo.Visible = false;
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

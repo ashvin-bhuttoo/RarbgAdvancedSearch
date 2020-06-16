@@ -110,7 +110,7 @@ namespace RarbgAdvancedSearch
                 return string.Empty;
             }
 
-            public static string Get(string url, ref byte[] responseBytes, string referer = "", string host = "rarbgenter.org", bool addRarbgHeaders = true)
+            public static string Get(string url, ref byte[] responseBytes, string referer = "", string host = "rarbgenter.org", bool addRarbgHeaders = true, bool allowSetCookie = true)
             {
                 //Ignore ssl errors
                 ServicePointManager.ServerCertificateValidationCallback += (sender, cert, chain, sslPolicyErrors) => true;
@@ -182,7 +182,7 @@ namespace RarbgAdvancedSearch
                                 }
                             }
 
-                            if(webResponse.Headers["Set-Cookie"] != null)
+                            if(webResponse.Headers["Set-Cookie"] != null && allowSetCookie)
                             {
                                 CookieCollection newCookies = new CookieCollection();
                                 if (HttpCookieExtension.GetHttpCookiesFromHeader(webResponse.Headers["Set-Cookie"], out newCookies))
