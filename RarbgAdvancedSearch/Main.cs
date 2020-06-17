@@ -981,12 +981,16 @@ namespace RarbgAdvancedSearch
                         if(dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
                         {
                             var info = imdB.GetImdbInfo(entry.imdb_id);
-                            if (!string.IsNullOrEmpty(info.imgUrl) && dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
+                            if (!string.IsNullOrEmpty(info.Name) && dgvListings.SelectedRows.Count > 0 && GetRarbgEntryFromRowTag(dgvListings.SelectedRows[0].Tag).imdb_id == entry.imdb_id)
                             {
                                 this.PerformSafely(() => {
                                     if(info.Image != null)
                                     {
                                         pbTooltipImg.Image = info.Image;
+                                    }
+                                    else
+                                    {
+                                        pbTooltipImg.ImageLocation = info.imgUrl;
                                     }
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
                                     lblttRating.Text = $"{info.RatingValue}/10";

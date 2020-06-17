@@ -40,18 +40,22 @@ namespace RarbgAdvancedSearch
             }
         }
 
-        public void cacheImage(string imdbId, Image img)
+        public void cacheImage(string imdbId, string imgUrl)
         {
-            if(tmpImdbCache.ContainsKey(imdbId))
+            Task.Run(async () =>
             {
-                try
+                Thread.Sleep(500);
+                if (tmpImdbCache.ContainsKey(imdbId))
                 {
-                    var NewInfoBackup = tmpImdbCache[imdbId];
-                    NewInfoBackup.Image = img;
-                    tmpImdbCache[imdbId] = NewInfoBackup;
+                    try
+                    {
+                        var NewInfoBackup = tmpImdbCache[imdbId];
+                        NewInfoBackup.Image = DownloadImage(imgUrl);
+                        tmpImdbCache[imdbId] = NewInfoBackup;
+                    }
+                    catch (Exception) { }
                 }
-                catch (Exception) { }
-            }
+            });            
         }
 
         private ImdbInfo fetchImdbInfo(string imdbId)
@@ -75,7 +79,7 @@ namespace RarbgAdvancedSearch
                             Name = imdbJsonObj.Name,
                             Description = imdbJsonObj.Description,
                             imgUrl = imdbJsonObj.Image?.OriginalString,
-                            Image = imdbJsonObj.Image != null ? DownloadImage(imdbJsonObj.Image.OriginalString) : null,
+                           // Image = imdbJsonObj.Image != null ? DownloadImage(imdbJsonObj.Image.OriginalString) : null,
                             Genre = imdbJsonObj.Genre ?? new Genre(),
                             DatePublished = imdbJsonObj.DatePublished ?? DateTimeOffset.Now,
                             Keywords = imdbJsonObj.Keywords?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[] { },
@@ -115,6 +119,7 @@ namespace RarbgAdvancedSearch
                 if(!string.IsNullOrEmpty(info.Name))
                 {
                     tmpImdbCache[imdbId] = info;
+                    cacheImage(imdbId, info.imgUrl);
                 }             
                 else
                 {
