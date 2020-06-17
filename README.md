@@ -35,7 +35,7 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
-v1.0.7
+v1.0.8
 - Added imdb preview panel for movies and tv shows
 
 v1.0.7
