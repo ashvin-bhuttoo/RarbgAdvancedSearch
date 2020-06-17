@@ -36,6 +36,9 @@ This project was built using VS2019 Community Edition and is completely open sou
 <b>Changelog</b>
 ```
 v1.0.7
+- Added imdb preview panel for movies and tv shows
+
+v1.0.7
 - YouTube trailer search optimization
 - Added copy magnet link option
 - Added backup updater
