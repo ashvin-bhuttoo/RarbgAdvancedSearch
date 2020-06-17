@@ -21,12 +21,6 @@
         }
         "Entry"
         {
-        "MsmKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
-        "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
-        "MsmSig" = "8:_UNDEFINED"
-        }
-        "Entry"
-        {
         "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
         "OwnerKey" = "8:_76EE30A52A744CD8B58109A9345E43FF"
         "MsmSig" = "8:_UNDEFINED"
@@ -34,7 +28,7 @@
         "Entry"
         {
         "MsmKey" = "8:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
-        "OwnerKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
+        "OwnerKey" = "8:_E1535124903CD0196F2FE74A90366536"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -75,6 +69,12 @@
         }
         "Entry"
         {
+        "MsmKey" = "8:_E1535124903CD0196F2FE74A90366536"
+        "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
+        "MsmSig" = "8:_UNDEFINED"
+        }
+        "Entry"
+        {
         "MsmKey" = "8:_EA5C1B0524FD598220FB9FEC6170CD63"
         "OwnerKey" = "8:_C5D4ECC6EB8A4685AE9152A27E0535F5"
         "MsmSig" = "8:_UNDEFINED"
@@ -94,7 +94,7 @@
         "Entry"
         {
         "MsmKey" = "8:_UNDEFINED"
-        "OwnerKey" = "8:_108CB59A48FA0C85A1B6D83ADAC72705"
+        "OwnerKey" = "8:_E1535124903CD0196F2FE74A90366536"
         "MsmSig" = "8:_UNDEFINED"
         }
         "Entry"
@@ -261,37 +261,6 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
-            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_108CB59A48FA0C85A1B6D83ADAC72705"
-            {
-            "AssemblyRegister" = "3:1"
-            "AssemblyIsInGAC" = "11:FALSE"
-            "AssemblyAsmDisplayName" = "8:Octokit, Version=0.47.0.0, Culture=neutral, processorArchitecture=MSIL"
-                "ScatterAssemblies"
-                {
-                    "_108CB59A48FA0C85A1B6D83ADAC72705"
-                    {
-                    "Name" = "8:Octokit.dll"
-                    "Attributes" = "3:512"
-                    }
-                }
-            "SourcePath" = "8:Octokit.dll"
-            "TargetName" = "8:"
-            "Tag" = "8:"
-            "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
-            "Condition" = "8:"
-            "Transitive" = "11:FALSE"
-            "Vital" = "11:TRUE"
-            "ReadOnly" = "11:FALSE"
-            "Hidden" = "11:FALSE"
-            "System" = "11:FALSE"
-            "Permanent" = "11:FALSE"
-            "SharedLegacy" = "11:FALSE"
-            "PackageAs" = "3:1"
-            "Register" = "3:1"
-            "Exclude" = "11:FALSE"
-            "IsDependency" = "11:TRUE"
-            "IsolateTo" = "8:"
-            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_1C0F24DCF04D4FB7167D2DC37DF9DDCA"
             {
             "AssemblyRegister" = "3:1"
@@ -405,6 +374,37 @@
             "IsDependency" = "11:TRUE"
             "IsolateTo" = "8:"
             }
+            "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_E1535124903CD0196F2FE74A90366536"
+            {
+            "AssemblyRegister" = "3:1"
+            "AssemblyIsInGAC" = "11:FALSE"
+            "AssemblyAsmDisplayName" = "8:Octokit, Version=0.48.0.0, Culture=neutral, processorArchitecture=MSIL"
+                "ScatterAssemblies"
+                {
+                    "_E1535124903CD0196F2FE74A90366536"
+                    {
+                    "Name" = "8:Octokit.dll"
+                    "Attributes" = "3:512"
+                    }
+                }
+            "SourcePath" = "8:Octokit.dll"
+            "TargetName" = "8:"
+            "Tag" = "8:"
+            "Folder" = "8:_779034D75BCD4217B39D50E995DC9CD5"
+            "Condition" = "8:"
+            "Transitive" = "11:FALSE"
+            "Vital" = "11:TRUE"
+            "ReadOnly" = "11:FALSE"
+            "Hidden" = "11:FALSE"
+            "System" = "11:FALSE"
+            "Permanent" = "11:FALSE"
+            "SharedLegacy" = "11:FALSE"
+            "PackageAs" = "3:1"
+            "Register" = "3:1"
+            "Exclude" = "11:FALSE"
+            "IsDependency" = "11:TRUE"
+            "IsolateTo" = "8:"
+            }
             "{9F6F8455-1EF1-4B85-886A-4223BCC8E7F7}:_EA5C1B0524FD598220FB9FEC6170CD63"
             {
             "AssemblyRegister" = "3:1"
@@ -492,15 +492,15 @@
         {
         "Name" = "8:Microsoft Visual Studio"
         "ProductName" = "8:RarbgAdvancedSearch"
-        "ProductCode" = "8:{8D938BD2-5E37-4F31-B161-13ECEF39DB53}"
-        "PackageCode" = "8:{BB038AEA-384A-4DA7-B027-C888F4860C10}"
+        "ProductCode" = "8:{B975C85F-CA5B-4106-86B1-107BC8113834}"
+        "PackageCode" = "8:{2E4EC831-BBCB-4C90-9FA5-BB2F35667702}"
         "UpgradeCode" = "8:{6E437ECD-F4CC-43C0-9703-A72E4F0E906C}"
         "AspNetVersion" = "8:4.0.30319.0"
         "RestartWWWService" = "11:FALSE"
         "RemovePreviousVersions" = "11:TRUE"
         "DetectNewerInstalledVersion" = "11:FALSE"
         "InstallAllUsers" = "11:TRUE"
-        "ProductVersion" = "8:1.0.20"
+        "ProductVersion" = "8:1.0.21"
         "Manufacturer" = "8:Unkn0wn"
         "ARPHELPTELEPHONE" = "8:"
         "ARPHELPLINK" = "8:https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch"
