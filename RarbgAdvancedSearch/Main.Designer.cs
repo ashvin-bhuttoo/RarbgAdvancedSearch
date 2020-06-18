@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.categ1 = new System.Windows.Forms.CheckedListBox();
             this.categ2 = new System.Windows.Forms.CheckedListBox();
@@ -210,14 +210,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvListings.BackgroundColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvListings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle19.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
             this.dgvListings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvListings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Category,
@@ -231,14 +231,14 @@
             this.dgYear,
             this.dgImdb,
             this.colStatus});
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvListings.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvListings.DefaultCellStyle = dataGridViewCellStyle20;
             this.dgvListings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvListings.Location = new System.Drawing.Point(12, 270);
             this.dgvListings.MultiSelect = false;
@@ -362,18 +362,18 @@
             this.groupBox1.Controls.Add(this.btnReapplyFilter);
             this.groupBox1.Controls.Add(this.dudSearchOrder);
             this.groupBox1.Controls.Add(this.cmbSearchOrder);
-            this.groupBox1.Controls.Add(this.chkMaxYear);
             this.groupBox1.Controls.Add(this.dtpMaxYear);
             this.groupBox1.Controls.Add(this.chkGenre);
-            this.groupBox1.Controls.Add(this.chkSearchOrder);
-            this.groupBox1.Controls.Add(this.chkMinYear);
             this.groupBox1.Controls.Add(this.dtpMinYear);
             this.groupBox1.Controls.Add(this.dtpMinUpDate);
             this.groupBox1.Controls.Add(this.nudPageLimit);
             this.groupBox1.Controls.Add(this.nudMinImdb);
-            this.groupBox1.Controls.Add(this.chkPageLimit);
-            this.groupBox1.Controls.Add(this.chkMinUpDate);
+            this.groupBox1.Controls.Add(this.chkMinYear);
+            this.groupBox1.Controls.Add(this.chkMaxYear);
             this.groupBox1.Controls.Add(this.chkMinImdb);
+            this.groupBox1.Controls.Add(this.chkMinUpDate);
+            this.groupBox1.Controls.Add(this.chkSearchOrder);
+            this.groupBox1.Controls.Add(this.chkPageLimit);
             this.groupBox1.Location = new System.Drawing.Point(12, 130);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(907, 134);
@@ -415,7 +415,7 @@
             this.dudSearchOrder.Enabled = false;
             this.dudSearchOrder.Items.Add("DESC");
             this.dudSearchOrder.Items.Add("ASC");
-            this.dudSearchOrder.Location = new System.Drawing.Point(438, 60);
+            this.dudSearchOrder.Location = new System.Drawing.Point(440, 60);
             this.dudSearchOrder.Name = "dudSearchOrder";
             this.dudSearchOrder.Size = new System.Drawing.Size(70, 20);
             this.dudSearchOrder.TabIndex = 9;
@@ -429,7 +429,7 @@
             "Size",
             "Seeders",
             "Leechers"});
-            this.cmbSearchOrder.Location = new System.Drawing.Point(311, 60);
+            this.cmbSearchOrder.Location = new System.Drawing.Point(314, 60);
             this.cmbSearchOrder.Name = "cmbSearchOrder";
             this.cmbSearchOrder.Size = new System.Drawing.Size(121, 21);
             this.cmbSearchOrder.TabIndex = 8;
@@ -451,7 +451,7 @@
             this.dtpMaxYear.CustomFormat = "yyyy";
             this.dtpMaxYear.Enabled = false;
             this.dtpMaxYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpMaxYear.Location = new System.Drawing.Point(140, 96);
+            this.dtpMaxYear.Location = new System.Drawing.Point(142, 96);
             this.dtpMaxYear.Name = "dtpMaxYear";
             this.dtpMaxYear.ShowUpDown = true;
             this.dtpMaxYear.Size = new System.Drawing.Size(60, 20);
@@ -497,7 +497,7 @@
             this.dtpMinYear.CustomFormat = "yyyy";
             this.dtpMinYear.Enabled = false;
             this.dtpMinYear.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
-            this.dtpMinYear.Location = new System.Drawing.Point(140, 59);
+            this.dtpMinYear.Location = new System.Drawing.Point(142, 59);
             this.dtpMinYear.Name = "dtpMinYear";
             this.dtpMinYear.ShowUpDown = true;
             this.dtpMinYear.Size = new System.Drawing.Size(60, 20);
@@ -507,7 +507,7 @@
             // dtpMinUpDate
             // 
             this.dtpMinUpDate.Enabled = false;
-            this.dtpMinUpDate.Location = new System.Drawing.Point(335, 21);
+            this.dtpMinUpDate.Location = new System.Drawing.Point(342, 21);
             this.dtpMinUpDate.Name = "dtpMinUpDate";
             this.dtpMinUpDate.Size = new System.Drawing.Size(181, 20);
             this.dtpMinUpDate.TabIndex = 4;
@@ -516,7 +516,7 @@
             // nudPageLimit
             // 
             this.nudPageLimit.Enabled = false;
-            this.nudPageLimit.Location = new System.Drawing.Point(342, 96);
+            this.nudPageLimit.Location = new System.Drawing.Point(344, 96);
             this.nudPageLimit.Maximum = new decimal(new int[] {
             -559939585,
             902409669,
@@ -540,7 +540,7 @@
             // 
             this.nudMinImdb.DecimalPlaces = 1;
             this.nudMinImdb.Enabled = false;
-            this.nudMinImdb.Location = new System.Drawing.Point(140, 22);
+            this.nudMinImdb.Location = new System.Drawing.Point(142, 22);
             this.nudMinImdb.Maximum = new decimal(new int[] {
             10,
             0,
