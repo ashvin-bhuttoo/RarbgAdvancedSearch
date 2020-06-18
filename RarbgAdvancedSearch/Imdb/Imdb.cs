@@ -66,7 +66,7 @@ namespace RarbgAdvancedSearch
                 string response = Utils.HttpClient.Get($"https://www.imdb.com/title/{imdbId}/", ref response_bytes, "", "", false, false);
                 HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                 doc.LoadHtml(response);
-                var posterImageNode = doc.DocumentNode.SelectSingleNode("//*[@id='title-overview-widget']/div[1]/div[3]/div[1]/a/img");
+                var posterImageNode = doc.DocumentNode.SelectSingleNode("//*[@id='title-overview-widget']/div[1]/div[3]/div[1]/a/img") ?? doc.DocumentNode.SelectSingleNode("//*[@id='title-overview-widget']/div[2]/div[1]/a/img");
                 var infoJsonNode = doc.DocumentNode.SelectNodes("//script[@type='application/ld+json']");
                 if (infoJsonNode != null && infoJsonNode.Count > 0)
                 {
