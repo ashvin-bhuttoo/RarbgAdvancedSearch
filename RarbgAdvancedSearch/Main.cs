@@ -991,6 +991,23 @@ namespace RarbgAdvancedSearch
                                     else
                                     {
                                         pbTooltipImg.ImageLocation = info.imgUrl;
+                                        Task.Run(async () =>
+                                        {
+                                            while (pbTooltipImg.ImageLocation == info.imgUrl && info.Image == null)
+                                            {
+                                                info = imdB.GetImdbInfo(entry.imdb_id);
+                                                Thread.Sleep(1);
+                                            }
+                                                
+
+                                            if(info.Image != null)
+                                            {
+                                                this.PerformSafely(() => {
+                                                    if(pbTooltipImg.ImageLocation == info.imgUrl)
+                                                        pbTooltipImg.Image = info.Image;
+                                                });
+                                            }
+                                        });
                                     }
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
                                     lblttRating.Text = $"{info.RatingValue}/10";

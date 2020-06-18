@@ -66,20 +66,20 @@ namespace RarbgAdvancedSearch
                 string response = Utils.HttpClient.Get($"https://www.imdb.com/title/{imdbId}/", ref response_bytes, "", "", false, false);
                 HtmlDocument doc = new HtmlAgilityPack.HtmlDocument();
                 doc.LoadHtml(response);
-                var nodes = doc.DocumentNode.SelectNodes("//script[@type='application/ld+json']");
-                if (nodes != null && nodes.Count > 0)
+                var posterImageNode = doc.DocumentNode.SelectSingleNode("//*[@id='title-overview-widget']/div[1]/div[3]/div[1]/a/img");
+                var infoJsonNode = doc.DocumentNode.SelectNodes("//script[@type='application/ld+json']");
+                if (infoJsonNode != null && infoJsonNode.Count > 0)
                 {
                     try
                     {
-                        var imdbJsonObj = JsonConvert.DeserializeObject<QuickType.ImdbJson>(nodes[0].InnerText, Converter.Settings);
+                        var imdbJsonObj = JsonConvert.DeserializeObject<QuickType.ImdbJson>(infoJsonNode[0].InnerText, Converter.Settings);
 
                         var info = new ImdbInfo
                         {
                             imdbId = imdbId,
                             Name = imdbJsonObj.Name,
                             Description = imdbJsonObj.Description,
-                            imgUrl = imdbJsonObj.Image?.OriginalString,
-                           // Image = imdbJsonObj.Image != null ? DownloadImage(imdbJsonObj.Image.OriginalString) : null,
+                            imgUrl = posterImageNode?.Attributes["src"]?.Value ?? imdbJsonObj.Image?.OriginalString,
                             Genre = imdbJsonObj.Genre ?? new Genre(),
                             DatePublished = imdbJsonObj.DatePublished ?? DateTimeOffset.Now,
                             Keywords = imdbJsonObj.Keywords?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[] { },
@@ -88,6 +88,9 @@ namespace RarbgAdvancedSearch
                             BestRating = imdbJsonObj.AggregateRating?.BestRating != null ? float.Parse(imdbJsonObj.AggregateRating?.BestRating) : 0.0f,
                             RatingCount = imdbJsonObj.AggregateRating?.RatingCount ?? 0
                         };
+
+                        if(info.imgUrl == posterImageNode?.Attributes["src"]?.Value && !string.IsNullOrEmpty(imdbJsonObj.Image?.OriginalString))
+                            cacheImage(imdbId, imdbJsonObj.Image?.OriginalString);
 
                         return info;
                     }
@@ -119,7 +122,6 @@ namespace RarbgAdvancedSearch
                 if(!string.IsNullOrEmpty(info.Name))
                 {
                     tmpImdbCache[imdbId] = info;
-                    cacheImage(imdbId, info.imgUrl);
                 }             
                 else
                 {
