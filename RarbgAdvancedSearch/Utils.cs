@@ -336,6 +336,30 @@ namespace RarbgAdvancedSearch
             return d1 + (d2 - d1) * fraction;
         }
 
+
+        public static string SpliceText(string text, int lineLength)
+        {
+            text = text ?? "...";
+            string[] words = text.Split(new[] { ' ' }, StringSplitOptions.RemoveEmptyEntries);
+            StringBuilder sb = new StringBuilder();
+            int currLength = 0;
+            foreach (string word in words)
+            {
+                if (currLength + word.Length + 1 < lineLength) // +1 accounts for adding a space
+                {
+                    sb.AppendFormat(" {0}", word);
+                    currLength = (sb.Length % lineLength);
+                }
+                else
+                {
+                    sb.AppendFormat("{0}{1}", Environment.NewLine, word);
+                    currLength = 0;
+                }
+            }
+
+            return sb.ToString().Trim();
+        }
+
         #endregion
     }
 

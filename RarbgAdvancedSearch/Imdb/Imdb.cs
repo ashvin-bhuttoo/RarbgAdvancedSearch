@@ -78,9 +78,9 @@ namespace RarbgAdvancedSearch
                         {
                             imdbId = imdbId,
                             Name = imdbJsonObj.Name,
-                            Description = imdbJsonObj.Description,
+                            Description = imdbJsonObj.Description ?? "not available",
                             imgUrl = posterImageNode?.Attributes["src"]?.Value ?? imdbJsonObj.Image?.OriginalString,
-                            Genre = imdbJsonObj.Genre ?? new Genre(),
+                            Genre = imdbJsonObj.Genre ?? new Genre() { String = "not availables" },
                             DatePublished = imdbJsonObj.DatePublished ?? DateTimeOffset.Now,
                             Keywords = imdbJsonObj.Keywords?.Split(new[] { ',' }, StringSplitOptions.RemoveEmptyEntries) ?? new string[] { },
                             RatingValue = imdbJsonObj.AggregateRating?.RatingValue != null ? float.Parse(imdbJsonObj.AggregateRating?.RatingValue) : 0.0f,

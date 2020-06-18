@@ -5,6 +5,8 @@ using System.ComponentModel;
 using System.Data;
 using System.Diagnostics;
 using System.Drawing;
+using System.Drawing.Drawing2D;
+using System.Globalization;
 using System.Linq;
 using System.Reflection;
 using System.Text;
@@ -937,8 +939,6 @@ namespace RarbgAdvancedSearch
 
         private void Main_Load(object sender, EventArgs e)
         {
-            pnlImdbInfo.Location = new Point(576, 4);
-
             Task.Run(async () =>
             {
                 while(true)
@@ -1010,20 +1010,23 @@ namespace RarbgAdvancedSearch
                                         });
                                     }
                                     lblttName.Text = $"{info.Name} ({info.DatePublished.Year})";
-                                    lblttRating.Text = $"{info.RatingValue}/10";
+                                    lblttRating.Text = $"{info.RatingValue.ToString("0.0")}";
                                     double ratingPercent = ((double)info.RatingValue / 8.5) * 100;
                                     lblttRating.ForeColor = Utils.GetBlendedColor((int)(ratingPercent > 100 ? 100 : ratingPercent));
-                                    lblttRatingCount.Text = $"{info.RatingCount} Users";
+                                    lblttDescription.Text = Utils.SpliceText(info.Description, 50);
+                                    lblttRatingCount.Text = $"{info.RatingCount.ToString("n0", CultureInfo.InvariantCulture)} Users";
                                     lblttGenre.Text = string.Empty;
                                     if(!string.IsNullOrEmpty(info.Genre.String))
                                     {
                                         lblttGenre.Text = $"{lblttGenre.Text}{info.Genre.String}\n";
                                     }
-                                    else foreach(var g in info.Genre.StringArray)
+                                    else// foreach(var g in info.Genre.StringArray)
                                     {
-                                            lblttGenre.Text = $"{lblttGenre.Text}{g}\n";
+                                        lblttGenre.Text = Utils.SpliceText(string.Join(", ", info.Genre.StringArray), 40); //$"{lblttGenre.Text}{g}\n";
                                     }
+                                    pnlImdbInfo.Location = new Point(this.Width - pnlImdbInfo.Width - 26, 4);
                                     pnlImdbInfo.Visible = true;
+                                    pnlImdbInfo.Refresh();
                                 });
                             }                                
                         }                        
@@ -1048,6 +1051,20 @@ namespace RarbgAdvancedSearch
         {
             pbTooltipImg.Image = null;
             pnlImdbInfo.Visible = false;
+        }
+
+        private void pnlImdbInfo_Paint(object sender, PaintEventArgs e)
+        {
+            LinearGradientBrush linearGradientBrush =
+            new LinearGradientBrush(((Panel)sender).ClientRectangle, Color.White, Color.White, 45f);
+
+            ColorBlend cblend = new ColorBlend(4);
+            cblend.Colors = new Color[4] { Color.White, Color.White, Color.White, Color.FromArgb(220, 220, 220) };
+            cblend.Positions = new float[4] {0f, 0.2f, 0.8f, 1f };
+
+            linearGradientBrush.InterpolationColors = cblend;
+
+            e.Graphics.FillRectangle(linearGradientBrush, ((Panel)sender).ClientRectangle);
         }
 
         private void Main_FormClosing(object sender, FormClosingEventArgs e)

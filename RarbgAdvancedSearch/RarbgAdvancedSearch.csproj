@@ -146,6 +146,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="star.png" />
     <None Include="Resources\UtilSvc.exe" />
     <None Include="github.png" />
     <None Include="close.png" />
