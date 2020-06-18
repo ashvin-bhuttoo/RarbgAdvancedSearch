@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle19 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle20 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Main));
             this.categ1 = new System.Windows.Forms.CheckedListBox();
             this.categ2 = new System.Windows.Forms.CheckedListBox();
@@ -55,18 +55,18 @@
             this.btnReapplyFilter = new System.Windows.Forms.Button();
             this.dudSearchOrder = new System.Windows.Forms.DomainUpDown();
             this.cmbSearchOrder = new System.Windows.Forms.ComboBox();
-            this.chkMaxYear = new System.Windows.Forms.CheckBox();
             this.dtpMaxYear = new System.Windows.Forms.DateTimePicker();
             this.chkGenre = new System.Windows.Forms.CheckBox();
-            this.chkSearchOrder = new System.Windows.Forms.CheckBox();
-            this.chkMinYear = new System.Windows.Forms.CheckBox();
             this.dtpMinYear = new System.Windows.Forms.DateTimePicker();
             this.dtpMinUpDate = new System.Windows.Forms.DateTimePicker();
             this.nudPageLimit = new System.Windows.Forms.NumericUpDown();
             this.nudMinImdb = new System.Windows.Forms.NumericUpDown();
-            this.chkPageLimit = new System.Windows.Forms.CheckBox();
-            this.chkMinUpDate = new System.Windows.Forms.CheckBox();
+            this.chkMinYear = new System.Windows.Forms.CheckBox();
+            this.chkMaxYear = new System.Windows.Forms.CheckBox();
             this.chkMinImdb = new System.Windows.Forms.CheckBox();
+            this.chkMinUpDate = new System.Windows.Forms.CheckBox();
+            this.chkSearchOrder = new System.Windows.Forms.CheckBox();
+            this.chkPageLimit = new System.Windows.Forms.CheckBox();
             this.statusStrip = new System.Windows.Forms.StatusStrip();
             this.tstProgress = new System.Windows.Forms.ToolStripProgressBar();
             this.tstStatus = new System.Windows.Forms.ToolStripStatusLabel();
@@ -89,6 +89,7 @@
             this.tsmiAllMarked = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator6 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
             this.tsbAbout = new System.Windows.Forms.ToolStripButton();
@@ -96,19 +97,18 @@
             this.toolStripSeparator11 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripSplitButton2 = new System.Windows.Forms.ToolStripDropDownButton();
             this.directDownloadToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.tsbReadNotify = new System.Windows.Forms.ToolStripButton();
             this.pnlImdbInfo = new System.Windows.Forms.Panel();
+            this.label1 = new System.Windows.Forms.Label();
+            this.lblttDescription = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.label4 = new System.Windows.Forms.Label();
             this.lblttGenre = new System.Windows.Forms.Label();
             this.lblttName = new System.Windows.Forms.Label();
             this.lblttRatingCount = new System.Windows.Forms.Label();
-            this.lblttRating = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.pbTooltipImg = new System.Windows.Forms.PictureBox();
-            this.tsbDonate = new System.Windows.Forms.ToolStripButton();
-            this.tsbReadNotify = new System.Windows.Forms.ToolStripButton();
-            this.label1 = new System.Windows.Forms.Label();
-            this.lblttDescription = new System.Windows.Forms.Label();
+            this.lblttRating = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.dgvListings)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nudPageLimit)).BeginInit();
@@ -210,14 +210,14 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.dgvListings.BackgroundColor = System.Drawing.SystemColors.ControlLight;
-            dataGridViewCellStyle19.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle19.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle19.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle19.ForeColor = System.Drawing.SystemColors.WindowText;
-            dataGridViewCellStyle19.SelectionBackColor = System.Drawing.SystemColors.Highlight;
-            dataGridViewCellStyle19.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle19.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.dgvListings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle19;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Segoe UI Semibold", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.SystemColors.WindowText;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.SystemColors.Highlight;
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.dgvListings.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle5;
             this.dgvListings.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dgvListings.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Category,
@@ -231,14 +231,14 @@
             this.dgYear,
             this.dgImdb,
             this.colStatus});
-            dataGridViewCellStyle20.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle20.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle20.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle20.ForeColor = System.Drawing.SystemColors.ControlText;
-            dataGridViewCellStyle20.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
-            dataGridViewCellStyle20.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
-            dataGridViewCellStyle20.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.dgvListings.DefaultCellStyle = dataGridViewCellStyle20;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.SystemColors.ControlText;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.SystemColors.HotTrack;
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.SystemColors.HighlightText;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.dgvListings.DefaultCellStyle = dataGridViewCellStyle6;
             this.dgvListings.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.dgvListings.Location = new System.Drawing.Point(12, 270);
             this.dgvListings.MultiSelect = false;
@@ -435,17 +435,6 @@
             this.cmbSearchOrder.TabIndex = 8;
             this.cmbSearchOrder.Tag = "data,size,seeders,leechers";
             // 
-            // chkMaxYear
-            // 
-            this.chkMaxYear.AutoSize = true;
-            this.chkMaxYear.Location = new System.Drawing.Point(23, 99);
-            this.chkMaxYear.Name = "chkMaxYear";
-            this.chkMaxYear.Size = new System.Drawing.Size(114, 17);
-            this.chkMaxYear.TabIndex = 7;
-            this.chkMaxYear.Text = "Max. Content Year";
-            this.chkMaxYear.UseVisualStyleBackColor = true;
-            this.chkMaxYear.CheckedChanged += new System.EventHandler(this.chkMaxYear_CheckedChanged);
-            // 
             // dtpMaxYear
             // 
             this.dtpMaxYear.CustomFormat = "yyyy";
@@ -468,29 +457,6 @@
             this.chkGenre.Text = "Genre";
             this.chkGenre.UseVisualStyleBackColor = true;
             this.chkGenre.CheckedChanged += new System.EventHandler(this.chkGenre_CheckedChanged);
-            // 
-            // chkSearchOrder
-            // 
-            this.chkSearchOrder.AutoSize = true;
-            this.chkSearchOrder.Location = new System.Drawing.Point(224, 62);
-            this.chkSearchOrder.Name = "chkSearchOrder";
-            this.chkSearchOrder.Size = new System.Drawing.Size(86, 17);
-            this.chkSearchOrder.TabIndex = 5;
-            this.chkSearchOrder.Text = "SearchOrder";
-            this.chkSearchOrder.UseVisualStyleBackColor = true;
-            this.chkSearchOrder.CheckedChanged += new System.EventHandler(this.chkSearchOrder_CheckedChanged);
-            // 
-            // chkMinYear
-            // 
-            this.chkMinYear.AutoSize = true;
-            this.chkMinYear.Location = new System.Drawing.Point(23, 62);
-            this.chkMinYear.Name = "chkMinYear";
-            this.chkMinYear.Size = new System.Drawing.Size(111, 17);
-            this.chkMinYear.TabIndex = 5;
-            this.chkMinYear.Text = "Min. Content Year";
-            this.toolTip.SetToolTip(this.chkMinYear, "Applies to Movies Only");
-            this.chkMinYear.UseVisualStyleBackColor = true;
-            this.chkMinYear.CheckedChanged += new System.EventHandler(this.chkMinYear_CheckedChanged);
             // 
             // dtpMinYear
             // 
@@ -550,27 +516,28 @@
             this.nudMinImdb.Size = new System.Drawing.Size(60, 20);
             this.nudMinImdb.TabIndex = 3;
             // 
-            // chkPageLimit
+            // chkMinYear
             // 
-            this.chkPageLimit.AutoSize = true;
-            this.chkPageLimit.Location = new System.Drawing.Point(224, 99);
-            this.chkPageLimit.Name = "chkPageLimit";
-            this.chkPageLimit.Size = new System.Drawing.Size(112, 17);
-            this.chkPageLimit.TabIndex = 2;
-            this.chkPageLimit.Text = "Page Search Limit";
-            this.chkPageLimit.UseVisualStyleBackColor = true;
-            this.chkPageLimit.CheckedChanged += new System.EventHandler(this.chkPageLimit_CheckedChanged);
+            this.chkMinYear.AutoSize = true;
+            this.chkMinYear.Location = new System.Drawing.Point(23, 62);
+            this.chkMinYear.Name = "chkMinYear";
+            this.chkMinYear.Size = new System.Drawing.Size(111, 17);
+            this.chkMinYear.TabIndex = 5;
+            this.chkMinYear.Text = "Min. Content Year";
+            this.toolTip.SetToolTip(this.chkMinYear, "Applies to Movies Only");
+            this.chkMinYear.UseVisualStyleBackColor = true;
+            this.chkMinYear.CheckedChanged += new System.EventHandler(this.chkMinYear_CheckedChanged);
             // 
-            // chkMinUpDate
+            // chkMaxYear
             // 
-            this.chkMinUpDate.AutoSize = true;
-            this.chkMinUpDate.Location = new System.Drawing.Point(224, 23);
-            this.chkMinUpDate.Name = "chkMinUpDate";
-            this.chkMinUpDate.Size = new System.Drawing.Size(109, 17);
-            this.chkMinUpDate.TabIndex = 2;
-            this.chkMinUpDate.Text = "Min. Upload Date";
-            this.chkMinUpDate.UseVisualStyleBackColor = true;
-            this.chkMinUpDate.CheckedChanged += new System.EventHandler(this.chkMinUpDate_CheckedChanged);
+            this.chkMaxYear.AutoSize = true;
+            this.chkMaxYear.Location = new System.Drawing.Point(23, 99);
+            this.chkMaxYear.Name = "chkMaxYear";
+            this.chkMaxYear.Size = new System.Drawing.Size(114, 17);
+            this.chkMaxYear.TabIndex = 7;
+            this.chkMaxYear.Text = "Max. Content Year";
+            this.chkMaxYear.UseVisualStyleBackColor = true;
+            this.chkMaxYear.CheckedChanged += new System.EventHandler(this.chkMaxYear_CheckedChanged);
             // 
             // chkMinImdb
             // 
@@ -583,6 +550,39 @@
             this.toolTip.SetToolTip(this.chkMinImdb, "Applies to Movies & TV Shows Only");
             this.chkMinImdb.UseVisualStyleBackColor = true;
             this.chkMinImdb.CheckedChanged += new System.EventHandler(this.chkMinImdb_CheckedChanged);
+            // 
+            // chkMinUpDate
+            // 
+            this.chkMinUpDate.AutoSize = true;
+            this.chkMinUpDate.Location = new System.Drawing.Point(224, 23);
+            this.chkMinUpDate.Name = "chkMinUpDate";
+            this.chkMinUpDate.Size = new System.Drawing.Size(109, 17);
+            this.chkMinUpDate.TabIndex = 2;
+            this.chkMinUpDate.Text = "Min. Upload Date";
+            this.chkMinUpDate.UseVisualStyleBackColor = true;
+            this.chkMinUpDate.CheckedChanged += new System.EventHandler(this.chkMinUpDate_CheckedChanged);
+            // 
+            // chkSearchOrder
+            // 
+            this.chkSearchOrder.AutoSize = true;
+            this.chkSearchOrder.Location = new System.Drawing.Point(224, 62);
+            this.chkSearchOrder.Name = "chkSearchOrder";
+            this.chkSearchOrder.Size = new System.Drawing.Size(86, 17);
+            this.chkSearchOrder.TabIndex = 5;
+            this.chkSearchOrder.Text = "SearchOrder";
+            this.chkSearchOrder.UseVisualStyleBackColor = true;
+            this.chkSearchOrder.CheckedChanged += new System.EventHandler(this.chkSearchOrder_CheckedChanged);
+            // 
+            // chkPageLimit
+            // 
+            this.chkPageLimit.AutoSize = true;
+            this.chkPageLimit.Location = new System.Drawing.Point(224, 99);
+            this.chkPageLimit.Name = "chkPageLimit";
+            this.chkPageLimit.Size = new System.Drawing.Size(112, 17);
+            this.chkPageLimit.TabIndex = 2;
+            this.chkPageLimit.Text = "Page Search Limit";
+            this.chkPageLimit.UseVisualStyleBackColor = true;
+            this.chkPageLimit.CheckedChanged += new System.EventHandler(this.chkPageLimit_CheckedChanged);
             // 
             // statusStrip
             // 
@@ -751,6 +751,15 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(6, 25);
             // 
+            // tsbDonate
+            // 
+            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
+            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.tsbDonate.Name = "tsbDonate";
+            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
+            this.tsbDonate.Text = "DONATE";
+            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
+            // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
@@ -798,123 +807,6 @@
             this.directDownloadToolStripMenuItem.Text = "Direct Download List";
             this.directDownloadToolStripMenuItem.Click += new System.EventHandler(this.directDownloadToolStripMenuItem_Click);
             // 
-            // pnlImdbInfo
-            // 
-            this.pnlImdbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlImdbInfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.pnlImdbInfo.BackColor = System.Drawing.Color.Transparent;
-            this.pnlImdbInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pnlImdbInfo.Controls.Add(this.label1);
-            this.pnlImdbInfo.Controls.Add(this.lblttDescription);
-            this.pnlImdbInfo.Controls.Add(this.pictureBox1);
-            this.pnlImdbInfo.Controls.Add(this.label3);
-            this.pnlImdbInfo.Controls.Add(this.label4);
-            this.pnlImdbInfo.Controls.Add(this.lblttGenre);
-            this.pnlImdbInfo.Controls.Add(this.lblttName);
-            this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
-            this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
-            this.pnlImdbInfo.Controls.Add(this.lblttRating);
-            this.pnlImdbInfo.Location = new System.Drawing.Point(382, 339);
-            this.pnlImdbInfo.Name = "pnlImdbInfo";
-            this.pnlImdbInfo.Size = new System.Drawing.Size(535, 263);
-            this.pnlImdbInfo.TabIndex = 12;
-            this.pnlImdbInfo.Visible = false;
-            this.pnlImdbInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlImdbInfo_Paint);
-            this.pnlImdbInfo.MouseEnter += new System.EventHandler(this.pnlImdbInfo_MouseEnter);
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
-            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.label3.Location = new System.Drawing.Point(201, 194);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(49, 19);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Genre:";
-            // 
-            // lblttGenre
-            // 
-            this.lblttGenre.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblttGenre.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
-            this.lblttGenre.Location = new System.Drawing.Point(208, 214);
-            this.lblttGenre.Name = "lblttGenre";
-            this.lblttGenre.Size = new System.Drawing.Size(309, 39);
-            this.lblttGenre.TabIndex = 13;
-            this.lblttGenre.Text = "Action, Sci-Fi";
-            // 
-            // lblttName
-            // 
-            this.lblttName.AutoSize = true;
-            this.lblttName.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
-            this.lblttName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
-            this.lblttName.Location = new System.Drawing.Point(204, 9);
-            this.lblttName.Name = "lblttName";
-            this.lblttName.Size = new System.Drawing.Size(120, 21);
-            this.lblttName.TabIndex = 12;
-            this.lblttName.Text = "Unknown (????)";
-            // 
-            // lblttRatingCount
-            // 
-            this.lblttRatingCount.AutoSize = true;
-            this.lblttRatingCount.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.lblttRatingCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.lblttRatingCount.Location = new System.Drawing.Point(242, 60);
-            this.lblttRatingCount.Name = "lblttRatingCount";
-            this.lblttRatingCount.Size = new System.Drawing.Size(80, 15);
-            this.lblttRatingCount.TabIndex = 12;
-            this.lblttRatingCount.Text = "999999 Users";
-            // 
-            // lblttRating
-            // 
-            this.lblttRating.AutoSize = true;
-            this.lblttRating.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lblttRating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
-            this.lblttRating.Location = new System.Drawing.Point(241, 39);
-            this.lblttRating.Name = "lblttRating";
-            this.lblttRating.Size = new System.Drawing.Size(32, 21);
-            this.lblttRating.TabIndex = 12;
-            this.lblttRating.Text = "9.9";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
-            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
-            this.label4.Location = new System.Drawing.Point(267, 44);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(24, 15);
-            this.label4.TabIndex = 13;
-            this.label4.Text = "/10";
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.Image = global::RarbgAdvancedSearch.Properties.Resources.star;
-            this.pictureBox1.Location = new System.Drawing.Point(205, 42);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(33, 31);
-            this.pictureBox1.TabIndex = 16;
-            this.pictureBox1.TabStop = false;
-            // 
-            // pbTooltipImg
-            // 
-            this.pbTooltipImg.Location = new System.Drawing.Point(0, 0);
-            this.pbTooltipImg.Name = "pbTooltipImg";
-            this.pbTooltipImg.Size = new System.Drawing.Size(207, 258);
-            this.pbTooltipImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this.pbTooltipImg.TabIndex = 11;
-            this.pbTooltipImg.TabStop = false;
-            this.pbTooltipImg.MouseEnter += new System.EventHandler(this.pbTooltipImg_MouseEnter);
-            // 
-            // tsbDonate
-            // 
-            this.tsbDonate.Image = ((System.Drawing.Image)(resources.GetObject("tsbDonate.Image")));
-            this.tsbDonate.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.tsbDonate.Name = "tsbDonate";
-            this.tsbDonate.Size = new System.Drawing.Size(72, 22);
-            this.tsbDonate.Text = "DONATE";
-            this.tsbDonate.Click += new System.EventHandler(this.tsbDonate_Click);
-            // 
             // tsbReadNotify
             // 
             this.tsbReadNotify.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
@@ -928,6 +820,31 @@
             this.tsbReadNotify.Text = "You have ? unread notifications";
             this.tsbReadNotify.Visible = false;
             this.tsbReadNotify.Click += new System.EventHandler(this.tsbReadNotify_Click);
+            // 
+            // pnlImdbInfo
+            // 
+            this.pnlImdbInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlImdbInfo.AutoSize = true;
+            this.pnlImdbInfo.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.pnlImdbInfo.BackColor = System.Drawing.Color.Transparent;
+            this.pnlImdbInfo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pnlImdbInfo.Controls.Add(this.label1);
+            this.pnlImdbInfo.Controls.Add(this.lblttDescription);
+            this.pnlImdbInfo.Controls.Add(this.pictureBox1);
+            this.pnlImdbInfo.Controls.Add(this.label3);
+            this.pnlImdbInfo.Controls.Add(this.label4);
+            this.pnlImdbInfo.Controls.Add(this.lblttGenre);
+            this.pnlImdbInfo.Controls.Add(this.lblttName);
+            this.pnlImdbInfo.Controls.Add(this.lblttRatingCount);
+            this.pnlImdbInfo.Controls.Add(this.pbTooltipImg);
+            this.pnlImdbInfo.Controls.Add(this.lblttRating);
+            this.pnlImdbInfo.Location = new System.Drawing.Point(395, 339);
+            this.pnlImdbInfo.Name = "pnlImdbInfo";
+            this.pnlImdbInfo.Size = new System.Drawing.Size(522, 263);
+            this.pnlImdbInfo.TabIndex = 12;
+            this.pnlImdbInfo.Visible = false;
+            this.pnlImdbInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlImdbInfo_Paint);
+            this.pnlImdbInfo.MouseEnter += new System.EventHandler(this.pnlImdbInfo_MouseEnter);
             // 
             // label1
             // 
@@ -949,6 +866,91 @@
             this.lblttDescription.Size = new System.Drawing.Size(312, 82);
             this.lblttDescription.TabIndex = 17;
             this.lblttDescription.Text = resources.GetString("lblttDescription.Text");
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::RarbgAdvancedSearch.Properties.Resources.star;
+            this.pictureBox1.Location = new System.Drawing.Point(205, 42);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(33, 31);
+            this.pictureBox1.TabIndex = 16;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Segoe UI Semibold", 10F, System.Drawing.FontStyle.Bold);
+            this.label3.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.label3.Location = new System.Drawing.Point(201, 194);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(49, 19);
+            this.label3.TabIndex = 15;
+            this.label3.Text = "Genre:";
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.label4.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(150)))), ((int)(((byte)(150)))), ((int)(((byte)(150)))));
+            this.label4.Location = new System.Drawing.Point(267, 44);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(24, 15);
+            this.label4.TabIndex = 13;
+            this.label4.Text = "/10";
+            // 
+            // lblttGenre
+            // 
+            this.lblttGenre.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblttGenre.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(130)))), ((int)(((byte)(130)))), ((int)(((byte)(130)))));
+            this.lblttGenre.Location = new System.Drawing.Point(208, 214);
+            this.lblttGenre.Name = "lblttGenre";
+            this.lblttGenre.Size = new System.Drawing.Size(309, 39);
+            this.lblttGenre.TabIndex = 13;
+            this.lblttGenre.Text = "Action, Sci-Fi";
+            // 
+            // lblttName
+            // 
+            this.lblttName.AutoSize = true;
+            this.lblttName.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold);
+            this.lblttName.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.lblttName.Location = new System.Drawing.Point(204, 9);
+            this.lblttName.Name = "lblttName";
+            this.lblttName.Padding = new System.Windows.Forms.Padding(0, 0, 20, 0);
+            this.lblttName.Size = new System.Drawing.Size(140, 21);
+            this.lblttName.TabIndex = 12;
+            this.lblttName.Text = "Unknown (????)";
+            // 
+            // lblttRatingCount
+            // 
+            this.lblttRatingCount.AutoSize = true;
+            this.lblttRatingCount.Font = new System.Drawing.Font("Segoe UI Semibold", 9F, System.Drawing.FontStyle.Bold);
+            this.lblttRatingCount.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.lblttRatingCount.Location = new System.Drawing.Point(242, 60);
+            this.lblttRatingCount.Name = "lblttRatingCount";
+            this.lblttRatingCount.Size = new System.Drawing.Size(80, 15);
+            this.lblttRatingCount.TabIndex = 12;
+            this.lblttRatingCount.Text = "999999 Users";
+            // 
+            // pbTooltipImg
+            // 
+            this.pbTooltipImg.Location = new System.Drawing.Point(0, 0);
+            this.pbTooltipImg.Name = "pbTooltipImg";
+            this.pbTooltipImg.Size = new System.Drawing.Size(207, 258);
+            this.pbTooltipImg.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this.pbTooltipImg.TabIndex = 11;
+            this.pbTooltipImg.TabStop = false;
+            this.pbTooltipImg.MouseEnter += new System.EventHandler(this.pbTooltipImg_MouseEnter);
+            // 
+            // lblttRating
+            // 
+            this.lblttRating.AutoSize = true;
+            this.lblttRating.Font = new System.Drawing.Font("Segoe UI Semibold", 12F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblttRating.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(90)))), ((int)(((byte)(90)))), ((int)(((byte)(90)))));
+            this.lblttRating.Location = new System.Drawing.Point(241, 39);
+            this.lblttRating.Name = "lblttRating";
+            this.lblttRating.Size = new System.Drawing.Size(32, 21);
+            this.lblttRating.TabIndex = 12;
+            this.lblttRating.Text = "9.9";
             // 
             // Main
             // 
