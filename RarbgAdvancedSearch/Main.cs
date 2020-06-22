@@ -87,7 +87,7 @@ namespace RarbgAdvancedSearch
                 RarbgPageParser parser = new RarbgPageParser();
                 int maxPage = 1;
 
-                var searchurl = $"https://rarbgenter.org/torrents.php?search={txtSearch.Text.Trim()}{category}{order}";
+                var searchurl = $"https://rarbgenter.org/torrents.php?search={System.Web.HttpUtility.UrlEncode(txtSearch.Text.Trim())}{category}{order}";
 
                 UsageStats.Log("search", searchurl);
                 string html = GetRarbgPage($"{searchurl}&page={99999999}", ref response_bytes);
@@ -438,13 +438,13 @@ namespace RarbgAdvancedSearch
                         clbGenre.Items.AddRange(entry.genre.Where(g => !clbGenre.Items.Contains(g)).ToArray());
                     }
 
-                if (txtSearch.Text.Trim().Length > 0)
-                {
-                    if (!entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper()) && !entry.name.ToUpper().Replace(".", " ").Contains(txtSearch.Text.Trim().ToUpper()))
-                    {
-                        goto entry_filtered;
-                    }
-                }
+                //if (txtSearch.Text.Trim().Length > 0)
+                //{
+                //    if (!entry.name.ToUpper().Contains(txtSearch.Text.Trim().ToUpper()) && !entry.name.ToUpper().Replace(".", " ").Contains(txtSearch.Text.Trim().ToUpper()))
+                //    {
+                //        goto entry_filtered;
+                //    }
+                //}
 
                 //Custom Filter
                 if (chkMinImdb.Checked || chkMinYear.Checked || chkMaxYear.Checked || chkMinUpDate.Checked || chkGenre.Checked)
