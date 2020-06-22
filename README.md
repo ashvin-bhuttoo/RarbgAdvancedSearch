@@ -35,6 +35,10 @@ This project was built using VS2019 Community Edition and is completely open sou
 
 <b>Changelog</b>
 ```
+v1.1.0
+- Bugfix in search code for search text containing '&' ampersand chars, fixed url encoding & listing filtering
+- Imdb Preview Panel polishing 
+
 v1.0.9
 - Imdb Preview Panel polishing & Optimization
 - Misc Gui updates
