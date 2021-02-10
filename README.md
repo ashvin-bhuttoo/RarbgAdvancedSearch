@@ -9,8 +9,12 @@
 
 <table style="width:100%">
   <tr>
-    <td>The latest installer can be downloaded from here:</td>
+    <td>The latest msi installer can be downloaded from here:</td>
     <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
+  </tr>
+  <tr>
+    <td>The latest nsis installer can be downloaded from here:</td>
+    <td><a href="https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch/releases/download/1.1.0/RarbgAdvancedSearch_nsis_v1.1.0.exe"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
   </tr>
 </table>
 
