@@ -7,6 +7,13 @@
   </tr>
 </table>
 
+<table style="width:100%">
+  <tr>
+    <td>The latest msi installer can be downloaded from here:</td>
+    <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
+  </tr>
+</table>
+
 If you want to buy me a beer or say thanks, here's the buttons for it<br/>
 [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://paypal.me/ABhuttoo?locale.x=en_US) | [![Thanks](https://img.shields.io/badge/Say%20Thanks-!-1EAEDB.svg)](https://saythanks.io/to/ashvin.bhuttoo%40gmail.com)
 
