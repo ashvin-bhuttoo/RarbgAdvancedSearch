@@ -343,34 +343,37 @@ namespace RarbgAdvancedSearch
                             {
                                 if (!chkMinUpDate.Checked || ctr.entry.dateAdded >= dtpMinUpDate.Value)
                                 {
-                                    if (ctracker.contains(ctr.entry, ref stat))
+                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || ctr.entry.genre.Any(g => clbGenre.CheckedIndices.Cast<int>().Any(i => clbGenre.GetItemCheckState(i) == CheckState.Checked && clbGenre.Items[i].ToString() == g) && !ctr.entry.genre.Any(g2 => clbGenre.CheckedIndices.Cast<int>().Any(i => clbGenre.GetItemCheckState(i) == CheckState.Indeterminate && clbGenre.Items[i].ToString() == g2))))
                                     {
-                                        Color backColor = Not_Set;
-                                        switch (stat)
+                                        if (ctracker.contains(ctr.entry, ref stat))
                                         {
-                                            case Status.MarkedForDownload:                            
-                                                backColor = Marked_For_Dld;
-                                                break;
-                                            case Status.Downloading:
-                                                backColor = Downloading;
-                                                break;
-                                            case Status.Downloaded:
-                                                backColor = Downloaded;
-                                                break;
-                                            case Status.Deleted:
-                                                backColor = Deleted;
-                                                break;
-                                        }
+                                            Color backColor = Not_Set;
+                                            switch (stat)
+                                            {
+                                                case Status.MarkedForDownload:
+                                                    backColor = Marked_For_Dld;
+                                                    break;
+                                                case Status.Downloading:
+                                                    backColor = Downloading;
+                                                    break;
+                                                case Status.Downloaded:
+                                                    backColor = Downloaded;
+                                                    break;
+                                                case Status.Deleted:
+                                                    backColor = Deleted;
+                                                    break;
+                                            }
 
-                                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, stat });
-                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
-                                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
-                                        dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
-                                    }
-                                    else
-                                    {
-                                        dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, Status.NotSet });
-                                        dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                                            dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, stat });
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.BackColor = backColor;
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].DefaultCellStyle.ForeColor = Color.Empty;
+                                        }
+                                        else
+                                        {
+                                            dgvListings.Rows.Add(new object[] { "Down", ctr.entry.category, ctr.entry.name, ctr.entry.dateAdded, Math.Round(ctr.entry.sizeInGb, 2), ctr.entry.seeders, ctr.entry.leechers, ctr.entry.uploader, string.Join(",", ctr.entry.genre), ctr.entry.year, ctr.entry.imdbRating, Status.NotSet });
+                                            dgvListings.Rows[dgvListings.Rows.Count - 1].Tag = ctr;
+                                        }
                                     }
                                 }
                             }
@@ -457,7 +460,7 @@ namespace RarbgAdvancedSearch
                             {
                                 if (!chkMinUpDate.Checked || entry.dateAdded >= dtpMinUpDate.Value)
                                 {
-                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || entry.genre.Any(g => clbGenre.CheckedItems.Contains(g)))
+                                    if (!chkGenre.Checked || clbGenre.CheckedItems.Count == 0 || entry.genre.Any(g => clbGenre.CheckedIndices.Cast<int>().Any(i => clbGenre.GetItemCheckState(i) == CheckState.Checked && clbGenre.Items[i].ToString() == g) && !entry.genre.Any(g2 => clbGenre.CheckedIndices.Cast<int>().Any(i => clbGenre.GetItemCheckState(i) == CheckState.Indeterminate && clbGenre.Items[i].ToString() == g2))))
                                     {
                                         Status stat = Status.NotSet;
                                         if (ctracker.contains(entry, ref stat))
@@ -635,6 +638,30 @@ namespace RarbgAdvancedSearch
                             clb.SetItemCheckState(i, CheckState.Unchecked);
                             break;
                         case CheckState.Indeterminate:
+                        case CheckState.Unchecked:
+                            clb.SetItemCheckState(i, CheckState.Checked);
+                            break;
+                    }
+                }
+            }
+        }
+
+
+        private void clbGenre_Click(object sender, EventArgs e)
+        {
+            var clb = sender as CheckedListBox;
+            for (int i = 0; i < clb.Items.Count; i++)
+            {
+                if (clb.GetItemRectangle(i).Contains(clb.PointToClient(MousePosition)))
+                {
+                    switch (clb.GetItemCheckState(i))
+                    {
+                        case CheckState.Checked:
+                            clb.SetItemCheckState(i, CheckState.Indeterminate);                            
+                            break;
+                        case CheckState.Indeterminate:
+                            clb.SetItemCheckState(i, CheckState.Unchecked);
+                            break;
                         case CheckState.Unchecked:
                             clb.SetItemCheckState(i, CheckState.Checked);
                             break;
