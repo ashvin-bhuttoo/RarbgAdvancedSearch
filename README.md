@@ -23,8 +23,7 @@ If you want to buy me a beer or say thanks, here's the buttons for it<br/>
 3. Double click on an entry to open a listing on rarbg, right click for context menufor each listing, with options to open the imdb page or rarbg page.
 4. Download Torrent using Magnet file or Torrent File directly from right click menu.
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
-6. Special Menu, Ability to Directly Download some movies.
-7. Youtube trailer option in right click listing context menu.
+6. Youtube trailer option in right click listing context menu.
 
 ![alt text](https://i.imgur.com/Rc9P3Es.png)
 
@@ -56,7 +55,6 @@ v1.0.6
 - Direct Downloader Fixes & Updates
 
 v1.0.5
-- Added Special Menu, Direct Download :)
 - Added Youtube trailer option in right click listing context menu.
 
 v1.0.3
