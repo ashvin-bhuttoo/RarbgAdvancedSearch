@@ -25,8 +25,6 @@ If you want to buy me a beer or say thanks, here's the buttons for it<br/>
 5. Personal Content Tracking (Mark as Downloaded, Downloading, For Download, Deleted)
 6. Youtube trailer option in right click listing context menu.
 
-![alt text](https://i.imgur.com/Rc9P3Es.png)
-
 ![alt text](https://i.imgur.com/CUxcDr7.png)
 
 This project was built using VS2019 Community Edition and is completely open source :)
