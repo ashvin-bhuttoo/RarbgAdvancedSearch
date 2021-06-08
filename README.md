@@ -48,7 +48,6 @@ v1.0.7
 - YouTube trailer search optimization
 - Added copy magnet link option
 - Added backup updater
-- Added ability for user to request for direct links (x265 Movies only)
 - Added notification support
 
 v1.0.6
