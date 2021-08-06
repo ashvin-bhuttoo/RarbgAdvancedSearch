@@ -799,6 +799,7 @@
             this.toolStripSplitButton2.Name = "toolStripSplitButton2";
             this.toolStripSplitButton2.Size = new System.Drawing.Size(77, 22);
             this.toolStripSplitButton2.Text = "★ SPECIAL";
+            this.toolStripSplitButton2.Visible = false;
             // 
             // directDownloadToolStripMenuItem
             // 
