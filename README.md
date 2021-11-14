@@ -9,7 +9,7 @@
 
 <table style="width:100%">
   <tr>
-    <td>The latest msi installer can be downloaded from here:</td>
+    <td>The latest msi installer can be downloaded from here:<br/>Note: If MSI installer does not work, use NSIS version below</td>
     <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
   </tr>
    <tr>
