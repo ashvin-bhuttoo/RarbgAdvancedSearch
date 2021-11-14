@@ -12,6 +12,10 @@
     <td>The latest msi installer can be downloaded from here:</td>
     <td><a href="https://raw.githubusercontent.com/ashvin-bhuttoo/RarbgAdvancedSearch/master/RarbgAdvancedSearchSetup/Release/RarbgAdvancedSearchSetup.msi"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
   </tr>
+   <tr>
+    <td>The latest NSIS installer can be downloaded from here:</td>
+    <td><a href="https://github.com/ashvin-bhuttoo/RarbgAdvancedSearch/releases/download/1.1.0/RarbgAdvancedSearch_nsis_v1.1.0.exe"><img src="http://icons.iconarchive.com/icons/dtafalonso/android-lollipop/32/Downloads-icon.png"></a> </td>    
+  </tr>
 </table>
 
 If you want to buy me a beer or say thanks, here's the buttons for it<br/>
