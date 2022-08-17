@@ -1,3 +1,5 @@
+⚠️ Notice: This project is no longer maintained.
+
 # RarbgAdvancedSearch
 
 <table style="width:100%">
