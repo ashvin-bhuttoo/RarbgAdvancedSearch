@@ -1,4 +1,4 @@
-⚠️ Notice: This project is no longer maintained.
+⚠️ Notice: RARBG is no longer online, This project is no longer maintained.
 
 # RarbgAdvancedSearch
 
